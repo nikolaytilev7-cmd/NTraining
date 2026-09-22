@@ -11,7 +11,7 @@
  * Bump CACHE on every deploy. Old caches are deleted on activate, so an update
  * never leaves two versions fighting over the same origin.
  */
-const CACHE = 'ironbell-v6';
+const CACHE = 'ironbell-v8';
 const SHELL = ['./', './index.html', './manifest.json',
                './icon-180.png', './icon-192.png', './icon-512.png'];
 
