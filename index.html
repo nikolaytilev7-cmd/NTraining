@@ -68,7 +68,6 @@ input,select,textarea{font-family:var(--font-b);}
 a{color:inherit;text-decoration:none;}
 ::-webkit-scrollbar{width:8px;height:8px;}
 ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:8px;}
-
 .app-shell{display:flex;min-height:100vh;}
 .sidebar{
   width:236px;flex-shrink:0;background:var(--bg-1);border-right:1px solid var(--border-soft);
@@ -81,7 +80,6 @@ a{color:inherit;text-decoration:none;}
 .side-link svg{width:19px;height:19px;flex-shrink:0;}
 .side-link.active{background:var(--blue-glow);color:var(--text-1);}
 .side-link:hover{color:var(--text-1);}
-
 .main-col{flex:1;min-width:0;display:flex;justify-content:center;}
 .main-inner{width:100%;max-width:560px;padding:20px 18px 100px;}
 @media (min-width:900px){
@@ -89,7 +87,6 @@ a{color:inherit;text-decoration:none;}
   .main-inner{padding:36px 32px 60px;max-width:640px;}
   .bottom-nav{display:none !important;}
 }
-
 .bottom-nav{
   position:fixed;left:0;right:0;bottom:0;z-index:40;
   background:rgba(10,14,19,0.92);backdrop-filter:blur(14px);
@@ -100,7 +97,6 @@ a{color:inherit;text-decoration:none;}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-3);font-size:11px;font-weight:600;flex:1;padding:4px;}
 .tab svg{width:22px;height:22px;}
 .tab.active{color:var(--blue);}
-
 .card{background:var(--bg-1);border:1px solid var(--border-soft);border-radius:var(--radius-l);padding:20px;}
 .card + .card{margin-top:14px;}
 .card-tight{padding:16px;border-radius:var(--radius-m);}
@@ -108,12 +104,10 @@ a{color:inherit;text-decoration:none;}
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .section-title{font-size:14px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:1.1px;}
 .eyebrow{font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:1.3px;}
-
 .btn{border:none;border-radius:var(--radius-m);padding:15px 22px;font-weight:700;font-size:15px;line-height:1;
   display:inline-flex;align-items:center;justify-content:center;gap:9px;white-space:nowrap;
   transition:transform .08s ease, background .15s ease, box-shadow .15s ease, opacity .15s ease;}
 .btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
-
 /* Icons are injected as raw <svg> with no intrinsic size, so every element that
    hosts one has to constrain it — otherwise it stretches to fill its box and
    swallows the label. One rule here beats a wrapper at each call site. */
@@ -137,44 +131,36 @@ a{color:inherit;text-decoration:none;}
 .btn-sm.btn-block{padding:12px 15px;font-size:13.5px;}
 .btn[disabled]{opacity:0.35;pointer-events:none;}
 .btn-icon{width:38px;height:38px;padding:0;border-radius:50%;background:var(--bg-3);color:var(--text-1);border:1px solid var(--border);flex-shrink:0;}
-
 .chip{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:99px;background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);font-weight:600;font-size:14px;}
 .chip.selected{background:var(--blue-dim);border-color:var(--blue);color:#FFFFFF;
   box-shadow:inset 0 0 0 1px var(--blue);}
 .chip-row{display:flex;flex-wrap:wrap;gap:9px;}
-
 .badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;}
 .badge-beginner{background:rgba(51,196,141,0.15);color:var(--green);}
 .badge-intermediate{background:rgba(240,180,41,0.15);color:var(--amber);}
 .badge-advanced{background:rgba(230,85,90,0.15);color:var(--red);}
 .badge-neutral{background:var(--bg-3);color:var(--text-2);}
 .badge-blue{background:var(--blue-glow);color:var(--blue);}
-
 .top-row{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
 .back-btn{width:36px;height:36px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-1);flex-shrink:0;}
 .top-row h2{font-size:24px;}
-
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .stat-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
 .stat-tile{background:var(--bg-2);border:1px solid var(--border-soft);border-radius:var(--radius-m);padding:16px;}
 .stat-tile .num{font-family:var(--font-d);font-size:30px;font-weight:700;line-height:1;color:var(--text-1);}
 .stat-tile .lbl{font-size:12.5px;color:var(--text-3);margin-top:6px;font-weight:600;}
-
 .progress-track{height:8px;background:var(--bg-3);border-radius:99px;overflow:hidden;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue-2),var(--blue));border-radius:99px;transition:width .3s ease;}
-
 .seg-track{display:flex;gap:5px;}
 .seg{flex:1;height:7px;border-radius:99px;background:var(--bg-3);}
 .seg.done{background:var(--blue);}
 .seg.current{background:var(--blue-dim);border:1.5px solid var(--blue);}
-
 .week-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;}
 .week-tab{flex-shrink:0;padding:10px 16px;border-radius:var(--radius-s);background:var(--bg-2);border:1px solid var(--border-soft);font-weight:700;font-family:var(--font-d);font-size:16px;color:var(--text-3);min-width:76px;text-align:center;}
 .week-tab .wk-status{font-size:10px;font-family:var(--font-b);font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:block;margin-top:2px;}
 .week-tab.current{background:var(--blue-glow);border-color:var(--blue);color:var(--text-1);}
 .week-tab.done{color:var(--green);}
 .week-tab.locked{color:var(--text-3);opacity:0.55;}
-
 .workout-row{display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:1px solid var(--border-soft);}
 .workout-row:last-child{border-bottom:none;}
 .wr-status{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--bg-3);color:var(--text-3);}
@@ -185,7 +171,6 @@ a{color:inherit;text-decoration:none;}
 .wr-title{font-weight:700;font-size:15.5px;}
 .wr-meta{font-size:13px;color:var(--text-3);margin-top:2px;}
 .wr-title.locked, .wr-meta.locked{color:var(--text-3);}
-
 .ex-icon{width:52px;height:52px;border-radius:var(--radius-s);background:var(--bg-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .ex-icon svg{width:30px;height:30px;color:var(--blue);}
 .ex-row{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--border-soft);}
@@ -193,7 +178,6 @@ a{color:inherit;text-decoration:none;}
 .ex-row-body{flex:1;min-width:0;}
 .ex-row-title{font-weight:700;font-size:15.5px;}
 .ex-row-meta{font-size:12.5px;color:var(--text-3);margin-top:3px;}
-
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:8px;}
 .field input[type=text], .field input[type=number], .field select{
@@ -201,38 +185,27 @@ a{color:inherit;text-decoration:none;}
   padding:13px 14px;color:var(--text-1);font-size:15px;
 }
 .field input:focus, .field select:focus{outline:none;border-color:var(--blue);}
-
 .num-stepper{display:flex;align-items:center;gap:14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-s);padding:6px;}
 .num-stepper button{width:40px;height:40px;border-radius:var(--radius-s);background:var(--bg-3);color:var(--text-1);border:none;font-size:20px;font-weight:700;}
 .num-stepper .val{flex:1;text-align:center;font-family:var(--font-d);font-size:22px;font-weight:700;}
-
 .timer-big{font-family:var(--font-d);font-size:68px;font-weight:700;text-align:center;line-height:1;letter-spacing:1px;}
 .timer-sub{text-align:center;color:var(--text-3);font-weight:600;font-size:13px;margin-top:6px;text-transform:uppercase;letter-spacing:0.8px;}
-
 .muscle-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--text-2);font-weight:600;}
 .muscle-legend .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle;}
-
 .divider{height:1px;background:var(--border-soft);margin:18px 0;}
-
 .empty-state{text-align:center;padding:50px 20px;color:var(--text-3);}
 .empty-state h3{color:var(--text-2);margin-bottom:8px;}
-
 .onb-progress{display:flex;gap:6px;margin-bottom:26px;}
 .onb-progress span{flex:1;height:4px;border-radius:99px;background:var(--bg-3);}
 .onb-progress span.on{background:var(--blue);}
-
 .program-hero{border-radius:var(--radius-l);padding:22px;border:1px solid var(--border-soft);position:relative;overflow:hidden;background:linear-gradient(160deg,var(--bg-2),var(--bg-1));}
 .program-hero .glow{position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:radial-gradient(circle,var(--blue-glow),transparent 70%);}
-
 .rest-overlay{position:fixed;inset:0;background:rgba(6,9,13,0.94);backdrop-filter:blur(6px);z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;}
-
 .toast{position:fixed;bottom:calc(90px + var(--safe-b));left:50%;transform:translateX(-50%);background:var(--bg-3);border:1px solid var(--border);color:var(--text-1);padding:12px 20px;border-radius:99px;font-weight:600;font-size:14px;z-index:90;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
 @media (min-width:900px){.toast{bottom:26px;}}
-
 .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .diff-opt{padding:13px 10px;border-radius:var(--radius-s);background:var(--bg-2);border:1.5px solid var(--border);text-align:center;font-weight:700;font-size:14px;color:var(--text-2);}
 .diff-opt.selected{border-color:var(--blue);background:var(--blue-glow);color:var(--text-1);}
-
 .fig-wrap{width:100%;max-width:230px;margin:0 auto;background:var(--bg-2);border-radius:var(--radius-m);padding:10px 0 4px;}
 .fig-wrap canvas{width:100%;height:auto;display:block;}
 .fig-wrap.fig-compact{max-width:168px;padding:8px 0 3px;margin-bottom:2px;}
@@ -347,16 +320,15 @@ a{color:inherit;text-decoration:none;}
 .fit-note{margin-top:14px;padding:11px 13px;border-radius:var(--radius-s);background:var(--bg-2);
   border:1px solid var(--border-soft);font-size:12.5px;color:var(--text-2);line-height:1.45;}
 </style>
-
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="IRONBELL">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAChElEQVR4nOxWz08TQRR+s7stLW0oB0ElEkMUPRghJnLwZMR4M1w0XjX+V179GzQmnjwhF5GEgyRAIAYIEGhJS7uzM/Pe+IbdUkPcSpf0BC/Ny+tu5vu+92szwcjtR0KIvY0f0B8LTCQtWOibCWv7iM4WQJ/tMhCQhaYEqeBMs4oDUC6AEBcjWN2G5Q3Q+O+3uQCmJuDuGGQkOKzDwopliTxpvCucwJlYabvwSwyXxLVKJoKldWpJV5ehQSfTE6f74mZ7bcfWWy5e3hTPpr0sBLtVaobk++Lti1whf/btwwn48EmRFTsH/C+VIPUFW7WBrch6gmJ0JNitMasL2Pih50EzxGqDuoB0yyCMLGeQD7ylNVhcg9qx6zaRq/5QCWbuQ0uyAsgHNiMBnw8VDFHu6yIowy11nk7kNiRszwNivhXKgZzISCCVrZSKGn0eJ6ldZRjdkNsMRDejgwXf2EJLtjISKBN4nn9QP0Gk5EdxYCHUcNSEctFXKpeFwE26P1A9dugGE45OjHFspaJS3i152kqnEvzeg3pTYBuro50SJkJDhOyPJK5uBffGg94IDhugsI0e602qT5aBUbNndGsRjdmv5Xsm4KFU7cZikoEDtmTYO+2UZGAJD440L0ZvBKPDburbFWdcdOhOr7aWYlw88RyPj/ppOKkEk2NuEGWEsUz2fyOeamdfLsL0ZDENJ/VTwV+ClzOolTQ6Mlqijjhmb+InHJtIa2lM9Hq2Evii5wzY3jz117fst5+yozdpQCeD2ceV93M3uoD8/1bxeb758Uttaz86rU9cq1sjuXdzN189v979+HmvLSub4fflhtLcZwo8eDJVeXCnfJ6DV/eiK4KL2x8AAAD//zh54/cAAAAGSURBVAMAAwUKPQCbovAAAAAASUVORK5CYII="></head>
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAASaklEQVR4nK1aW7AmV1X+1u7+r+ec/1zmzJl7MpcMJCSZoAMERJPCEqTKRBMeiFoWF4vCEqvwgbLK4gFe9EkFH/CN0geDUEoZqPJFSAGpEgRRiIFEkpCQZDLXzJzbf+3uvdfnw+7dvfufM4kIPT19du/u/fe31vrWZe9uOXjqTSg34ue8CcBw/Llv4v+kJEXAn+ER0mjJXhfjTlYH/AySiZCECFKA5P9PSVKBEMicHK89tKGzn/rpHjMpaT1+zx95LTARdBERRKfXPzQcSNJfF4KvTrMbiSb+AlPwpx0vEVUEAhEjxpC01qpzbMJnaFf9SZIkSSpGqEooGLkKXwXyHLASc0rgNV1AIhwBvQAQEWOSoshn02mr3V5ZXR8MVsWYvcaVT1DV4e7WzvbVIs873V6r1XbqhOFy3YrG7A2pVHz6f3EBAiU9YsVDxCSj0e7+jSP3P3jfL5x9+6EjJxYXV0RMPZAkQPqdSqjqaLhz4fxPnnj8m9967F+uXb3QXxhQHUBQoify1bXqMVMgG8fvugGFKs0JREpqV2IIjEnGo+E73vmeD3zojzcO7LMFigLOYQ4xSdX4FGKSJEWS4Mrlq198+NPf/rcv9/pLVMeSPyX0IMO8DSN4BOacuOF4nDsJRgAESZKOhjv3P/j7H/noxyZTbG1ZL5iH7nGT0PIYCaBUWlU61XZ39f0f+fNOb+kbX3m4vzCgs5V5945RsSyVE5OUinqBiaWVyqgigLdArfvJeHzmjb/0gQ9/bGvbOQeIIeFUVUmlx10JMCcJIISQJp9kmMp97/2T8+eeff6Z/+x0+kq3F5lZgwxXheIZlALg/CAGPcQ76iORJMmDD/2RdZjOnJiEpFOXJK20LQSoJdag+/pUHfK8KIocMEo4ZzvSuefdH37hx99nTQz/Vxpn84woaZbCh+QqyDHEmfmUWqI3kmTZ9MSpO24+dWZn15JCp6pstdtXr77y/I9/MJuOAYnct2yAULLd6R85fsfSYCPLpoAoJRuODxy98+DR2y6ee6rd7io0QGUEt7RE7Jj+mAb39+G0uij0tJGmHUTEGGuL47eckcTMxplI4tS1O53Hv/etz332k6PhlpJzsjf1IAtLq/f/zidOvv5ts9kYMM7ZTm/xwNHbz7/wBMRU7JfABBBlsRMH2dIAUueBcKwIc732qwuysnY4L5AXhKgqYfD1f/2H3Z2rS4N1pQa2VbVGHaiNmNHu1e984wtHT96dFwTUOUqqi8uHq0dVIfI6f/DezcgMTBHSOr2k9a033I2RtL2Q5cgLhYCQbDQbj3bbnb5TF3S1FwdAJ2y3+5PJ7mg8IaCq6hSpStoXMZG/NUL7XO1X1nEkG2G0Af160Rve7BRZgcxSQIKqVCoIKaFLmTxQeV+cbEFlXighqnSOTNWp1Iautz1jfymE/1OW09dDj+JmRAcfUkWsQ1YgL9Q/hApSYIyYVECS6lxhc4AmMSJGxBiT+LEihkRW0G9OlblaRxGB30NcEZGS1nUElRCR6nLaFxMS8SfgbQgWB1OxjnnOvAgBhoQkdDabDp1qkrT7i4Mj+w9I0tne2lHN82ySz4bO5sYYApAkL5SAKlVJQ+d4Xbxu2kHKGONPythGSYM/NyqHmDnRj9U1nHPMCi19gOKcy2fj3uL6sVNvPn7qzLGbT62sHmr3VkazdHdkncuz2Xi0c2nzynOvnH/i4gvfzbNxVjjAqFJV1XgLXMeT65kz31XmgVr9oeaJPToE08gghWNWMLf0MScx5t77//TITacPHx4IMBxjd4zNLZCQJE1M2mv1+8v7N26+8/TZB0bbu5tXnnVMbWGVSqUTLRxuYIE4Q0UNzzQyrW8TeA+rqra535LYAoos11lmO+1ur9dP09ZNZ88a4Oo1HU3oVESEgFLUlTWcKp2SlLQ7OHD8bJ7DpNlkvJvlk5aoU0pw4hBgokQQoFd5uaqVUuyxRRS6zr8pIsYUVrNCF/qLve6CMVhZwmymW0OxzkAgBkpoWVCIbxNCQAEtqErCiOn0FvbD7DolAJGk8Wiv1yov1GpvWCdtkj6+JlJapvZdX0oU+YyKfatdm1MEq0vYnWBnZPyNTr2+o/qHdU8pEqS6IW0vpQaAODtN20sUF83LJLho1WgoWkCDurvBv+spRMAkyWyyc+zUW8+cfYdaimBtgM1dbA8BgVNYhSqcg9PX2gn1DQfnsH7i11YO3V1kOyJJ47mUBogYFUHAzF8KdzSEggAwJslm440jtz3wgU91F9etxb5lubaL4RSQJmjCKZTlaSySarNBKKUokPbWb3vXpxf23eaKcUMGicD482ZdaioDVBba824RY4tscbD/vt/7y1Z3cTrRtWXZGWF3AqCGrrEMNxbJNa2klDxT01p83Tv+otXbry7z89IGaShN/oTiKrorOjbuDe5L96sPfHKwb2M8csuLprDYHEIwj2ZeklcRidDQQ4jN8u7SgeNv/Tip4cGyB45YBMYUYjV5aIgIQEwym+7c8ZaHTt7+luGua7WSbgdXdyLd8wag9+TM/J2kKtUBkk+nq8fevv/0e2y2K5LspXLW6RjA3mGUEf181C/ywerRs/d+aDpRp2a1z+2hTjMYgVIIU4YXH2dUVVn2IOFcT4hL5WRNy/9UBQSkzbKDb3j/1rnH7GxzXoZGWig348ukOjFUKwJV2hCT5+Pb3/LQwsryLGOaSLslU03a3STpJCY1zjHWNBJj2onfPemZGGkn0or2NDFpkqRJ0kpNq52knaTVgySkumLa7h/cf+oBZyeQOkiywXOQJfA9E1lsB3E2X1o5fPqu35xNaRXrA/zk2R/++2OPdPqLRTZdO3zm1F33uYyEOFWTmJeeevTahceTtEfy2J2/2x2snf/RozuX/tskXaX6J9Mrn5UVxNnx+onfWNx/F21h8+Hqze+68uwXbb4jXsUxqiaxUpTTD/+fFF/1lYlQjMknw9Nv/K2FlZXpWEmYBC+//MLT3/t8f2Gfqjv3zNdWDp5Z2nfM5qpKSXH1/OPnnnqk3V0muXH6/s7K2vbFxy89/aW0M6BaUFHOk70w6osxO9taWLtjcf8vUh2dbfcPDg7effW5LyftJdRLFazdIFjF1OeMbBRCE0kxydFb7rGWTqnEpU0U2u71V9u95e7CurriR9/5O1KqeJ+kvXZ3pdVZbneXCWMdTLrQ6q22uiut7kraXU07y2lnOW0vJ53ltLOSdlbS9kraXRWTqlpSSVVnlw7cLWLq2BhQRjwH6kwcoY/9XG3eX9pYO3RnnovSaBlPSHWqTl3e6ixeev6xi89/36TGOnXql4BcmKyIKpzLXDF2xcQVY1eMSUc6UqmF73HF2OUjdQVJqpJ0dtpbPp1299EVNWp6QYIMLClESJhjQio2gYAxzs0Ga8fb/eWioFJUIQptpA4RkR//198ODv210lgtl658EUaKzbFx+sHVI/f4mtzmo5e//xlXjNVlvZXTh25/v9oZIOqKzuJRl49KB2GetFfaC0fGs6sm6TbUXzdIlsUcwlovKJRSIAqgrlhYOSoG1imQOIVoZS0SoM2StL9z+YnzTz966NZft65evPG3qEVn6abu4GbfX2S78JUCXdpeXNp4kysm4c5MbeGbVCdpp90/MHrFIgkPqwxQzzBpgkuFK6UwlRNof3DY5ykX1TYlPnW95ZsAmKR77om/nw6HPrjUcZhKUoupzcY2G9p8bPNRFUqo1mZDmw9tNrTZUF3moZd5jUy7+yNuM9CGUehnVUqUD6xELWMckLQW5pOrD8JiXD7aOPnO5YNvVC1mw/MvP/lPkgjVEvDQ6XNYtVpNhOl46XdkdFEZ0PuJppqkW0Kp3ZJsiBSibAU3FtT3mLQ/VyaoVg93MK2jZz4Idaa1cOWZR0bXtkzSpVrAG6NUp1KDdl14BCu2kA7+Br9AE24W02aEtaJGLRNowm8Fq1Q2ChjzbDxX2GhtNCmy0dLhk6vH7tFiYvPRhR8+DElQg9AQcMJe5i8N6Gt9V+Qpd6qzE1ARQyo5UgUilqvT9foLGN67+gmW5tmoLBgFqoBCWYvqzX7ojvftXPyuEdl66eut3j6T9qgOQIQboIOAqmXx439EHakg6JM0WTZUqeqKcdBjpP5gQC+GiU40vBTRYDUFMNk578vguK4EylQKwGaysHZ6/eS7bT5ULWbDcyKmZoWWJNFKu03W+6tluzSXUyqdLaZXfIUX+BacpvRjkjQhLIWVosrB/WWTjLdfzHMoTDwvKZXlq0jCFdnG6x9q9fbRZSJJqeYSnKdHxSglquOc17qKZiCdneWTSxDDqvoIQZQ1h2kqmZqmKTOpJO3R5nOT3U2KOKVzUC1pgKoUI1wx7Swc2n/LgzYfeT7EMiDYQX2/RmM1spKG29QBppi9ko9fFknLsg+hcGKlcYI0tV2CaWszqRpJs9Hl7cs/oNA6pa/bQYjxmZUs8dh8uH7yvu7STc5OESaEkQ8EBw2zLe+EqhXH4oYDktnOcy7b8jV2rVxGCEmWiSzqQlUnVo5De+W5ryrFWxmEK2bFbNPOtovZlrMTr3K1edIabLzuvTbbtNm2zXdstu2Ls5IbVKqqczYf2nzX5jvOjmvGN+KVIzl65T/KmFsRFpHuA+yUUKGhUKCE8aumIr5MN1CbpP3Nl74+3b7W6q6qs65w3cFNB2/97aS96PJRf/X1rsg8RW0+XD78ywdufZ/NtiEJQJN01RV1nAEhZnDoV9TNqEV74ShdEdSqVQNI8vHF8bXHJekEp6/cwNOpTo6yuHZERAAjIp4YAgMxVaeYVpFtnXjrx29+0x/kkxHEiKQmaVOVgNqZK6ZAHQdN0vP0IxlqzzrmgDCmU2pVCy2m3mUqAahF0lq69pN/vPbc55LWoqpFjViDQ2vVmXpNiyhpygVsoUSdoE3S/sUnH944/WDaGagrSGvLsrFKKVqhtHY70qXUoT00rB1WwoSsGm5QB0nyyaWdC1/16i99HZXuiQg9qCayS5AsGhBSemu2++K5733GpF11BVV9qewJqXNxMA5plRPHcSbwOYx10Q1WTGfzxUfs9LJIWnoFGsyJoo6SPowimNin90iGMhGqTduDS//z+avPfyVtLzuX10mnmp3UySiqZ6Lc1Iwz81KpqrpCkoXRlW/vXviqJH2qDQFdyzwbgDEKMylBIQgVGEAppuQPlDCACgyhfmX3+W9+ojs40ekftMXIZ/GYPJEvNuuCG/ZXY0ktxHTy8flXnvksICXdWcX+hh38WM8+E5/MWYfU8ENKWkna2fjyM1/7aDHbNqarLq+jeKjDtMGZWs0VVZqcCdxzOaTt8uHlpz5l800xaVmJ7IWeQfdeQukP1gFATPmarGyUUci/lQsxSsS0XD5cXD9zy71/1equF9mOiIkkV5LQ8CQNumjEmeuMoNYk/SK7dvmpT2fDZ01FnjhcBv7UwTSUatIbrAMMr0VNJIOUL27jBkRMyxXD7vLJE2/7s4W124vZFugImePMDchTcwb0aZEmXZjtPnPlR39TTM5L2keNnnuDDrwiKBDpLe0rM3usbIiEYiFYQ4JNIKaldmrS3pE7/3DfyQcA4/IhQ9C8kWM0TtWRlKRLtbsXHt184QvUTEyHtCAixbOqI+qSrr4KANJbWgsLjuHDpoA4sknZH8SAp6kWk6UDbz5w6wcX1u8CxBUTak6tZo3znl3GdUnEtKl2sv3k1ov/PNv+oSRdgSFdgFjpOxSX9WlV85erENJbXIvfsMa6jyjUlKd8CW/EJK6YiEmWNt68euzd/X13pu1VEtRCtaDaMH3xJDWAUNVmm9PtJ4eXHptsPQE6k/Sa0FlH8BvYoV5bEUh3cbXSP4MzNLE2iNToBMQkANROQLQXj/RX39BbvrW9eCxtr0nSFUlJ0mXOTmx2LRu9NNt9drbzdDG9BMAkPQCkC0swIf/FdpiTKlC/nEgC0l1cRWNjpfvy3X9kigi6hH+1w9DlqjlAYzom7ZukK0kHgLqMbqZ2Qi0AiGmLaTX0Gi3nNMWoFB+dVoT3PtBdWKnBx+8zGwKEkFq99AYig/gBVRRGcLWwBlbGMeNfHleKLNcaqtl6mO/yOgGizvktjWTyB/8CUOG/eaJADAFABcL644OyXX5ZV32k4kNqKZkpXwCVUKvvEhGgMPRUiGN5as7EXlvp2PekZPkhdU2h8rNBhs9GAIqIkP5TkvDlLssvasr+MLT8PC/0NNnJxpd7pb5RCRBEqGRQhHmVAPHQErMwDXI3n4NITfO6N37KEzxJypVgL0z1YpPRW6oKQKz/ijOlJRiZJXbcUvdsKqMa/b8x0r0thZeNXQAAAABJRU5ErkJggg==">
+</head>
 <body>
 <div id="bgLayer"></div>
 <div id="app"></div>
@@ -429,7 +401,6 @@ function poseIcon(cat){
       +'<path d="M9.6 10.6 L13.2 6"/><circle cx="14.6" cy="4.4" r="2" fill="currentColor" stroke="none"/>'};
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(P[cat]||P.squat)+'</svg>';
 }
-
 /* ============================= EXERCISE DATA ============================= */
 const EXERCISES = [
 {id:'goblet_squat',name:'Goblet Squat',cat:'squat',equipment:['kettlebell'],difficulty:'beginner',type:'Squat',
@@ -693,18 +664,15 @@ const EXERCISES = [
  phases:['Chest','Squat','Drive','Overhead','Chest'],swap:'kb_thruster'},
 ];
 const EX_BY_ID = Object.fromEntries(EXERCISES.map(e=>[e.id,e]));
-
 const MUSCLE_LABELS = {quads:'Quadriceps',glutes:'Glutes',hamstrings:'Hamstrings',core:'Core / Abs',obliques:'Obliques',
   chest:'Chest',shoulders:'Shoulders',biceps:'Biceps',triceps:'Triceps',back:'Upper Back',lower_back:'Lower Back',
   traps:'Traps',forearms:'Forearms',calves:'Calves'};
-
 const MUSCLE_TO_REGION = {
   quads:['quads_l','quads_r'], glutes:['glutes_l','glutes_r'], hamstrings:['hamstrings_l','hamstrings_r'],
   core:['abs'], obliques:['obliques_l','obliques_r'], chest:['chest'],
   shoulders:['shoulders_l','shoulders_r'], biceps:['biceps_l','biceps_r'], triceps:['triceps_l','triceps_r'],
   back:['upperback_l','upperback_r'], lower_back:['lowerback'], traps:['trap_l','trap_r'],
   forearms:['forearms_l','forearms_r','forearmsb_l','forearmsb_r'], calves:['shins_l','shins_r','calves_l','calves_r']};
-
 /* ============================= PROGRAMS ============================= */
 const PROGRAMS = [
  {id:'foundation',name:'FOUNDATION',tagline:'6 Week Kettlebell Fundamentals',weeks:6,daysPerWeek:3,level:'beginner',
@@ -1071,7 +1039,6 @@ const PROGRAMS = [
   ]},
 ];
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
-
 /* ============================= STORAGE ============================= */
 const BUILD = '2026-09-22b';   // shown in Profile, so "did the update land?" has an answer
 const STORE_KEY='ironbell_state_v1';
@@ -1119,7 +1086,6 @@ function saveState(){
   }
 }
 function lastSavedAt(){ try{ return localStorage.getItem(STORE_KEY+'_at'); }catch(e){ return null; } }
-
 /* ------------------------------ BACKUP ------------------------------ */
 /* Everything lives in one browser key on one origin. Safari clears that key
    for sites left unvisited, so a fortnight away can take the lot. A file the
@@ -1194,7 +1160,6 @@ function applyBackup(text){
   toast(added ? ('Restored \u00b7 '+added+' new sets') : 'Already up to date \u2014 nothing new');
 }
 function progKey(id){ if(!STATE.programProgress[id]) STATE.programProgress[id] = {completed:{}}; return STATE.programProgress[id]; }
-
 /* ============================= HELPERS ============================= */
 function ico(svg, cls){ return '<span class="ico '+(cls||'')+'">'+svg+'</span>'; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -1236,7 +1201,6 @@ function nextHeavier(weight){
   if(i>=0 && i<inv.length-1) return inv[i+1];
   return null;
 }
-
 /* ---- Adaptive engine ---- */
 /* For a per-side lift the two sides are effectively two different lifts: the
    weaker one usually logs fewer reps, and comparing across them would read as
@@ -1314,7 +1278,6 @@ function getRecommendation(ex, programId, w, block){
   return { low, high, weight, note: easy&&atTop&&nextHeavier(prevWeight) ? 'Progressing to a heavier bell' : (hard?'Holding steady to build consistency':'Small progression from last time'), prevText };
 }
 function diffLabel(d){ return {very_easy:'Very Easy',easy:'Easy',just_right:'Just Right',good:'Good',hard:'Hard',too_hard:'Too Hard'}[d]||d; }
-
 function logSet(entry){
   // entry: {exerciseId, programId, programName, week, workoutIndex, workoutName, format, weight, result, difficulty, reason, targetLow, targetHigh}
   entry.date = todayISO();
@@ -1338,13 +1301,11 @@ function updatePRs(entry){
   if(entry.result > pr.bestResult){ pr.bestResult = entry.result; }
   if(isPR) entry.isPR = true;
 }
-
 /* ============================= PROGRAM PROGRESS ============================= */
 /* A training block is a schedule, not a puzzle. The old rule locked every day
    behind the one before it and locked a week until ALL of the previous week was
    ticked, so a single session cut short — or simply missed, which is what
    February looks like — bricked the rest of the programme with no way forward.
-
    Days inside a week are never locked now: the app still says which one is
    next, but it will not stand in front of the door. A week opens once most of
    the one before it has been trained, so the structure still means something
@@ -1401,7 +1362,6 @@ function currentPosition(program){
 /* Structural progression across a block: volume creeps up in steps, then the
    final week backs off. A deload at the end is how real programs are written —
    without it the last week is the hardest, which is exactly backwards.
-
    The phases have to be spread across whatever length the program actually is.
    The old rule chopped the block into fixed thirds, which only worked for long
    programs: a one-week program came out as a single deload week — the whole
@@ -1409,7 +1369,6 @@ function currentPosition(program){
    Foundation, Foundation, Build, Deload, never reaching Peak at all. The rule
    below spreads the three phases proportionally over the weeks before the
    deload, so every block of every length climbs and then backs off.
-
    Some programs are not blocks at all, and say so with `progression`:
      block   (default) climb, then deload
      ladder  the rep ladder is the progression; sets stay put
@@ -1435,7 +1394,6 @@ function weekPhase(program, week){
   if(style==='reset') return PHASE.reset;
   if(style==='ladder')                       // the rungs climb; the sets do not
     return week>=W ? PHASE.rungTop : (week===1 ? PHASE.rungLow : PHASE.rungMid);
-
   if(W<=1) return PHASE.test;                // a single week is not a block
   if(week>=W) return PHASE.deload;
   const n = W-1;                             // the weeks that do the climbing
@@ -1450,7 +1408,6 @@ function weekPhase(program, week){
    than typed per template — the day's movement patterns choose the drills, and
    the declared minutes are the sum of what is actually prescribed, never a
    number written beside a two-item list. */
-
 function sessionExIds(w){
   const out=[];
   (w.blocks ||[]).forEach(b=>out.push(b.ex));
@@ -1544,7 +1501,6 @@ function buildWarmup(w){
   const mob   = pickDrills(WARM_POOL.mobility,   pats, short?2:3,  seed);
   const act   = pickDrills(WARM_POOL.activation, pats, short?1:2,  seed);
   const ramp  = specificRamp(w, short?1:2);
-
   /* Five minutes is a floor, not a rounding: if the short selection lands under
      it, the warm-up grows by a real drill rather than by a rounded-up label. */
   let total = [].concat(pulse,mob,act,ramp).reduce((s,d)=>s+d.sec,0);
@@ -1558,7 +1514,6 @@ function buildWarmup(w){
       act.push(spare[i].d); total += spare[i].d.sec;
     }
   }
-
   const items=[];
   [['Raise the pulse',pulse],['Mobilise',mob],['Switch on',act],['Rehearse the day',ramp]]
     .forEach(function(pair){ pair[1].forEach(function(d){ items.push({
@@ -1575,7 +1530,6 @@ function attachWarmup(w){
   w.warmupMin = Math.max(5, Math.ceil(items.reduce((s,i)=>s+i.sec,0)/60));
   return w;
 }
-
 function buildWorkoutInstance(program, week, idx){
   const tmpl = program.templates[idx % program.templates.length];
   const ph = weekPhase(program, week);
@@ -1650,18 +1604,14 @@ function buildWorkoutInstance(program, week, idx){
   }
   return w;
 }
-
 /* ============================= ROUTER / APP STATE ============================= */
 let ROUTE = {name:'home', params:{}};
 let SESSION = null; // active workout runtime state
 let ONB_STEP = 0;
 let ONB_DATA = null;
 let REST_TIMER = null;
-
 function navigate(name, params){ ROUTE = {name, params: params||{}}; window.scrollTo(0,0); render(); }
-
 function goBack(){ history.back(); }
-
 function render(){
   const app = document.getElementById('app');
   stopAnimation();
@@ -1691,7 +1641,6 @@ function render(){
   app.innerHTML = shell(body, ROUTE.name);
   if(ROUTE.name==='exercise_detail'){ initExerciseAnimation(ROUTE.params.id); }
 }
-
 function shell(inner, active){
   const navItems = [
     ['home','Home',ICON.home],['programs','Programs',ICON.programs],['exercises','Exercises',ICON.exercises],
@@ -1710,7 +1659,6 @@ function shell(inner, active){
     + '<div class="bottom-nav">'+bottomItems+'</div>';
 }
 function shellless(inner){ return '<div class="main-col"><div class="main-inner" style="max-width:520px;padding-top:28px;">'+inner+'</div></div>'; }
-
 /* ============================= MUSCLE MAP SVG ============================= */
 function bodySvg(view, highlighted){
   // highlighted: {region: color}
@@ -1757,7 +1705,6 @@ function muscleMap(ex){
     +'<span><span class="dot" style="background:#EE9A4C;"></span>Secondary</span>'
     +'</div>';
 }
-
 /* ============================= placeholder for section fills ============================= */
 window.App = window.App || {};
 </script>
@@ -1790,7 +1737,6 @@ function renderOnboarding(){
   else content = onbStep6();
   return '<div class="onb-body">'+dots+content+'</div>';
 }
-
 /* An option that explains what choosing it actually changes. A row of bare
    pills makes the reader guess; six of them wrapping unevenly makes them
    guess AND hunt. */
@@ -1967,7 +1913,6 @@ function finishOnboarding(){
   saveState();
   navigate('recommend');
 }
-
 /* ============================= PROGRAM RECOMMENDATION ============================= */
 function scorePrograms(){
   const p = STATE.profile;
@@ -2050,7 +1995,6 @@ function selectProgram(id){
   toast('Program selected: '+PROG_BY_ID[id].name);
   navigate('home');
 }
-
 /* ============================= HOME ============================= */
 function renderHome(){
   const p = STATE.profile;
@@ -2126,7 +2070,6 @@ function recentHistorySection(){
     +'<div class="wr-body"><div class="wr-title">'+(ex?esc(ex.name):'Exercise')+'</div><div class="wr-meta">'+esc(h.workoutName||'')+' \u00b7 '+h.date+'</div></div></div>'; }).join('')
   +'</div></div>';
 }
-
 /* ============================= PROGRAMS LIST / DETAIL ============================= */
 function renderProgramsList(){
   return '<h1 style="font-size:28px;margin-bottom:18px;">Programs</h1>'
@@ -2189,7 +2132,6 @@ function renderProgramDetail(id){
   +'<div class="card">'+dayRows+'</div>';
 }
 function setPdWeek(progId, w){ window._pdWeek = {prog:progId, week:w}; render(); }
-
 /* ============================= EXERCISES ============================= */
 let EX_FILTER = {equipment:'all', difficulty:'all', q:''};
 function renderExercisesList(){
@@ -2223,12 +2165,10 @@ function exRowHtml(e){
 }
 /* ============================================================================
    EXERCISE MOTION ENGINE (v3)
-
    Movements are MODELLED, not posed. Each exercise is a short script of
    biomechanical primitives (hinge, squat, lunge, armHang, armPress …) with a
    parameter per key that has a real meaning, so the numbers can be checked
    against coaching cues instead of guessed.
-
    Three deliberate seams, so this can be upgraded without a rewrite:
      1. Every joint is a full 3D point and each leg takes its OWN ankle
         target — split stances and carries need that, and adding it later
@@ -2239,7 +2179,6 @@ function exRowHtml(e){
         Swapping the hand-rolled canvas for a real 3D renderer touches that
         function and nothing else.
    ============================================================================ */
-
 /* ---------------------------------- RIG ---------------------------------- */
 /* Proportions follow real human ratios (body ≈ 7.5 heads). The arm reach in
    particular matters: too short and the bell can never travel below the hips,
@@ -2251,7 +2190,6 @@ const RIG = {
 const REACH = RIG.upperArm + RIG.forearm;   // 56
 const SOFT  = REACH - 0.5;                  // a "straight" arm, with a hair of bend
 const Z_LEG = 19, Z_ARM = 16, Z_HAND2 = 6;  // depth separation of the paired limbs
-
 function ik2(ox,oy,tx,ty,l1,l2,bend){
   const dx=tx-ox, dy=ty-oy;
   const d0 = Math.hypot(dx,dy) || 0.001;
@@ -2265,7 +2203,6 @@ function ik2(ox,oy,tx,ty,l1,l2,bend){
 }
 function p3(p,z){ return {x:p.x, y:p.y, z:z||0}; }
 function lerpN(a,b,f){ return (a==null?0:a)+((b==null?0:b)-(a==null?0:a))*f; }
-
 /* ------------------------------ STANCE PRIMITIVES ------------------------- */
 /* HINGE — the hips travel BACK. That is what separates a hinge from a squat. */
 function hinge(t){ return { hipX: RIG.hipX - 33*t, hipY: RIG.hipY + 6*t, pitch: 4 + 57*t }; }
@@ -2294,7 +2231,6 @@ function walk(p){
     hipX: RIG.hipX, hipY: RIG.hipY + 2.2*Math.abs(Math.sin(a)), pitch: 2,
     ankles: feetSplit(RIG.ankleX + 13*Math.sin(a), RIG.ankleX - 13*Math.sin(a))};
 }
-
 /* -------------------------------- ARM MODES ------------------------------- */
 /* WORLD frame — the frame gravity works in. Anything hanging or swinging. */
 function armHang(sh, angleDeg, reach){
@@ -2352,11 +2288,9 @@ function armHalo(sh, head, p){
   const cx=head.x, cy=head.y+5;
   return { x: cx + 19*Math.cos(a), y: cy + 11*Math.sin(a) };
 }
-
 /* ------------------------------- RIG KINDS -------------------------------- */
 /* Every builder returns the same shape, so one renderer serves all of them:
    { hip, shoulder, head, legs:[{ankle,knee,hip}], arms:[{shoulder,elbow,hand}], bell } */
-
 function buildStanding(st){
   const pr=st.pitch*Math.PI/180;
   const hip={x:st.hipX,y:st.hipY};
@@ -2366,7 +2300,6 @@ function buildStanding(st){
   // not end up staring at the floor
   const hp=(st.pitch*0.68)*Math.PI/180;
   const head={x:sh.x+Math.sin(hp)*(RIG.neck+RIG.headR), y:sh.y-Math.cos(hp)*(RIG.neck+RIG.headR)};
-
   const ankles = st.ankles || feetTogether();
   const legs = ankles.map((an,i)=>{
     const z = i===0 ? -Z_LEG : Z_LEG;
@@ -2374,7 +2307,6 @@ function buildStanding(st){
     const s = ik2(an.x,an.y, hip.x,hip.y, RIG.shin,RIG.thigh, 1);
     return { ankle:p3(an,z), knee:p3(s.joint,z), hip:p3(hip, z*0.55) };
   });
-
   const H = st.hands(hip, sh, head);
   /* Draw the hand where the ARM can actually put it, not where the script
      asked for it. ik2 already clamps an out-of-reach target and hands back the
@@ -2401,7 +2333,6 @@ function buildStanding(st){
   }
   return { kind:'standing', hip:p3(hip,0), shoulder:p3(sh,0), head:p3(head,0), legs, arms, bells };
 }
-
 /* Prone — push-up and plank. The body is ONE RIGID LINE from ankle through
    knee and hip to the shoulder: solving the legs with IK (as the standing rig
    does) buckles the knee and the figure reads as kneeling, not planking.
@@ -2420,7 +2351,6 @@ function buildProne(st){
   const hip  = at(RIG.shin + RIG.thigh);
   const sh   = at(L);
   const head = at(L + RIG.neck + RIG.headR*0.9);
-
   const drive = st.drive || 0;        // a knee pulled in toward the chest
   const rowLift = st.rowLift || 0;     // a hand lifted off the floor to the ribs
   const legs = [-Z_LEG, Z_LEG].map((z,i)=>{
@@ -2450,7 +2380,6 @@ function buildProne(st){
   });
   return { kind:'prone', hip:p3(hip,0), shoulder:p3(sh,0), head:p3(head,0), legs, arms, bells:[] };
 }
-
 /* Supine — floor press. On the back, knees bent, pressing straight up. */
 function buildSupine(st){
   /* The shoulder used to be typed in at x=76 against a hip at x=130 — a torso
@@ -2480,8 +2409,6 @@ function buildSupine(st){
     { shoulder:p3(sh, Z_ARM), elbow:p3(sMain.joint, Z_ARM), hand:p3(sMain.end, Z_ARM) }];
   return { kind:'supine', hip:p3(hip,0), shoulder:p3(sh,0), head:p3(head,0), legs, arms:armsOut, bells:[p3(sMain.end,Z_ARM)] };
 }
-
-
 /* Bridge — shoulders and feet stay down, the hips drive up. The floor-press rig
    is pinned flat on its back, so it cannot express this. */
 function buildBridge(st){
@@ -2533,8 +2460,6 @@ function buildSitUp(st){
   return {kind:'supine', hip:p3(hip,0), shoulder:p3(sh,0), head:p3(head,0), legs, arms,
           bells: st.bell ? [p3(hand,0)] : []};
 }
-
-
 /* Hollow hold — low back pressed down, straight legs and arms floating. The
    sit-up rig keeps the feet planted, which is simply not this position. */
 function buildHollow(st){
@@ -2571,7 +2496,6 @@ function buildCustom(st){
   return { kind:'custom', hip:p3(j.hip,0), shoulder:p3(j.shoulder,0), head:p3(j.head,0),
            legs, arms, bells: st.noBell ? [] : [p3(j.handF, Z_ARM)] };
 }
-
 /* --------------------------- MUSCLE BAND PLACEMENT ------------------------ */
 /* A muscle is drawn as a BAND running along the limb that works and hugging the
    correct side of it. Offset + half-width must stay inside the limb radius,
@@ -2583,7 +2507,6 @@ function segPt(a,b,f,back){
   return { x:a.x+ux*L*f + nx*back, y:a.y+uy*L*f + ny*back, z:(a.z||0)+((b.z||0)-(a.z||0))*f };
 }
 function band(a,b,f0,f1,back,w){ return { a:segPt(a,b,f0,back), b:segPt(a,b,f1,back), w }; }
-
 function muscleBands(pose, key){
   const out=[];
   const torso=[pose.hip,pose.shoulder], head=pose.head;
@@ -2609,7 +2532,6 @@ function muscleBands(pose, key){
   }
   return out;
 }
-
 /* --------------------------------- CAMERA --------------------------------- */
 /* Fixed per exercise: the angle is part of the movement's definition, because
    each movement has a plane it reads best in — and it needs two numbers, not
@@ -2656,7 +2578,6 @@ function project(p){
 }
 const ORIGIN = { x:100, y:140 };           // pose-space point placed at the canvas centre
 function rel(p){ return { x:p.x-ORIGIN.x, y:p.y-ORIGIN.y, z:p.z||0 }; }
-
 /* The camera frames itself. The old fit did the trigonometry by hand and
    assumed the camera never tilted, so it could not survive an elevation angle.
    This one projects the whole clip at unit scale and solves for the scale and
@@ -2691,17 +2612,14 @@ function applyCameraFit(moveId, move, ctx, mirrored){
   CAM.rot=cam.rot; CAM.pitch=cam.pitch;
   CAM.base=f.base; CAM.cx=f.cx; CAM.groundY=f.groundY;
 }
-
 /* ===========================================================================
    TWO-BONE IK IN THREE DIMENSIONS
-
    The app solves every elbow and knee inside the side-on plane. For a squat
    that is right. For a bench press it is badly wrong: at the bottom the hand
    is about 16 units from the shoulder while the arm is 56 long, so the only
    place a sagittal solver can put the elbow is 27 units toward the head or
    the feet. That is the broken bend — the elbow of a real bench press goes
    OUT to the side, which is a direction the plane does not contain.
-
    So: solve along the real bone vector and push the joint out along a hint
    direction, orthogonalised against it. The hint is where that joint is
    supposed to travel — sideways for a press, back and out for a push-up.
@@ -2751,8 +2669,6 @@ function kneeFor(hip, ankle){
   const dn=ik3(hip, ankle, RIG.thigh, RIG.shin, {x:-1,y:1,z:0});
   return up.y<=dn.y ? up : dn;
 }
-
-
 /* -------------------------------- RENDERER -------------------------------- */
 /* Reached through drawFigure(). The body is built from anatomical outlines
    sampled along each bone and unioned into one silhouette — no joint
@@ -2766,7 +2682,6 @@ function loadRGB(v){
 }
 function rgbStr(c,a){ return 'rgba('+c[0]+','+c[1]+','+c[2]+','+(a==null?1:a)+')'; }
 function loadColor(v){ return rgbStr(loadRGB(v)); }
-
 /* ------------------------------ shading kit ------------------------------- */
 const LIGHT=(()=>{const v={x:-0.52,y:-0.70,z:0.49};
   const m=Math.hypot(v.x,v.y,v.z);return{x:v.x/m,y:v.y/m,z:v.z/m};})();
@@ -2791,10 +2706,8 @@ function formGradient(ctx,px,py,nx,ny,r,col){
   }
   return g;
 }
-
 /* ===========================================================================
    THE HUMAN FIGURE
-
    Each part is a closed outline sampled along its bone with a width profile,
    so a limb is thick where the muscle belly is and thin at the joint. No
    joint spheres at all: the parts overlap and the union is taken, which is
@@ -3038,7 +2951,6 @@ function muscleWash(ctx,pose){
   });
   ctx.restore();
 }
-
 /* ----------------------------- shared scenery ----------------------------- */
 function drawGround(ctx){
   const y=RIG.groundY, x0=-160,x1=340,z0=-170,z1=170,st=34;
@@ -3163,7 +3075,6 @@ function shadow(ctx,pose){
     ctx.ellipse(q.x,q.y,rx,Math.max(3,rx*0.2),0,0,7);ctx.fill();
   });
 }
-
 function drawFigure(ctx, pose, opts){
   const o = opts||{};
   ctx.setTransform(1,0,0,1,0,0);
@@ -3172,12 +3083,10 @@ function drawFigure(ctx, pose, opts){
   shadow(ctx,pose);
   drawHuman(ctx, pose, { muscle: o.bands!==false, face: o.face });
 }
-
 /* ============================================================================
    MOVES — one script per exercise. Pure data plus a small pose() function that
    composes primitives. No rendering here on purpose: these can be edited,
    reviewed against coaching cues, or migrated to another renderer on their own.
-
    Per key:
      t     position in the rep (0..1)
      cue   what the lifter should be doing at that moment
@@ -3189,10 +3098,8 @@ function drawFigure(ctx, pose, opts){
            'pingpong' for grinds, with ecc = share of the rep spent lowering
      ms    duration of one full rep
    ============================================================================ */
-
 function smoothstep(x){ return x*x*(3-2*x); }
 function lerpPtObj(a,b,f){ return { x:a.x+(b.x-a.x)*f, y:a.y+(b.y-a.y)*f }; }
-
 function sampleKeys(keys, p, linear){
   let i=0;
   for(let j=0;j<keys.length-1;j++){ if(p>=keys[j].t) i=j; }
@@ -3216,12 +3123,9 @@ function sampleKeys(keys, p, linear){
   out.keyIndex = f<0.5 ? i : Math.min(i+1,keys.length-1);
   return out;
 }
-
 /* helper: the free hand of a one-handed lift just hangs, rather than sitting at
    some arbitrary angle — that mismatch is what read as "arms going opposite ways" */
 const freeHand = (sh)=> armHang(sh, 2);
-
-
 /* A burpee is the one movement that starts upright and ends on the floor, and
    the rig keeps those in two separate builders. Blending their output frame by
    frame collapses the limbs, so the floor half gets its own chain: the hands
@@ -3236,7 +3140,6 @@ function burpeeFloor(u, push){
   const lift = SOFT * (1 - 0.38*(push||0));          // elbows bend on the chest drop
   const sh   = { x: hand.x - lift*Math.sin(a), y: hand.y - lift*Math.cos(a) };
   const an   = { x: 52 - 95*u, y: RIG.groundY-3 };
-
   /* The hip's DIRECTION from the shoulder sweeps from the tuck to the body
      line; its DISTANCE is always the torso, so the spine cannot stretch.
      The tuck direction is solved, not guessed: it is the one that leaves the
@@ -3251,7 +3154,6 @@ function burpeeFloor(u, push){
      head ends up pointing back at the hips in the tuck */
   const nk = (RIG.neck+RIG.headR*0.9)/RIG.torso;
   const head = { x: sh.x + (sh.x-hip.x)*nk, y: sh.y + (sh.y-hip.y)*nk };
-
   /* Both sides are solved, never nudged: shifting a joint by a few units to
      fake depth is what broke the upper arm by 14 percent. Depth is the z
      separation the builder already applies. */
@@ -3267,7 +3169,6 @@ function burpeeFloor(u, push){
     ankleB:an, kneeB:leg.joint, ankleF:an, kneeF:leg.joint,
     elbowB:arm.joint, handB:hand, elbowF:arm.joint, handF:hand }});
 }
-
 const MOVES = {
   burpee:{
     cam:40, loop:'cycle', ms:2600,
@@ -3345,8 +3246,6 @@ const MOVES = {
       };
       return buildStanding(st);
     }},
-
-
   /* ----------------------------- HINGE FAMILY ---------------------------- */
   kb_swing:{
     cam:16, loop:'cycle', ms:2050,
@@ -3367,7 +3266,6 @@ const MOVES = {
        load:{hamstrings:0.85, glutes:0.45, back:0.6, core:0.5, forearms:0.6}},
     ],
     pose(k){ const st=stance(k.h,0); st.hands=(hip,sh)=>({main:armHang(sh,k.arm)}); return buildStanding(st); }},
-
   russian_swing:{
     cam:16, loop:'cycle', ms:1900,
     keys:[
@@ -3387,7 +3285,6 @@ const MOVES = {
        load:{hamstrings:0.8, glutes:0.45, back:0.55, core:0.5, forearms:0.6}},
     ],
     pose(k){ const st=stance(k.h,0); st.hands=(hip,sh)=>({main:armHang(sh,k.arm)}); return buildStanding(st); }},
-
   kb_deadlift:{
     cam:16, loop:'pingpong', ms:2700, ecc:0.58,
     keys:[
@@ -3397,7 +3294,6 @@ const MOVES = {
        load:{hamstrings:0.95, glutes:0.6, back:0.55, lower_back:0.5, forearms:0.75, core:0.45}},
     ],
     pose(k){ const st=stance(k.h,0); st.hands=(hip,sh)=>({main:armHang(sh,0)}); return buildStanding(st); }},
-
   romanian_deadlift:{
     cam:16, loop:'pingpong', ms:3000, ecc:0.62,
     keys:[
@@ -3407,7 +3303,6 @@ const MOVES = {
        load:{hamstrings:1.0, glutes:0.55, lower_back:0.55, back:0.45, forearms:0.7}},
     ],
     pose(k){ const st=stance(k.h,0); st.hands=(hip,sh)=>({main:armHang(sh,0)}); return buildStanding(st); }},
-
   /* ---------------------------- POWER / SKILL ---------------------------- */
   kb_clean:{
     cam:20, loop:'cycle', ms:1900,
@@ -3435,7 +3330,6 @@ const MOVES = {
       };
       return buildStanding(st);
     }},
-
   kb_snatch:{
     cam:20, loop:'cycle', ms:2000,
     keys:[
@@ -3459,7 +3353,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armSnatch(sh,k.u), off:freeHand(sh), bend:1 });
       return buildStanding(st);
     }},
-
   kb_high_pull:{
     cam:20, loop:'cycle', ms:1850,
     keys:[
@@ -3483,7 +3376,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armHighPull(sh,k.u), off:freeHand(sh), bend:1 });
       return buildStanding(st);
     }},
-
   turkish_getup:{ cam:22, loop:'pingpong', ms:7000, ecc:0.5, linear:true,
     keys:[
       {t:0.00, cue:'Lying press — bell straight up',
@@ -3546,7 +3438,6 @@ const MOVES = {
         ankleB:j.ankleB, kneeB:lB.joint, ankleF:j.ankleF, kneeF:lF.joint,
         elbowB:aB.joint, handB:aB.end,   elbowF:aF.joint, handF:aF.end }});
     }},
-
   /* -------------------------------- PULLS -------------------------------- */
   one_arm_row:{
     cam:24, loop:'pingpong', ms:2400, ecc:0.55,
@@ -3561,7 +3452,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armRow(hip,sh,k.u), off:freeHand(sh), bend:-1 });
       return buildStanding(st);
     }},
-
   bent_over_row:{
     cam:24, loop:'pingpong', ms:2400, ecc:0.55,
     keys:[
@@ -3575,7 +3465,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armRow(hip,sh,k.u), bend:-1 });
       return buildStanding(st);
     }},
-
   /* ------------------------------- PRESSES -------------------------------- */
   overhead_press:{
     cam:36, loop:'pingpong', ms:2200, ecc:0.58,
@@ -3590,7 +3479,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armPress(sh,k.u), off:freeHand(sh), bend:1 });
       return buildStanding(st);
     }},
-
   push_press:{
     cam:34, loop:'cycle', ms:2000,
     keys:[
@@ -3612,7 +3500,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armPress(sh,k.u), off:freeHand(sh), bend:1 });
       return buildStanding(st);
     }},
-
   /* ------------------------------ LEG PATTERNS ---------------------------- */
   goblet_squat:{
     cam:32, loop:'pingpong', ms:2600, ecc:0.6,
@@ -3627,7 +3514,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armTorso(hip,sh,0.74,15), bend:1 });
       return buildStanding(st);
     }},
-
   reverse_lunge:{
     cam:30, loop:'pingpong', ms:2600, ecc:0.58,
     keys:[
@@ -3641,7 +3527,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armTorso(hip,sh,0.74,15), bend:1 });
       return buildStanding(st);
     }},
-
   split_squat:{
     cam:30, loop:'pingpong', ms:2500, ecc:0.58,
     keys:[
@@ -3660,7 +3545,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armTorso(hip,sh,0.74,15), bend:1 });
       return buildStanding(st);
     }},
-
   /* -------------------------------- CARRIES ------------------------------- */
   farmer_carry:{
     cam:26, loop:'cycle', ms:1800, linear:true,
@@ -3677,7 +3561,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armHang(sh,2), off:armHang(sh,-2), bells:'both' });
       return buildStanding(st);
     }},
-
   suitcase_carry:{
     cam:26, loop:'cycle', ms:1800, linear:true,
     keys:[
@@ -3693,7 +3576,6 @@ const MOVES = {
       st.hands=(hip,sh)=>({ main:armHang(sh,2), off:armHang(sh,-2), bells:'main' });
       return buildStanding(st);
     }},
-
   /* ------------------------------- MOBILITY ------------------------------- */
   kb_halo:{
     cam:30, loop:'cycle', ms:3200, linear:true,
@@ -3710,7 +3592,6 @@ const MOVES = {
       st.hands=(hip,sh,head)=>({ main:armHalo(sh,head,k.c), bend:1 });
       return buildStanding(st);
     }},
-
   /* --------------------------- FLOOR / BODYWEIGHT ------------------------- */
   push_up:{ cam:26, loop:'pingpong', ms:2400, ecc:0.55,
     keys:[
@@ -3720,7 +3601,6 @@ const MOVES = {
        load:{chest:1.0, triceps:0.85, shoulders:0.6, core:0.7}},
     ],
     pose(k){ return buildProne({shoulderY:k.y}); }},
-
   plank:{ cam:26, loop:'cycle', ms:4000, linear:true,
     keys:[
       {t:0.00, y:138, cue:'Straight line from head to heels',
@@ -3731,9 +3611,6 @@ const MOVES = {
        load:{core:1.0, obliques:0.7, shoulders:0.5, glutes:0.5}},
     ],
     pose(k){ return buildProne({shoulderY:k.y}); }},
-
-
-
   /* ------------------------- ADDED MOVEMENTS (v2) ------------------------- */
   kb_front_squat:{
     cam:30, loop:'pingpong', ms:2600, ecc:0.6,
@@ -3846,7 +3723,6 @@ const MOVES = {
     pose(k){ const st=stance(k.h,0);
       st.hands=(hip,sh)=>({ main:armTorso(hip,sh,0.80,11), bend:1 });
       return buildStanding(st); }},
-
   /* -------------------------- WARM-UP MOVEMENTS --------------------------
      Not loggable exercises, but they get the same treatment on screen: an
      empty-handed figure, a cue and the tissue being prepared. */
@@ -3927,7 +3803,6 @@ const MOVES = {
          elbowB:{x:146,y:165}, handB:{x:144,y:188}, elbowF:{x:150,y:165}, handF:{x:150,y:188} }},
     ],
     pose(k){ return buildCustom({joints:k.joints, noBell:true}); }},
-
   kb_floor_press:{ cam:24, loop:'pingpong', ms:2400, ecc:0.55,
     keys:[
       {t:0.00, y:132, cue:'Top — wrist stacked over the elbow',
@@ -3936,7 +3811,6 @@ const MOVES = {
        load:{chest:1.0, triceps:0.8, shoulders:0.6, core:0.4}},
     ],
     pose(k){ return buildSupine({handY:k.y}); }}};
-
 const ELBOW_HINT = {
   // The halo is the one movement a hint cannot fully serve: the bell orbits
   // the head while the hands barely move, so the arm is folded tight and the
@@ -3965,15 +3839,10 @@ Object.keys(ELBOW_HINT).forEach(id=>{
     return ps;
   };
 });
-
-
-
-
 /* ============================================================================
    PLAYER — drives a move's script and paints it into the on-screen canvas.
    ============================================================================ */
 const ANIM = { mounted:false, playing:true, raw:0, last:null, id:null, move:null, ctx:null, sig:'' };
-
 function figureMarkup(sizeClass){
   return '<div class="fig-wrap'+(sizeClass?(' '+sizeClass):'')+'">'
        + '<canvas id="figCanvas" width="460" height="478"></canvas></div>';
@@ -4070,8 +3939,6 @@ function updateAnimReadout(k){
          + esc(MUSCLE_LABELS[m]||m)+'</div></div>';
   }).join('');
 }
-
-
 function renderExerciseDetail(id){
   const e = EX_BY_ID[id]; if(!e) return '<p>Exercise not found.</p>';
   const saved = STATE.savedExercises.includes(id);
@@ -4107,7 +3974,6 @@ function toggleSaveExercise(id){
   if(i>=0) STATE.savedExercises.splice(i,1); else STATE.savedExercises.push(id);
   saveState(); render();
 }
-
 /* ============================= GENERATOR ============================= */
 let GEN = {goal:'general_fitness', duration:30, difficulty:'intermediate', format:'traditional', equipment:'kettlebell'};
 function renderGenerator(){
@@ -4147,7 +4013,6 @@ function generateWorkout(){
   startCustomWorkout(workout);
 }
 function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
-
 /* ============================= ACTIVE WORKOUT ENGINE ============================= */
 /* Preview — what you are about to do, before you are in it. Mirrors the shape
    of the session itself: the modules this day carries, in order. */
@@ -4158,7 +4023,6 @@ function renderWorkoutPreview(pr){
   const w = buildWorkoutInstance(prog, +pr.week, +pr.idx);
   const mods = workoutModules(w);
   const alreadyDone = isWorkoutDone(prog, +pr.week, +pr.idx);
-
   const exRow = (id, meta)=>{
     const ex = EX_BY_ID[id]; if(!ex) return '';
     return '<div class="ex-row" style="cursor:pointer;" onclick="peekExercise(\''+id+'\')">'
@@ -4188,7 +4052,6 @@ function renderWorkoutPreview(pr){
           +(isPerSide(EX_BY_ID[c.ex])?' \u00b7 per side':''))).join('');
   else if(w.format==='complex') mainList = '<div class="eyebrow" style="margin:12px 0 4px;">One chain \u00b7 '+w.rounds+' rounds \u00b7 the bell stays in the hand</div>'
       + (w.chain||[]).map(c=>exRow(c.ex, c.reps+' reps'+(isPerSide(EX_BY_ID[c.ex])?' per side':''))).join('');
-
   /* The warm-up reads as the four phases a coach writes, each with its dose and
      its time — so the declared minutes are visibly where they go. */
   let _wPhase = null;
@@ -4207,13 +4070,11 @@ function renderWorkoutPreview(pr){
                   + Math.round(it.sec/5)*5 + ' sec</div>' : '')
       + '</div>';
   }).join('');
-
   const finList = w.finisher ? (w.finisher.format==='emom'
       ? (w.finisher.pattern||[]).map((id,i)=> id==='rest'
           ? '<div class="ex-row"><div class="ex-row-body"><div class="ex-row-title" style="color:var(--text-3);">Rest minute</div></div></div>'
           : exRow(id,'minute '+(i+1))).join('')
       : (w.finisher.round||[]).map(r=>exRow(r.ex, roundTarget(r.ex, r.target))).join('')) : '';
-
   return '<div class="top-row"><div class="back-btn" onclick="navigate(\'program_detail\',{id:\''+pr.progId+'\'})">'+ICON.back+'</div>'
     +'<h2 style="font-size:20px;">'+esc(w.name)+'</h2></div>'
   +'<div class="chip-row" style="margin-bottom:14px;">'
@@ -4236,7 +4097,6 @@ function renderWorkoutPreview(pr){
   +'<button class="btn btn-primary btn-block" style="margin-bottom:30px;" onclick="startWorkout(\''+pr.progId+'\','+pr.week+','+pr.idx+')">'+ICON.play+(alreadyDone?' Run It Again':' Start Workout')+'</button>'
   + renderPeekOverlay();
 }
-
 function startWorkout(progId, week, idx){
   const prog = PROG_BY_ID[progId];
   const w = buildWorkoutInstance(prog, week, idx);
@@ -4244,7 +4104,6 @@ function startWorkout(progId, week, idx){
   navigate('active_workout');
 }
 function startCustomWorkout(w){ initSession(w); navigate('active_workout'); }
-
 function initSession(w){
   SESSION = { workout:w, phase:(w.warmup&&w.warmup.length)?'warmup':'main', blockIndex:0, setIndex:0, round:0, minute:0, timeLeft:0, timerRunning:false,
     log:[], emomLog:[], pendingFeedback:null, restSecondsLeft:0, amrapRounds:0, amrapDone:false, amrapResults:{},
@@ -4285,7 +4144,6 @@ function doneSegments(){
   return 0;
 }
 function overallPct(){ return Math.min(100, Math.round(doneSegments()/totalSegments()*100)); }
-
 function renderActiveWorkout(){
   if(!SESSION) return shell('<p>No active session.</p>','home');
   const w = SESSION.workout;
@@ -4369,7 +4227,6 @@ function voiceButton(){
     + (VOICE.on?'background:var(--blue-glow);border-color:var(--blue);color:var(--blue);':'')
     + '">'+(VOICE.on?ICON.soundOn:ICON.soundOff)+'</div>';
 }
-
 function togglePause(){
   if(!SESSION) return;
   SESSION.paused = !SESSION.paused;
@@ -4408,7 +4265,6 @@ function countSessionSets(){
   const todays = STATE.history.filter(h=>h.date===todayISO() && h.workoutName===w.name);
   return todays.length + (SESSION.emomLog?SESSION.emomLog.filter(e=>!e.skipped).length:0);
 }
-
 /* The warm-up is a module you work through, shown the same way as the working
    sets: one movement at a time with the figure, the cue and what it is
    preparing. The items are free text in the program data, so the movement is
@@ -4472,7 +4328,6 @@ function renderWarmupPhase(){
   const done = SESSION._warmDone||{};
   const nDone = items.filter((_,i)=>done[i]).length;
   const cur = items[idx];
-
   let html = '<div class="card" style="text-align:center;">'
     + '<div class="eyebrow">' + esc(cur.phase || 'Warm-up') + ' · ' + (idx+1) + ' of ' + items.length + '</div>'
     + '<h2 style="font-size:22px;margin:8px 0 2px;">' + esc(cur.label) + '</h2>'
@@ -4480,7 +4335,6 @@ function renderWarmupPhase(){
     + '<div class="seg-track" style="margin:12px 0 4px;">'
       + items.map((_,i)=>'<div class="seg '+(done[i]?'done':i===idx?'current':'')+'"></div>').join('')
     + '</div>';
-
   if(cur.move){
     window._activeFigureExId = cur.move;          // drives the same animation engine
     html += figureMarkup('fig-compact')
@@ -4490,12 +4344,10 @@ function renderWarmupPhase(){
     window._activeFigureExId = null;
     html += '<p style="color:var(--text-3);font-size:13.5px;margin:18px 0;">Take this one at your own pace.</p>';
   }
-
   html += '<button class="btn btn-primary btn-block" style="margin-top:12px;" onclick="completeWarmItem()">'
         + (nDone+1 >= items.length ? 'Done — start the main part' : 'Done, next movement') + '</button>';
   if(idx > 0) html += '<button class="btn btn-ghost btn-sm" style="margin-top:9px;" onclick="goWarmItem('+(idx-1)+')">Back</button>';
   html += '</div>';
-
   // the rest of the list stays visible, so you can see what is coming and jump
   html += '<div class="card" style="margin-top:12px;">'
     + items.map((it,i)=> i===idx ? '' :
@@ -4508,7 +4360,6 @@ function renderWarmupPhase(){
   return html;
 }
 function finishWarmup(){ SESSION.phase='main'; render(); }
-
 /* Unilateral work is the single easiest thing for a training app to get wrong:
    a "set" of one-arm press means a set on EACH arm. Three kinds exist —
      perSide      one full set per side, logged separately
@@ -4537,7 +4388,6 @@ function targetDisplay(rec, ex){
   const base = ex.timeBased ? rec.low+'\u2013'+rec.high+' sec' : rec.low+'\u2013'+rec.high+' reps';
   return base + (isPerSide(ex) ? ' / side' : '');
 }
-
 /* --- Traditional --- */
 function renderTraditionalPhase(){
   const w = SESSION.workout; const block = w.blocks[SESSION.blockIndex];
@@ -4649,7 +4499,6 @@ function submitTraditionalSet(exId, low, high, weight){
   const ex = EX_BY_ID[exId];
   const side = isPerSide(ex) ? currentSide() : null;
   logSet({exerciseId:exId, programId:w.programId, programName:w.programName, week:w.week, workoutIndex:w.idx, workoutName:w.name, format:'traditional', weight:usedWeight, result, difficulty:diff, reason:null, targetLow:low, targetHigh:high, side:side});
-
   const doneBlock = w.blocks[SESSION.blockIndex];
   // the right side is only half the set — go straight to the left before counting it
   if(isPerSide(ex) && currentSide()==='R'){
@@ -4700,7 +4549,6 @@ function restLabelFor(ex, w, block){
   const top = plannedReps(ex, w, block)[1] || 12;
   return top <= 8 ? 'Strength' : top <= 15 ? 'Hypertrophy' : 'Endurance';
 }
-
 /* --- Superset --- */
 function renderSupersetPhase(){
   const w = SESSION.workout; const pair = w.pairs[SESSION.blockIndex];
@@ -4760,8 +4608,6 @@ function submitSupersetSet(exId, low, high){
   }
   render();
 }
-
-
 /* --- Complex ---
    A chain of movements done without putting the bell down. It is not a
    superset (you may rest between those) and not a circuit (you may change
@@ -4779,7 +4625,6 @@ function renderComplexPhase(){
   if(!perSide) resetSide();
   window._activeFigureExId = ex.id;
   window._figureMirror = perSide && currentSide()==='L';
-
   let html = '<div class="card">';
   html += '<div style="display:flex;justify-content:space-between;align-items:center;">'
         + '<h2 style="font-size:22px;">'+esc(ex.name)+'</h2>'
@@ -4832,7 +4677,6 @@ function skipComplexRound(){
   if(SESSION.round>=w.rounds) completeMainPart();
   render();
 }
-
 /* --- EMOM --- */
 function renderEmomPhase(){
   const w = SESSION.workout;
@@ -4919,7 +4763,6 @@ function skipEmomExercise(exId){
   SESSION.emomLog.push({exerciseId:exId, result:0, minute:SESSION.minute+1, skipped:true});
   completeEmomMinute();
 }
-
 /* --- AMRAP --- */
 function renderAmrapPhase(){
   const w = SESSION.workout;
@@ -4969,20 +4812,17 @@ function renderForTimePhase(){
   const idx = Math.min(SESSION.rung, Math.max(0,lad.length-1));
   const reps = lad[idx] || 0;
   const left = Math.max(0, cap - SESSION.timeElapsed);
-
   let html = '<div class="card" style="text-align:center;">'
     + '<div class="eyebrow">For time · '+Math.round(cap/60)+' min cap</div>'
     + '<div class="timer-big" id="ftTimer">'+fmtMMSS(SESSION.timeElapsed)+'</div>'
     + '<div class="timer-sub">Round <span id="ftRung">'+(SESSION.rung+1)+'</span> of '+lad.length
       + ' · <span id="ftLeft"'+(left<=120?' class="cap-warn"':'')+'>'+fmtMMSS(left)+'</span> to the cap</div>'
     + '</div>';
-
   html += '<div class="card"><div class="eyebrow" style="margin-bottom:10px;">The ladder</div>'
     + '<div class="rung-row">'+lad.map((r,i)=>'<span class="rung'
         +(i<SESSION.rung?' done':i===SESSION.rung?' now':'')+'">'+r+'</span>').join('')+'</div>'
     + (w.note ? '<div class="wr-meta" style="margin-top:10px;">'+esc(w.note)+'</div>' : '')
     + '</div>';
-
   html += '<div class="card"><div class="eyebrow" style="margin-bottom:10px;">This round</div>'
     + (w.chain||[]).map(c=>{ const ex=EX_BY_ID[c.ex]; if(!ex) return '';
         return '<div class="tap-row" onclick="peekExercise(\''+c.ex+'\')">'
@@ -4992,7 +4832,6 @@ function renderForTimePhase(){
         + '<span class="row-chev">'+ICON.chevron+'</span></div>'; }).join('')
     + '<div style="font-size:11px;color:var(--text-3);margin-top:10px;font-weight:600;text-align:center;">TAP ANY MOVEMENT TO SEE IT</div>'
     + '</div>';
-
   if(!SESSION.timerRunning){
     html += '<button class="btn btn-primary btn-block" style="margin-top:16px;" onclick="startForTime()">Start the clock</button>';
   } else {
@@ -5044,7 +4883,6 @@ function finishForTime(capped){
   completeMainPart();
   render();
 }
-
 function startAmrapTimer(){ SESSION.timerRunning=true; render(); runAmrapTick(); }
 function runAmrapTick(){
   if(!SESSION || SESSION.workout.format!=='amrap' || !SESSION.timerRunning) return;
@@ -5071,7 +4909,6 @@ function finishAmrapEarly(){
   completeMainPart();
   render();
 }
-
 /* --- Rest overlay --- */
 function startRest(seconds, onDone, label){
   if(!seconds || seconds<=0){ if(onDone) onDone(); return; }   // e.g. straight into a superset pair
@@ -5113,7 +4950,6 @@ function renderRestOverlay(){
   +'<button class="btn btn-ghost btn-sm" onclick="addRestTime(15)">+15s</button>'
   +'</div></div>';
 }
-
 /* --- Feedback modal (simple inline overlay via confirm-like screen) --- */
 /* How the set felt is OPTIONAL and sits with the other inputs. Interrupting
    every single set with a modal made it feel like homework; the adaptive engine
@@ -5149,7 +4985,6 @@ function submitFeedback(diff){
   const ctx = SESSION._feedbackCtx; SESSION._feedbackCtx = null;
   ctx.onDone(diff, null);
 }
-
 /* Some formats only have room for a list of names — AMRAP especially, where
    you are moving fast and may not remember what a name looks like. Tapping any
    row opens the movement over the top of whatever you were doing. */
@@ -5285,7 +5120,6 @@ function renderFinisherIntro(){
     +'<button class="btn btn-ghost btn-block btn-sm" style="margin-top:9px;" onclick="finishWorkout()">Skip the finisher</button>'
     +'</div>';
 }
-
 function finishWorkout(opts){
   const w = SESSION.workout;
   const early = !!(opts && opts.early);
@@ -5342,7 +5176,6 @@ function closeWorkout(){
   SESSION = null;
   navigate(w.programId?'program_detail':'home', w.programId?{id:w.programId}:{});
 }
-
 /* ============================= PROGRESS ============================= */
 let PROGRESS_EX = null;
 function renderProgress(){
@@ -5387,7 +5220,6 @@ function volumeChart(weeks){
   const done = weeks.filter(w=>w.v>0);
   if(!done.length)
     return '<div class="empty-state">Log a few sets and your weekly volume shows up here.</div>';
-
   const lastIdx = weeks.reduce((k,w,i)=> w.v>0 ? i : k, -1);
   const cols = weeks.map((w,i)=>{
     const pct   = max>0 ? Math.max(3, w.v/max*74) : 0;   // 74% leaves room for the label
@@ -5400,7 +5232,6 @@ function volumeChart(weeks){
     return '<div class="vol-col" title="'+esc(w.label)+' · '
       + (w.v>0 ? Math.round(w.v)+' '+u : 'no sets logged')+'">'+label+bar+'</div>';
   }).join('');
-
   /* the caption has room for the real number; only the bars need the short form */
   const thisWeek = Math.round(weeks[weeks.length-1].v);
   const span = weeks.length>1 ? 'Weeks '+weeks[0].week+'–'+weeks[weeks.length-1].week
@@ -5454,7 +5285,6 @@ function groupHistoryByDate(){
   });
   return Object.values(map);
 }
-
 /* ============================= PROFILE ============================= */
 function renderProfile(){
   const p = STATE.profile;
@@ -5511,7 +5341,6 @@ function resetAllData(){
     STATE = defaultState(); ONB_DATA=null; ONB_STEP=0; saveState(); navigate('onboarding');
   }
 }
-
 /* ============================= INIT ============================= */
 /* The session length a programme advertises is measured, never typed. A
    hand-written range goes stale the moment the programming changes, and a
