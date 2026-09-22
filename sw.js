@@ -11,9 +11,13 @@
  * Bump CACHE on every deploy. Old caches are deleted on activate, so an update
  * never leaves two versions fighting over the same origin.
  */
-const CACHE = 'ironbell-v8';
+const CACHE = 'ironbell-v9';
+/* The icons carry a version in their FILENAME. A cache can be told to refetch,
+   but iOS keeps its own copy of a home-screen icon that no cache header
+   reaches — and a file it has never seen before is the one thing it cannot
+   serve from memory. Rename on every icon change. */
 const SHELL = ['./', './index.html', './manifest.json',
-               './icon-180.png', './icon-192.png', './icon-512.png'];
+               './icon-180-v2.png', './icon-192-v2.png', './icon-512-v2.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
