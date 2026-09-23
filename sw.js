@@ -1,4 +1,4 @@
-/* IRONBELL service worker.
+/* NT Training service worker.
  *
  * Network-first for the page itself, cache-first for the icons.
  *
@@ -11,7 +11,7 @@
  * Bump CACHE on every deploy. Old caches are deleted on activate, so an update
  * never leaves two versions fighting over the same origin.
  */
-const CACHE = 'ironbell-v9';
+const CACHE = 'nt-training-v12';
 /* The icons carry a version in their FILENAME. A cache can be told to refetch,
    but iOS keeps its own copy of a home-screen icon that no cache header
    reaches — and a file it has never seen before is the one thing it cannot

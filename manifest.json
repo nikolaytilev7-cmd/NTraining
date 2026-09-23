@@ -1,7 +1,7 @@
 {
-  "name": "IRONBELL — Kettlebell Coach",
-  "short_name": "IRONBELL",
-  "description": "Kettlebell programs, guided sessions and progress tracking.",
+  "name": "NT Training — Kettlebell Coach",
+  "short_name": "NT Training",
+  "description": "Kettlebell coaching: programs, guided sessions and progress.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
