@@ -442,6 +442,13 @@ a{color:inherit;text-decoration:none;}
 .fig-wrap.has-photo{background:#14161A;padding:0;overflow:hidden;max-width:300px;}
 .fig-wrap.fig-compact.has-photo{max-width:100%;background:transparent;}
 .fig-compact .photo-stack{max-width:320px;margin:0 auto;border-radius:12px;overflow:hidden;}
+.photo-stack.slow img{transition:opacity .6s ease;}
+.set-strip .st, .tech-strip figure{cursor:pointer;}
+.tech-strip figure.on{outline:2px solid var(--blue);outline-offset:-2px;}
+.frame-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px 0 12px;}
+.frame-seg button{background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);border-radius:10px;padding:9px 4px;font-weight:700;font-size:13px;line-height:1.2;cursor:pointer;}
+.frame-seg button small{display:block;font-weight:600;font-size:10.5px;opacity:.75;margin-top:2px;}
+.frame-seg button.on{background:var(--blue);border-color:var(--blue);color:#fff;}
 .set-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:6px;}
 .set-strip .st{position:relative;border-radius:8px;overflow:hidden;border:2px solid transparent;opacity:.5;transition:opacity .2s,border-color .2s;}
 .set-strip .st.on{border-color:var(--blue);opacity:1;}
@@ -605,7 +612,7 @@ a{color:inherit;text-decoration:none;}
 <body>
 <div id="bgLayer"></div>
 <div id="app"></div>
-<script src="photos.js?v=2026-09-24m"></script>
+<script src="photos.js?v=2026-09-25a"></script>
 <script>
 'use strict';
 /* ============================= ICONS ============================= */
@@ -712,14 +719,14 @@ const EXERCISES = [
  desc:'The signature kettlebell movement — an explosive hip hinge that builds power and conditioning.',
  keyPoints:['Power comes from the hips, not the arms','Kettlebell floats to chest height','Flat back at the bottom of the hike','Snap the hips, don\u2019t squat it'],
  mistakes:['Squatting the swing','Using the arms to lift the bell','Overextending the lower back at the top','Letting the bell drop uncontrolled'],
- phases:['Hike','Hinge','Drive','Float','Hike'],swap:'russian_swing'},
-{id:'russian_swing',name:'Russian Swing',cat:'power',equipment:['kettlebell'],difficulty:'intermediate',type:'Swing',
- primary:['glutes','hamstrings'],secondary:['core'],
- reps:[15,20],sets:[3,5],
- desc:'A shoulder-height swing variation with a shorter, punchier hip snap, popular for conditioning work.',
- keyPoints:['Bell travels to shoulder height, not overhead','Sharp, fast hip extension','Arms stay relaxed','Reset the hinge every rep'],
- mistakes:['Muscling the bell up with the shoulders','Excessive arch at the top','Slowing the hip snap','Letting the swing drift forward'],
- phases:['Hike','Hinge','Drive','Float','Hike'],swap:'kb_swing'},
+ phases:['Hike','Hinge','Drive','Float','Hike'],swap:'american_swing'},
+{id:'american_swing',name:'American Swing',cat:'power',equipment:['kettlebell'],difficulty:'intermediate',type:'Swing',
+ primary:['glutes','hamstrings'],secondary:['shoulders','core'],
+ reps:[10,15],sets:[3,5],
+ desc:'The overhead swing: the same hip drive as the Kettlebell Swing, carried all the way until the bell is stacked above the head.',
+ keyPoints:['The hips send it, the arms only guide','Bell finishes stacked over the head, arms by the ears','Ribs down at the top, no arch','Use a lighter bell than for the chest-height swing'],
+ mistakes:['Pulling the bell up with the shoulders','Arching the lower back to reach overhead','Bell drifting in front of the face at the top','Going heavy before the pattern is clean'],
+ phases:['Hike','Hinge','Drive','Overhead','Hike'],swap:'kb_swing'},
 {id:'kb_clean',unilateral:'perSide',name:'Kettlebell Clean',cat:'power',equipment:['kettlebell'],difficulty:'intermediate',type:'Power',
  primary:['glutes','hamstrings'],secondary:['forearms','shoulders'],
  reps:[5,8],sets:[3,4],
@@ -966,7 +973,7 @@ const PROGRAMS = [
   templates:[
    {name:'Full Body Fundamentals',format:'traditional',warmupMin:8,mainMin:32,
     blocks:[{ex:'goblet_squat',sets:3},{ex:'kb_deadlift',sets:3},{ex:'one_arm_row',sets:3},{ex:'push_up',sets:3},{ex:'plank',sets:3}]},
-   {name:'Swing & Core',format:'traditional',warmupMin:8,mainMin:32,finisher:{name:'Core Burner',format:'amrap',totalMinutes:4,round:[{ex:'plank',target:'20 sec'},{ex:'russian_swing',target:10},{ex:'push_up',target:8}],note:'Four minutes, steady pace. Stop a rep or two short of failure on every round.'},
+   {name:'Swing & Core',format:'traditional',warmupMin:8,mainMin:32,finisher:{name:'Core Burner',format:'amrap',totalMinutes:4,round:[{ex:'plank',target:'20 sec'},{ex:'kb_swing',target:10},{ex:'push_up',target:8}],note:'Four minutes, steady pace. Stop a rep or two short of failure on every round.'},
     blocks:[{ex:'kb_swing',sets:4},{ex:'overhead_press',sets:3},{ex:'reverse_lunge',sets:3},{ex:'plank',sets:3}]},
    {name:'Technique Circuit',format:'superset',warmupMin:8,mainMin:32,rounds:3,
     pairs:[['goblet_squat','push_up'],['kb_deadlift','plank']]},
@@ -985,9 +992,9 @@ const PROGRAMS = [
   goals:['explosive','conditioning','build_strength','general_fitness'],sessionMin:[50,60],
   desc:'High-output power work paired with hard conditioning for experienced kettlebell athletes.',
   templates:[
-   {name:'Power Development',format:'traditional',warmupMin:10,mainMin:40,finisher:{name:'Engine Blast',format:'amrap',totalMinutes:5,round:[{ex:'russian_swing',target:15},{ex:'push_up',target:10},{ex:'reverse_lunge',target:'6/side'}],note:'Five hard minutes. Count rounds, not reps \u2014 and keep the back flat on every swing.'},
+   {name:'Power Development',format:'traditional',warmupMin:10,mainMin:40,finisher:{name:'Engine Blast',format:'amrap',totalMinutes:5,round:[{ex:'kb_swing',target:15},{ex:'push_up',target:10},{ex:'reverse_lunge',target:'6/side'}],note:'Five hard minutes. Count rounds, not reps \u2014 and keep the back flat on every swing.'},
     blocks:[{ex:'kb_snatch',sets:4},{ex:'kb_clean',sets:4},{ex:'push_press',sets:3},{ex:'turkish_getup',sets:2}]},
-   {name:'Conditioning EMOM',format:'emom',warmupMin:10,mainMin:26,totalMinutes:26,pattern:['russian_swing','split_squat','kb_high_pull','push_up'],finisher:{name:'Grip Finish',format:'emom',totalMinutes:5,pattern:['farmer_carry','rest','suitcase_carry','rest','farmer_carry'],note:'Heavy as you can hold with the shoulders back.'}},
+   {name:'Conditioning EMOM',format:'emom',warmupMin:10,mainMin:26,totalMinutes:26,pattern:['kb_swing','split_squat','kb_high_pull','push_up'],finisher:{name:'Grip Finish',format:'emom',totalMinutes:5,pattern:['farmer_carry','rest','suitcase_carry','rest','farmer_carry'],note:'Heavy as you can hold with the shoulders back.'}},
    {name:'AMRAP Engine',format:'amrap',warmupMin:10,mainMin:24,totalMinutes:24,finisher:{name:'Snatch Close',format:'emom',totalMinutes:5,pattern:['kb_snatch','rest','kb_snatch','rest','kb_snatch'],note:'Technique first \u2014 this is the tired end of the session.'},
     round:[{ex:'kb_swing',target:12},{ex:'reverse_lunge',target:'8/side'},{ex:'push_up',target:10},{ex:'plank',target:'20 sec'}]},
    {name:'Strength Superset',format:'superset',warmupMin:8,mainMin:36,rounds:4,
@@ -1014,7 +1021,7 @@ const PROGRAMS = [
    {name:'Hinge & Pull',format:'traditional',warmupMin:7,mainMin:30,
     blocks:[{ex:'kb_deadlift',sets:3},{ex:'one_arm_row',sets:3},{ex:'glute_bridge',sets:3},{ex:'farmer_carry',sets:3}]},
    {name:'Whole Body',format:'traditional',warmupMin:7,mainMin:30,
-    finisher:{name:'Swing Finish',format:'emom',totalMinutes:4,pattern:['russian_swing','rest','russian_swing','rest'],
+    finisher:{name:'Swing Finish',format:'emom',totalMinutes:4,pattern:['kb_swing','rest','kb_swing','rest'],
       note:'Four easy minutes. If the hip snap fades, stop the set early.'},
     blocks:[{ex:'goblet_squat',sets:3},{ex:'kb_deadlift',sets:3},{ex:'kb_floor_press',sets:3},{ex:'kb_sit_up',sets:3}]},
   ]},
@@ -1023,7 +1030,7 @@ const PROGRAMS = [
   desc:'Four full sessions a week, each split by pattern so nothing gets trained into the ground. A sane first block for someone training most days.',
   templates:[
    {name:'Hinge & Swing',format:'traditional',warmupMin:8,mainMin:28,
-    finisher:{name:'Swing Close',format:'emom',totalMinutes:5,pattern:['russian_swing','rest','russian_swing','rest','russian_swing'],
+    finisher:{name:'Swing Close',format:'emom',totalMinutes:5,pattern:['kb_swing','rest','kb_swing','rest','kb_swing'],
       note:'One set a minute. Stop the set when the hip snap softens.'},
     blocks:[{ex:'kb_deadlift',sets:3},{ex:'kb_swing',sets:3},{ex:'glute_bridge',sets:3},{ex:'plank',sets:3}]},
    {name:'Push Day',format:'traditional',warmupMin:8,mainMin:30,
@@ -1046,7 +1053,7 @@ const PROGRAMS = [
     pattern:['kb_swing','goblet_squat','push_up','rest']},
    {name:'Strength Anchor',format:'traditional',warmupMin:8,mainMin:30,
     finisher:{name:'Ten Minute Burn',format:'amrap',totalMinutes:6,
-      round:[{ex:'russian_swing',target:15},{ex:'mountain_climber',target:20},{ex:'reverse_lunge',target:'6/side'}],
+      round:[{ex:'kb_swing',target:15},{ex:'mountain_climber',target:20},{ex:'reverse_lunge',target:'6/side'}],
       note:'Pick a pace you can hold for all six minutes, not the first one.'},
     blocks:[{ex:'kb_front_squat',sets:3},{ex:'one_arm_row',sets:3},{ex:'kb_floor_press',sets:3}]},
    {name:'Interval Circuit',format:'superset',warmupMin:8,mainMin:28,rounds:4,
@@ -1253,7 +1260,7 @@ const PROGRAMS = [
    {name:'Grease \u2014 Squat',format:'traditional',mainMin:28,
     blocks:[{ex:'goblet_squat',sets:8,reps:[5,5]},{ex:'reverse_lunge',sets:6,reps:[5,5]}]},
    {name:'Grease \u2014 Hinge',format:'traditional',mainMin:28,
-    blocks:[{ex:'kb_deadlift',sets:8,reps:[5,5]},{ex:'russian_swing',sets:6,reps:[10,10]}]},
+    blocks:[{ex:'kb_deadlift',sets:8,reps:[5,5]},{ex:'kb_swing',sets:6,reps:[10,10]}]},
    {name:'Grease \u2014 Clean',format:'traditional',mainMin:28,
     blocks:[{ex:'goblet_clean',sets:8,reps:[5,5]},{ex:'kb_halo',sets:6}]},
    {name:'Grease \u2014 Carry',format:'traditional',mainMin:28,
@@ -1266,7 +1273,7 @@ const PROGRAMS = [
    {name:'Push & Squat',format:'superset',mainMin:26,rounds:4,
     pairs:[['goblet_squat','overhead_press'],['push_up','kb_swing']]},
    {name:'Hinge & Pull',format:'superset',mainMin:26,rounds:4,
-    pairs:[['kb_deadlift','one_arm_row'],['russian_swing','plank']]},
+    pairs:[['kb_deadlift','one_arm_row'],['kb_swing','plank']]},
    {name:'Whole Body',format:'traditional',mainMin:27,
     blocks:[{ex:'goblet_squat',sets:3,reps:[10,12]},{ex:'one_arm_row',sets:3,reps:[10,12]},
             {ex:'kb_swing',sets:3,reps:[15,20]},{ex:'plank',sets:2}]},
@@ -1303,7 +1310,7 @@ const PROGRAMS = [
    {name:'Swing EMOM',format:'emom',mainMin:20,totalMinutes:20,
     pattern:['kb_swing','goblet_squat','push_up','rest']},
    {name:'Round Clock',format:'amrap',mainMin:18,totalMinutes:18,
-    round:[{ex:'russian_swing',target:15},{ex:'reverse_lunge',target:'6/side'},
+    round:[{ex:'kb_swing',target:15},{ex:'reverse_lunge',target:'6/side'},
            {ex:'one_arm_row',target:'8/side'},{ex:'mountain_climber',target:20}]},
    {name:'Burpee Clock',format:'emom',mainMin:20,totalMinutes:20,
     pattern:['burpee','kb_clean','hollow_hold','rest']},
@@ -1327,10 +1334,10 @@ const PROGRAMS = [
   desc:'The swing, then the clean, then the high pull \u2014 learned in that order, because each one is the last one with somewhere else to go. Short clock work at the end of every session, so the engine gets built while the technique is still being taught.',
   templates:[
    {name:'The Hinge',format:'traditional',mainMin:28,
-    blocks:[{ex:'kb_deadlift',sets:3,reps:[8,10]},{ex:'russian_swing',sets:5,reps:[10,12]},
+    blocks:[{ex:'kb_deadlift',sets:3,reps:[8,10]},{ex:'kb_swing',sets:5,reps:[10,12]},
             {ex:'glute_bridge',sets:3,reps:[12,15]},{ex:'plank',sets:3}],
     finisher:{name:'Swing Clock',format:'emom',totalMinutes:5,
-      pattern:['russian_swing','rest','russian_swing','rest','russian_swing'],
+      pattern:['kb_swing','rest','kb_swing','rest','kb_swing'],
       note:'Ten swings on the minute. Stop the set the moment the hips stop snapping.'}},
    {name:'The Swing',format:'traditional',mainMin:28,
     blocks:[{ex:'kb_swing',sets:5,reps:[12,15]},{ex:'goblet_squat',sets:3,reps:[10,12]},
@@ -1349,7 +1356,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-24m';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-25a';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -1376,12 +1383,28 @@ function loadState(){
     if(raw){ STATE = Object.assign(defaultState(), JSON.parse(raw)); }
   }catch(e){ console.warn('Could not load state', e); STATE = defaultState(); }
   migrateUnloadedWeights();
+  migrateRussianSwing();
   registerCustomPrograms();
   loadVoicePref();
 }
 /* Older builds logged a bell against bodyweight movements. Those weights are
    removed and the records for those movements replayed, so a push-up stops
    counting 12 kg of volume per rep. Only the affected movements are touched. */
+/* The old Russian Swing was the chest-height swing under a second name; its slot
+   is now the overhead American Swing. Everything logged or planned as a Russian
+   swing is the same movement as the Kettlebell Swing, so it moves there and the
+   swing's records are replayed from the merged history. */
+function migrateRussianSwing(){
+  const raw = JSON.stringify(STATE);
+  if(raw.indexOf('"russian_swing"') < 0) return;
+  const oldPr = STATE.prs && STATE.prs.russian_swing;
+  if(oldPr) delete STATE.prs.russian_swing;
+  STATE = JSON.parse(JSON.stringify(STATE).split('"russian_swing"').join('"kb_swing"'));
+  if(STATE.savedExercises) STATE.savedExercises = STATE.savedExercises.filter(function(v,i,a){ return a.indexOf(v)===i; });
+  if(STATE.prs) delete STATE.prs.kb_swing;
+  (STATE.history||[]).forEach(function(h){ if(h.exerciseId==='kb_swing' && !h.noPR){ delete h.isPR; updatePRs(h); } });
+  saveState();
+}
 function migrateUnloadedWeights(){
   const hist = STATE.history || [];
   const fix = {};
@@ -1485,6 +1508,7 @@ function applyBackup(text){
   if(Array.isArray(inc.customPrograms)){
     const have = new Set((STATE.customPrograms||[]).map(function(p){ return p.id; }));
     STATE.customPrograms = (STATE.customPrograms||[]).concat(inc.customPrograms.filter(function(p){ return p && p.id && !have.has(p.id); }));
+    migrateRussianSwing();
     registerCustomPrograms();
   }
   if(inc.savedExercises) inc.savedExercises.forEach(function(id){
@@ -1855,7 +1879,7 @@ const WARM_POOL = {
   ],
   activation:[
     {move:'glute_bridge',  label:'Glute bridge',               dose:'2 × 10 with a two-second squeeze',        sec:60, want:['hinge','squat','swing','power','lunge'], prio:1},
-    {move:'russian_swing', label:'Russian swings — light',  dose:'2 × 10, hips only',                      sec:60, want:['swing','power','hinge'],        prio:1},
+    {move:'kb_swing',      label:'Swings — light',  dose:'2 × 10, hips only',                      sec:60, want:['swing','power','hinge'],        prio:1},
     {move:'push_up',       label:'Push-ups — slow',         dose:'2 × 5, three seconds down',              sec:55, want:['press'],                        prio:1},
     {move:'kb_halo',       label:'Halo — light bell',       dose:'5 each way, ribs down',                       sec:50, want:['press','pull','carry'],         prio:2},
     {move:'plank',            label:'Plank',                        dose:'2 × 20 seconds',        sec:55, want:['core','carry'],          prio:2},
@@ -3322,7 +3346,7 @@ function muscleBands(pose, key){
    camera also lifts off the horizontal. */
 const CAM = { rot:20, pitch:0, z:470, base:2.62, cx:230, groundY:442, groundLocal:50 };
 const CAM_ANGLE = {
-  kb_swing:{rot:20,pitch:-4},          russian_swing:{rot:20,pitch:-4},
+  kb_swing:{rot:20,pitch:-4},          american_swing:{rot:20,pitch:-4},
   one_arm_swing:{rot:22,pitch:-5},     kb_deadlift:{rot:24,pitch:-6},
   romanian_deadlift:{rot:24,pitch:-6}, single_leg_deadlift:{rot:28,pitch:-7},
   kb_good_morning:{rot:24,pitch:-6},   glute_bridge:{rot:26,pitch:-10},
@@ -4076,23 +4100,23 @@ const MOVES = {
     ],
     pose(k){ const st=stance(k.h,0); st.hands=(hip,sh)=>({main:armHang(sh,k.arm)}); return buildStanding(st); }},
 
-  russian_swing:{
-    cam:16, loop:'cycle', ms:1900,
+  american_swing:{
+    cam:16, loop:'cycle', ms:2300,
     keys:[
-      {t:0.00, h:0.92, arm:-38, cue:'Hike',
-       load:{hamstrings:0.8, glutes:0.45, back:0.55, core:0.5, forearms:0.6}},
-      {t:0.17, h:0.38, arm: -8, cue:'Sharp hip snap',
-       load:{glutes:1.0, hamstrings:0.85, core:0.7, forearms:0.6}},
-      {t:0.33, h:0.00, arm: 55, cue:'Bell floats up',
-       load:{glutes:0.75, core:0.6, shoulders:0.35, forearms:0.5}},
-      {t:0.46, h:0.00, arm: 76, cue:'Top — shoulder height, no higher',
-       load:{core:0.75, glutes:0.5, shoulders:0.45, forearms:0.45}},
-      {t:0.64, h:0.08, arm: 30, cue:'Controlled descent',
-       load:{core:0.5, back:0.45, forearms:0.5}},
-      {t:0.83, h:0.58, arm:  0, cue:'Loading the hips',
-       load:{hamstrings:0.68, glutes:0.4, back:0.48, forearms:0.55}},
-      {t:1.00, h:0.92, arm:-38, cue:'Hike',
-       load:{hamstrings:0.8, glutes:0.45, back:0.55, core:0.5, forearms:0.6}},
+      {t:0.00, h:1.00, arm:-42, cue:'Hike — bell between the legs',
+       load:{hamstrings:0.85, glutes:0.45, back:0.6, core:0.5, forearms:0.6}},
+      {t:0.15, h:0.40, arm:-10, cue:'Hip drive — arms still hanging',
+       load:{glutes:1.0, hamstrings:0.9, quads:0.4, core:0.7, forearms:0.6}},
+      {t:0.30, h:0.00, arm: 90, cue:'The drive carries it past the chest',
+       load:{glutes:0.8, hamstrings:0.5, core:0.65, shoulders:0.5, forearms:0.5}},
+      {t:0.46, h:0.00, arm:172, cue:'Top — stacked overhead, ribs down',
+       load:{core:0.85, shoulders:0.7, glutes:0.5, forearms:0.45}},
+      {t:0.62, h:0.04, arm: 80, cue:'Let it fall, the body waits',
+       load:{core:0.55, back:0.45, forearms:0.5}},
+      {t:0.80, h:0.62, arm:  0, cue:'Hips load back',
+       load:{hamstrings:0.7, glutes:0.4, back:0.5, core:0.45, forearms:0.55}},
+      {t:1.00, h:1.00, arm:-42, cue:'Hike',
+       load:{hamstrings:0.85, glutes:0.45, back:0.6, core:0.5, forearms:0.6}},
     ],
     pose(k){ const st=stance(k.h,0); st.hands=(hip,sh)=>({main:armHang(sh,k.arm)}); return buildStanding(st); }},
 
@@ -4735,14 +4759,40 @@ function animPhaseChips(exId){
    are cross-faded, and flipped for the left side the way the figure is.
    Frames: AI-generated, one athlete, cut from 2x2 sheets and aligned on the feet. */
 const PHOTO_SETS = window.NT_PHOTOS || {};
-function photosWanted(){ return !STATE.profile || STATE.profile.photos !== false; }
+const PHOTO_PACE = 1.8;
+function photosWanted(){ return true; }
+/* How the frames move: 'anim' follows the rep, 'slow' holds each frame 2.5 s,
+   'manual' holds the key position and changes only when a frame is tapped. */
+const FRAME_MODES = [['anim','Animated','Follows the rep'],['slow','Slow','2.5 s per frame'],['manual','Manual','Tap a frame']];
+function frameMode(){ const m = STATE.profile && STATE.profile.frameMode; return (m==='slow'||m==='manual') ? m : 'anim'; }
+function setFrameMode(m){ if(!STATE.profile) return; STATE.profile.frameMode = m; saveState(); render(); }
+function photoPick(i){
+  const ph = ANIM.photo; if(!ph) return;
+  ph.picked = i; ph.t0 = performance.now() - i*2500;
+  paintPhoto(i);
+}
+function paintPhoto(best){
+  const ph = ANIM.photo; if(!ph) return;
+  if(best !== ph.cur){
+    ph.cur = best;
+    ph.imgs.forEach(function(im, i){ im.classList.toggle('on', i===best); });
+    (ph.thumbs||[]).forEach(function(t, i){ t.classList.toggle('on', i===best); });
+    document.querySelectorAll('.tech-strip figure').forEach(function(f, i){ f.classList.toggle('on', i===best); });
+  }
+  if(frameMode()!=='anim'){
+    const cueEl = document.getElementById('animCue');
+    const lab = ph.set.labels[best] || '';
+    if(cueEl && cueEl.textContent!==lab) cueEl.textContent = lab;
+  }
+}
 function mountPhotos(exId, cv){
   const set = PHOTO_SETS[exId];
   const wrap = cv && cv.parentElement;
   if(!set || !wrap || !photosWanted()) return null;
   wrap.classList.add('has-photo');
   const stack = document.createElement('div');
-  stack.className = 'photo-stack' + (window._figureMirror ? ' mirrored' : '');
+  stack.className = 'photo-stack' + (window._figureMirror ? ' mirrored' : '') + (frameMode()==='slow' ? ' slow' : '');
+  stack.onclick = function(){ const ph = ANIM.photo; if(ph && frameMode()==='manual') photoPick((ph.cur+1) % set.src.length); };
   if(set.ar) stack.style.aspectRatio = set.ar;
   stack.innerHTML = set.src.map(function(s){ return '<img alt="" src="'+s+'">'; }).join('')
     ;
@@ -4752,10 +4802,10 @@ function mountPhotos(exId, cv){
   if(wrap.classList.contains('fig-compact')){
     const st = document.createElement('div');
     st.className = 'set-strip' + (window._figureMirror ? ' mirrored' : '');
-    st.innerHTML = set.src.map(function(s,i){ return '<div class="st"><img alt="" style="aspect-ratio:'+(set.ar||'480/540')+'" src="'+s+'"><span class="n">'+(i+1)+'</span><div class="l">'+esc(set.labels[i])+'</div></div>'; }).join('');
+    st.innerHTML = set.src.map(function(s,i){ return '<div class="st" onclick="photoPick('+i+')"><img alt="" style="aspect-ratio:'+(set.ar||'480/540')+'" src="'+s+'"><span class="n">'+(i+1)+'</span><div class="l">'+esc(set.labels[i])+'</div></div>'; }).join('');
     wrap.insertBefore(st, cv); thumbs = st.querySelectorAll('.st');
   }
-  return { set, imgs: stack.querySelectorAll('img'), thumbs, cur: -1 };
+  return { set, imgs: stack.querySelectorAll('img'), thumbs, cur: -1, t0: performance.now(), picked: null };
 }
 function showPhotoAt(p){
   /* Every frame of the sheet gets its turn in each rep:
@@ -4763,9 +4813,14 @@ function showPhotoAt(p){
      - there-and-back lifts: frames 1-2 on the way out, 3-4 on the way back;
      - ballistic cycles: the hand-tuned positions in the set. */
   const ph = ANIM.photo, move = ANIM.move || {}, n = ph.set.src.length;
+  const mode = frameMode();
   let best = 0;
-  if(ph.set.hold){
-    best = Math.floor(ANIM.raw * (move.ms||2400) / 1600) % n;
+  if(mode==='manual'){
+    best = ph.picked != null ? ph.picked : Math.min(ph.set.key||0, n-1);
+  } else if(mode==='slow'){
+    best = Math.floor((performance.now() - ph.t0) / 2500) % n;
+  } else if(ph.set.hold){
+    best = Math.floor(ANIM.raw * (move.ms||2400) * PHOTO_PACE / 2200) % n;
   } else if(move.loop === 'pingpong'){
     const out = ph.lastP == null ? true : (p > ph.lastP ? true : p < ph.lastP ? false : ph.out);
     ph.out = out; ph.lastP = p;
@@ -4778,10 +4833,7 @@ function showPhotoAt(p){
       if(d < bd){ bd = d; best = a[0]; }
     });
   }
-  if(best === ph.cur) return;
-  ph.cur = best;
-  ph.imgs.forEach(function(im, i){ im.classList.toggle('on', i===best); });
-  (ph.thumbs||[]).forEach(function(t, i){ t.classList.toggle('on', i===best); });
+  paintPhoto(best);
 }
 function initExerciseAnimation(exId){
   const move = MOVES[exId];
@@ -4818,7 +4870,8 @@ function animTick(ts){
   if(ANIM.last==null) ANIM.last=ts;
   const dt=ts-ANIM.last; ANIM.last=ts;
   if(ANIM.playing && ANIM.move){
-    ANIM.raw += dt/(ANIM.move.ms||2400);
+    // photos read slower than a drawn figure: a rep with photo frames takes 1.8x as long
+    ANIM.raw += dt/((ANIM.move.ms||2400) * (ANIM.photo ? PHOTO_PACE : 1));
     renderAnimFrame(phaseOf(ANIM.move, ANIM.raw));
   }
   if(ANIM.mounted) requestAnimationFrame(animTick);
@@ -4840,7 +4893,7 @@ function renderAnimFrame(p){
 }
 function updateAnimReadout(k){
   const cueEl=document.getElementById('animCue');
-  if(cueEl && cueEl.textContent!==k.cue) cueEl.textContent=k.cue;
+  if(cueEl && cueEl.textContent!==k.cue && !(ANIM.photo && frameMode()!=='anim')) cueEl.textContent=k.cue;
   const box=document.getElementById('animMuscles');
   if(!box) return;
   const cap = box.classList.contains('mus-compact') ? 3 : 4;   // one row while training
@@ -4864,7 +4917,7 @@ function updateAnimReadout(k){
 
 function techStrip(id){ const s=PHOTO_SETS[id]; if(!s||!photosWanted()) return '';
   return '<div class="section"><div class="section-title">Technique</div><div class="card" style="padding:10px;"><div class="tech-strip">'
-   + s.src.map(function(src,i){ return '<figure><img alt="" style="aspect-ratio:'+(s.ar||'480/540')+'" src="'+src+'"><span class="tn">'+(i+1)+'</span><figcaption>'+esc(s.labels[i])+'</figcaption></figure>'; }).join('')
+   + s.src.map(function(src,i){ return '<figure onclick="photoPick('+i+');document.getElementById(\'figCanvas\').parentElement.scrollIntoView({behavior:\'smooth\',block:\'center\'})"><img alt="" style="aspect-ratio:'+(s.ar||'480/540')+'" src="'+src+'"><span class="tn">'+(i+1)+'</span><figcaption>'+esc(s.labels[i])+'</figcaption></figure>'; }).join('')
    + '</div></div></div>'; }
 function renderExerciseDetail(id){
   const e = EX_BY_ID[id]; if(!e) return '<p>Exercise not found.</p>';
@@ -5392,7 +5445,7 @@ const WARM_MOVE_MAP = [
   [/bodyweight squat/i,       'bw_squat'],
   [/hip hinge/i,              'bw_hinge'],
   [/halo/i,                   'kb_halo'],
-  [/russian swing/i,          'russian_swing'],
+  [/american swing/i,         'american_swing'],
   [/swing/i,                  'kb_swing'],
   [/split squat/i,            'split_squat'],
   [/reverse lunge/i,          'reverse_lunge'],
@@ -5741,7 +5794,8 @@ function coachPrefsSection(){
   return '<div class="section"><div class="section-title">Coaching</div><div class="card card-tight" style="padding:4px 16px;">'
     + (coachSupported() ? row('voice','Voice coach','Calls the next set and beeps the countdown', !!VOICE.on) : '')
     + row('readiness','Readiness check','Three questions before each session', readinessWanted())
-    + row('photos','Exercise photos (test)','Still frames instead of the figure, where there are any', photosWanted())
+    + '<div class="pref-row" style="border-bottom:0;padding-bottom:4px;"><div style="flex:1;min-width:0;"><div class="wr-title">Exercise frames</div><div class="wr-meta">How the photos move during a set</div></div></div>'
+    + '<div class="frame-seg">' + FRAME_MODES.map(function(m){ return '<button class="'+(frameMode()===m[0]?'on':'')+'" onclick="setFrameMode(\''+m[0]+'\')">'+m[1]+'<small>'+m[2]+'</small></button>'; }).join('') + '</div>'
     + '</div></div>';
 }
 
@@ -6683,8 +6737,17 @@ async function buildShareCard(){
   // hero figure
   const heroId = (S.lifts[0] && MOVES[S.lifts[0].ex.id]) ? S.lifts[0].ex.id
                : (function(){ const w=S.w; const b=(w.blocks&&w.blocks[0]&&w.blocks[0].ex)||(w.pairs&&w.pairs[0]&&w.pairs[0][0])||(w.chain&&w.chain[0]&&w.chain[0].ex)||(w.round&&w.round[0]&&w.round[0].ex)||((w.pattern||[]).find(function(x){return x!=='rest';})); return b; })();
-  const fig = heroId ? heroFigure(820, heroId) : null;
-  if(fig) ctx.drawImage(fig, (W-820)/2, 210, 820, 820);
+  const ph = heroId && PHOTO_SETS[heroId];
+  const img = ph ? await new Promise(function(res){ const im = new Image(); im.onload = function(){ res(im); }; im.onerror = function(){ res(null); }; im.src = ph.src[Math.min(ph.key||0, ph.src.length-1)]; }) : null;
+  if(img){
+    // the lift's key photo, in a rounded frame where the figure used to stand
+    const w = 900, h = Math.min(820, Math.round(w * img.naturalHeight / img.naturalWidth)), x = (W-w)/2, y = 210 + (820-h)/2;
+    ctx.save(); rr(ctx, x, y, w, h, 36); ctx.clip(); ctx.drawImage(img, x, y, w, h); ctx.restore();
+    rr(ctx, x, y, w, h, 36); ctx.strokeStyle = 'rgba(255,255,255,0.10)'; ctx.lineWidth = 2; ctx.stroke();
+  } else {
+    const fig = heroId ? heroFigure(820, heroId) : null;
+    if(fig) ctx.drawImage(fig, (W-820)/2, 210, 820, 820);
+  }
   // title block
   const early = !!SESSION.endedEarly;
   ctx.textBaseline = 'alphabetic';
