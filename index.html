@@ -162,6 +162,14 @@ a{color:inherit;text-decoration:none;}
 .badge-neutral{background:var(--bg-3);color:var(--text-2);}
 .badge-blue{background:var(--blue-glow);color:var(--blue);}
 
+.ex-pager{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.ex-pg{flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding:10px 12px;border-radius:var(--radius-s);background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);font-size:12.5px;font-weight:700;cursor:pointer;}
+.ex-pg span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ex-pg svg{width:16px;height:16px;flex-shrink:0;color:var(--blue);}
+.ex-pg.nx{justify-content:flex-end;text-align:right;}
+.ex-pg.nx svg{transform:scaleX(-1);}
+.ex-pg:active{background:var(--bg-3);}
+.ex-pg-n{font-size:11.5px;font-weight:800;color:var(--text-3);flex-shrink:0;min-width:44px;text-align:center;}
 .top-row{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
 .back-btn{width:36px;height:36px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-1);flex-shrink:0;}
 .top-row h2{font-size:24px;}
@@ -199,6 +207,8 @@ a{color:inherit;text-decoration:none;}
 .wr-title.locked, .wr-meta.locked{color:var(--text-3);}
 
 .ex-icon{width:52px;height:52px;border-radius:var(--radius-s);background:var(--bg-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ex-icon .ex-thumb{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;}
+.ex-icon:has(.ex-thumb){overflow:hidden;background:#14161A;}
 .ex-icon svg{width:30px;height:30px;color:var(--blue);}
 .ex-row{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--border-soft);}
 .ex-row:last-child{border-bottom:none;}
@@ -429,6 +439,30 @@ a{color:inherit;text-decoration:none;}
 
 .fig-wrap{width:100%;max-width:230px;margin:0 auto;background:var(--bg-2);border-radius:var(--radius-m);padding:10px 0 4px;}
 .fig-wrap canvas{width:100%;height:auto;display:block;}
+.fig-wrap.has-photo{background:#14161A;padding:0;overflow:hidden;max-width:300px;}
+.fig-wrap.fig-compact.has-photo{max-width:100%;background:transparent;}
+.fig-compact .photo-stack{max-width:320px;margin:0 auto;border-radius:12px;overflow:hidden;}
+.set-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:6px;}
+.set-strip .st{position:relative;border-radius:8px;overflow:hidden;border:2px solid transparent;opacity:.5;transition:opacity .2s,border-color .2s;}
+.set-strip .st.on{border-color:var(--blue);opacity:1;}
+.set-strip img{width:100%;aspect-ratio:480/540;object-fit:cover;display:block;}
+.set-strip.mirrored img{transform:scaleX(-1);}
+.set-strip .n{position:absolute;left:4px;top:4px;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.set-strip .st.on .n{background:var(--blue);}
+.set-strip .l{font-size:9.5px;font-weight:700;color:var(--text-2);text-align:center;padding:3px 0 4px;background:#14161A;}
+.tech-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.tech-strip figure{margin:0;position:relative;border-radius:10px;overflow:hidden;background:#14161A;}
+.tech-strip img{width:100%;aspect-ratio:480/540;object-fit:cover;display:block;}
+.tech-strip .tn{position:absolute;left:5px;top:5px;width:18px;height:18px;border-radius:50%;background:var(--blue);color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.tech-strip figcaption{font-size:10.5px;font-weight:700;color:var(--text-2);text-align:center;padding:6px 2px 7px;line-height:1.2;}
+.fig-wrap.has-photo canvas{display:none;}
+.photo-stack{position:relative;width:100%;aspect-ratio:480/540;}
+.photo-stack.mirrored{transform:scaleX(-1);}
+.photo-stack img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .22s ease;}
+.photo-stack img.on{opacity:1;}
+.photo-tag{position:absolute;left:8px;bottom:7px;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);background:rgba(0,0,0,.35);border-radius:6px;padding:2px 6px;}
+.photo-stack.mirrored .photo-tag{transform:scaleX(-1);}
 .fig-wrap.fig-compact{max-width:168px;padding:8px 0 3px;margin-bottom:2px;}
 .fig-caption{text-align:center;font-size:11px;color:var(--text-2);font-weight:700;letter-spacing:0.2px;margin:-2px 0 10px;min-height:15px;line-height:1.3;}
 .mus-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:4px;min-height:44px;align-content:flex-start;}
@@ -560,7 +594,6 @@ a{color:inherit;text-decoration:none;}
 .fit-note{margin-top:14px;padding:11px 13px;border-radius:var(--radius-s);background:var(--bg-2);
   border:1px solid var(--border-soft);font-size:12.5px;color:var(--text-2);line-height:1.45;}
 </style>
-
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -572,6 +605,7 @@ a{color:inherit;text-decoration:none;}
 <body>
 <div id="bgLayer"></div>
 <div id="app"></div>
+<script src="photos.js?v=2026-09-24l"></script>
 <script>
 'use strict';
 /* ============================= ICONS ============================= */
@@ -606,6 +640,9 @@ const ICON = {
    The old set had press, carry and pull as near-identical T-poses and skill
    was a copy of power — so none of them said anything about the movement.
    Each one now shows the position that defines its family, bell included. */
+const EX_THUMBS = window.NT_THUMBS || {};
+/* The exercise's own photo where there is one, the category glyph otherwise. */
+function exIcon(e){ return (e && EX_THUMBS[e.id] && photosWanted()) ? '<img class="ex-thumb" alt="" src="'+EX_THUMBS[e.id]+'">' : poseIcon(e ? e.cat : ''); }
 function poseIcon(cat){
   const P = {
     // deep squat, bell at the chest
@@ -1312,7 +1349,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-23c';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-24l';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -2066,35 +2103,50 @@ function shellless(inner){ return '<div class="main-col"><div class="main-inner"
 
 /* ============================= MUSCLE MAP SVG ============================= */
 function bodySvg(view, highlighted){
-  // highlighted: {region: color}
-  const c = id => highlighted[id] || '#2A3441';
-  if(view==='front'){
-    return '<svg viewBox="0 0 120 220" width="100%" style="height:auto;display:block;">'
-    +'<ellipse cx="60" cy="18" rx="14" ry="16" fill="#2A3441"/>'
-    +'<rect x="46" y="34" width="28" height="10" rx="4" fill="#2A3441"/>'
-    +'<path d="M35 44 h50 a10 10 0 0 1 10 10 v18 a10 10 0 0 1 -10 10 h-50 a10 10 0 0 1 -10 -10 v-18 a10 10 0 0 1 10 -10 z" fill="'+c('chest')+'"/>'
-    +'<circle cx="30" cy="52" r="9" fill="'+c('shoulders_l')+'"/><circle cx="90" cy="52" r="9" fill="'+c('shoulders_r')+'"/>'
-    +'<rect x="18" y="58" width="13" height="30" rx="6" fill="'+c('biceps_l')+'"/><rect x="89" y="58" width="13" height="30" rx="6" fill="'+c('biceps_r')+'"/>'
-    +'<rect x="16" y="88" width="13" height="26" rx="6" fill="'+c('forearms_l')+'"/><rect x="91" y="88" width="13" height="26" rx="6" fill="'+c('forearms_r')+'"/>'
-    +'<rect x="42" y="74" width="36" height="34" rx="8" fill="'+c('abs')+'"/>'
-    +'<rect x="34" y="76" width="9" height="30" rx="5" fill="'+c('obliques_l')+'"/><rect x="77" y="76" width="9" height="30" rx="5" fill="'+c('obliques_r')+'"/>'
-    +'<rect x="42" y="108" width="16" height="12" rx="4" fill="#2A3441"/><rect x="62" y="108" width="16" height="12" rx="4" fill="#2A3441"/>'
-    +'<rect x="40" y="120" width="18" height="46" rx="9" fill="'+c('quads_l')+'"/><rect x="62" y="120" width="18" height="46" rx="9" fill="'+c('quads_r')+'"/>'
-    +'<rect x="41" y="168" width="16" height="38" rx="7" fill="'+c('shins_l')+'"/><rect x="63" y="168" width="16" height="38" rx="7" fill="'+c('shins_r')+'"/>'
-    +'</svg>';
-  }
-  return '<svg viewBox="0 0 120 220" width="100%" style="height:auto;display:block;">'
-  +'<ellipse cx="60" cy="18" rx="14" ry="16" fill="#2A3441"/>'
-  +'<circle cx="35" cy="46" r="8" fill="'+c('trap_l')+'"/><circle cx="85" cy="46" r="8" fill="'+c('trap_r')+'"/>'
-  +'<path d="M35 44 h50 a10 10 0 0 1 10 10 v18 a10 10 0 0 1 -10 10 h-50 a10 10 0 0 1 -10 -10 v-18 a10 10 0 0 1 10 -10 z" fill="#2A3441"/>'
-  +'<rect x="40" y="48" width="17" height="30" rx="6" fill="'+c('upperback_l')+'"/><rect x="63" y="48" width="17" height="30" rx="6" fill="'+c('upperback_r')+'"/>'
-  +'<rect x="18" y="58" width="13" height="30" rx="6" fill="'+c('triceps_l')+'"/><rect x="89" y="58" width="13" height="30" rx="6" fill="'+c('triceps_r')+'"/>'
-  +'<rect x="16" y="88" width="13" height="26" rx="6" fill="'+c('forearmsb_l')+'"/><rect x="91" y="88" width="13" height="26" rx="6" fill="'+c('forearmsb_r')+'"/>'
-  +'<rect x="44" y="80" width="32" height="20" rx="7" fill="'+c('lowerback')+'"/>'
-  +'<rect x="40" y="102" width="18" height="20" rx="7" fill="'+c('glutes_l')+'"/><rect x="62" y="102" width="18" height="20" rx="7" fill="'+c('glutes_r')+'"/>'
-  +'<rect x="40" y="124" width="18" height="42" rx="8" fill="'+c('hamstrings_l')+'"/><rect x="62" y="124" width="18" height="42" rx="8" fill="'+c('hamstrings_r')+'"/>'
-  +'<rect x="41" y="168" width="16" height="38" rx="7" fill="'+c('calves_l')+'"/><rect x="63" y="168" width="16" height="38" rx="7" fill="'+c('calves_r')+'"/>'
-  +'</svg>';
+  const IDLE = '#2B3643', BASE = '#1B222C', EDGE = '#10151C';
+  const c = id => highlighted[id] || IDLE;
+  const lit = id => !!highlighted[id];
+  const m = (d, id) => '<path d="'+d+'" fill="'+c(id)+'" stroke="'+EDGE+'" stroke-width="0.7" stroke-linejoin="round"'
+                     + (lit(id) ? ' filter="url(#glow-'+view+')"' : '') + '/>';
+  // one half of the body; sfx picks the _l or _r region ids
+  const half = sfx => {
+    const s = id => id + sfx;
+    // the base silhouette of this half: arm, leg, flank
+    let g = '<path d="M60,40 L50,41 Q38,43 33,49 Q27,55 27,66 L24,100 L19,138 L17,152 Q19,158 24,155 L26,140 L31,104 L35,78 L37,96 Q37,110 38,122 L39,136 L41,178 L43,226 Q39,232 43,235 L54,235 Q56,231 54,226 L57,180 L60,140 Z" fill="'+BASE+'"/>';
+    if(view === 'front'){
+      g += m('M60,41 L51,42 L45,46 L56,47 Z', s('trap'));                                   // upper traps, seen over the collarbone
+      g += m('M44,46 Q33,46 29,55 Q27,63 30,71 Q34,62 42,56 Z', s('shoulders'));           // front deltoid
+      g += m('M59,49 L45,49 Q39,54 38,64 Q39,72 44,76 Q52,79 59,76 Z', 'chest');           // pectoral
+      g += m('M30,72 Q26,80 25,93 Q26,99 29,100 Q32,92 34,80 Q34,74 32,70 Z', s('biceps'));
+      g += m('M25,102 Q21,114 19,136 L24,137 Q28,118 30,103 Z', s('forearms'));
+      g += m('M59,79 L51,80 Q49,98 51,118 L59,120 Z', 'abs');                              // rectus abdominis
+      g += '<path d="M51,90 L59,90 M51,100 L59,100 M51,110 L59,110" stroke="'+EDGE+'" stroke-width="0.7" fill="none"/>';
+      g += m('M48,79 Q41,82 40,96 Q40,108 43,116 L50,118 Q48,98 50,80 Z', s('obliques'));
+      g += m('M45,126 Q39,146 42,172 L46,178 L55,178 Q58,160 58,142 Q58,130 55,124 Z', s('quads'));
+      g += m('M45,184 Q43,204 46,222 L52,222 Q54,204 54,184 Z', s('shins'));
+      g += '<path d="M50,131 Q48,152 50,174" stroke="'+EDGE+'" stroke-width="0.7" fill="none"/>';   // vastus / rectus femoris split
+    } else {
+      g += m('M60,38 L52,42 Q44,45 40,49 L50,56 Q56,62 60,78 Z', s('trap'));               // trapezius, neck to mid back
+      g += m('M40,48 Q31,49 28,58 Q27,65 30,71 Q34,62 42,56 Z', s('shoulders'));           // rear deltoid
+      g += m('M42,57 Q36,70 38,86 Q42,98 50,102 L58,100 Q56,74 50,60 Z', s('upperback'));  // lats and rhomboids
+      g += m('M30,72 Q26,82 25,94 Q26,100 29,100 Q33,90 34,78 Q33,73 31,70 Z', s('triceps'));
+      g += m('M25,102 Q21,114 19,136 L24,137 Q28,118 30,103 Z', s('forearmsb'));
+      g += m('M59,101 L51,103 Q49,112 51,121 L59,122 Z', 'lowerback');                     // spinal erectors
+      g += m('M49,121 Q41,122 40,132 Q41,142 50,145 Q57,146 60,140 L60,123 Z', s('glutes'));
+      g += m('M42,147 Q39,160 42,176 L55,177 Q58,162 57,148 Z', s('hamstrings'));
+      g += m('M43,182 Q39,196 44,210 L54,210 Q58,196 55,182 Z', s('calves'));
+    }
+    return g;
+  };
+  const glow = '<defs><filter id="glow-'+view+'" x="-40%" y="-40%" width="180%" height="180%">'
+    + '<feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  return '<svg viewBox="0 0 120 240" width="100%" style="height:auto;display:block;" role="img" aria-label="'
+    + (view==='front' ? 'Front' : 'Back') + ' muscle map">' + glow
+    + '<ellipse cx="60" cy="21" rx="11.5" ry="14" fill="'+BASE+'"/>'
+    + '<rect x="54" y="32" width="12" height="10" rx="3" fill="'+BASE+'"/>'
+    + half('_l')
+    + '<g transform="translate(120,0) scale(-1,1)">' + half('_r') + '</g>'
+    + '</svg>';
 }
 function muscleMap(ex){
   const colorFor = level => level==='primary'?'#E6555A':level==='secondary'?'#EE9A4C':'#E8C548';
@@ -2607,7 +2659,7 @@ function renderBuilder(){
     const ex = EX_BY_ID[b.ex]; if(!ex) return;
     const unit = ex.timeBased ? ' sec' : '';
     html += '<div class="b-block">'
-      + '<div class="b-head"><div class="ex-icon">'+poseIcon(ex.cat)+'</div>'
+      + '<div class="b-head"><div class="ex-icon">'+exIcon(ex)+'</div>'
       + '<div style="flex:1;min-width:0;"><div class="ex-row-title">'+esc(ex.name)+'</div><div class="ex-row-meta">'
       + esc(ex.type)+(isPerSide(ex)?' \u00b7 per side':'')+(ex.pair?' \u00b7 two bells':'')+(!isLoaded(ex)?' \u00b7 no bell':'')+'</div></div>'
       + '<button class="b-ico" onclick="bMove('+i+',-1)" '+(i===0?'disabled':'')+' aria-label="Move up">\u2191</button>'
@@ -2642,7 +2694,7 @@ function pickerList(){
       + list.map(function(e){
           const used = inDay.indexOf(e.id)>=0;
           const gear = !isLoaded(e) ? 'no bell' : e.pair ? 'two bells' : 'one bell';
-          return '<div class="ex-row pick-row'+(used?' used':'')+'" onclick="bAdd(\''+e.id+'\')"><div class="ex-icon">'+poseIcon(e.cat)+'</div>'
+          return '<div class="ex-row pick-row'+(used?' used':'')+'" onclick="bAdd(\''+e.id+'\')"><div class="ex-icon">'+exIcon(e)+'</div>'
             + '<div class="ex-row-body"><div class="ex-row-title">'+esc(e.name)+'</div><div class="ex-row-meta">'+esc(e.type)+' \u00b7 '+gear
             + ' \u00b7 '+esc(e.difficulty)+(used?' \u00b7 already in this day':'')+'</div></div></div>';
         }).join('');
@@ -2773,13 +2825,38 @@ function setPdWeek(progId, w){ window._pdWeek = {prog:progId, week:w}; render();
 
 /* ============================= EXERCISES ============================= */
 let EX_FILTER = {equipment:'all', difficulty:'all', q:''};
-function renderExercisesList(){
-  const filtered = EXERCISES.filter(e=>{
+/* The library as currently filtered: the list screen shows it, and the
+   exercise page's Previous / Next steps through it in the same order. */
+function libraryList(){
+  return EXERCISES.filter(e=>{
     if(EX_FILTER.equipment!=='all' && !e.equipment.includes(EX_FILTER.equipment)) return false;
     if(EX_FILTER.difficulty!=='all' && e.difficulty!==EX_FILTER.difficulty) return false;
     if(EX_FILTER.q && !e.name.toLowerCase().includes(EX_FILTER.q.toLowerCase())) return false;
     return true;
   });
+}
+/* Step to the neighbouring exercise without growing the back stack, so Back
+   still returns to the list however many exercises were paged through. */
+function exStep(d){
+  const list = libraryList(), i = list.findIndex(e=>e.id===ROUTE.params.id);
+  if(i<0 || !list.length) return;
+  const n = list[(i + d + list.length) % list.length];
+  ROUTE = {name:'exercise_detail', params:{id:n.id, lib:1}};
+  window.scrollTo(0,0); render();
+}
+function exPager(id){
+  if(!ROUTE.params.lib) return '';
+  const list = libraryList(), i = list.findIndex(e=>e.id===id);
+  if(i<0 || list.length<2) return '';
+  const prev = list[(i-1+list.length)%list.length], next = list[(i+1)%list.length];
+  return '<div class="ex-pager">'
+    + '<button class="ex-pg" onclick="exStep(-1)" aria-label="Previous exercise">'+ICON.back+'<span>'+esc(prev.name)+'</span></button>'
+    + '<div class="ex-pg-n">'+(i+1)+' / '+list.length+'</div>'
+    + '<button class="ex-pg nx" onclick="exStep(1)" aria-label="Next exercise"><span>'+esc(next.name)+'</span>'+ICON.back+'</button>'
+    + '</div>';
+}
+function renderExercisesList(){
+  const filtered = libraryList();
   return '<h1 style="font-size:28px;margin-bottom:16px;">Exercise Library</h1>'
   +'<div class="field"><input type="text" id="exSearchInput" placeholder="Search exercises" value="'+esc(EX_FILTER.q)+'" oninput="filterExercises(this.value)"></div>'
   +'<div class="chip-row" style="margin-bottom:8px;">'
@@ -2796,8 +2873,8 @@ function filterExercises(val){
   if(el){ el.focus(); const len=el.value.length; el.setSelectionRange(len,len); }
 }
 function exRowHtml(e){
-  return '<div class="ex-row" style="cursor:pointer;" onclick="navigate(\'exercise_detail\',{id:\''+e.id+'\'})">'
-  +'<div class="ex-icon">'+poseIcon(e.cat)+'</div>'
+  return '<div class="ex-row" style="cursor:pointer;" onclick="navigate(\'exercise_detail\',{id:\''+e.id+'\',lib:1})">'
+  +'<div class="ex-icon">'+exIcon(e)+'</div>'
   +'<div class="ex-row-body"><div class="ex-row-title">'+esc(e.name)+'</div><div class="ex-row-meta">'+esc(e.type)+' \u00b7 '+esc(MUSCLE_LABELS[e.primary[0]]||'')+'</div></div>'
   +'<span class="badge '+difficultyBadgeClass(e.difficulty)+'">'+e.difficulty+'</span>'
   +'</div>';
@@ -4650,16 +4727,73 @@ function animPhaseChips(exId){
     '<span class="phase-chip" id="phaseChip'+i+'" onclick="seekToPhase('+i+')">'+esc(shortCue(k.cue))+'</span>'
   ).join('');
 }
+/* ============================ PHOTO FRAMES (TEST) ============================
+   Still frames in place of the drawn figure, for the movements that have them.
+   The clock, the cues, the muscle chips and the phase buttons all keep running
+   exactly as they do for the figure; the only change is what is shown: the
+   frame whose position in the rep is nearest to where the rep is now. Frames
+   are cross-faded, and flipped for the left side the way the figure is.
+   Frames: AI-generated, one athlete, cut from 2x2 sheets and aligned on the feet. */
+const PHOTO_SETS = window.NT_PHOTOS || {};
+function photosWanted(){ return !STATE.profile || STATE.profile.photos !== false; }
+function mountPhotos(exId, cv){
+  const set = PHOTO_SETS[exId];
+  const wrap = cv && cv.parentElement;
+  if(!set || !wrap || !photosWanted()) return null;
+  wrap.classList.add('has-photo');
+  const stack = document.createElement('div');
+  stack.className = 'photo-stack' + (window._figureMirror ? ' mirrored' : '');
+  if(set.ar) stack.style.aspectRatio = set.ar;
+  stack.innerHTML = set.src.map(function(s){ return '<img alt="" src="'+s+'">'; }).join('')
+    ;
+  wrap.insertBefore(stack, cv);
+  // during a set: the big frame plus all four in a strip, the current one lit
+  let thumbs = [];
+  if(wrap.classList.contains('fig-compact')){
+    const st = document.createElement('div');
+    st.className = 'set-strip' + (window._figureMirror ? ' mirrored' : '');
+    st.innerHTML = set.src.map(function(s,i){ return '<div class="st"><img alt="" style="aspect-ratio:'+(set.ar||'480/540')+'" src="'+s+'"><span class="n">'+(i+1)+'</span><div class="l">'+esc(set.labels[i])+'</div></div>'; }).join('');
+    wrap.insertBefore(st, cv); thumbs = st.querySelectorAll('.st');
+  }
+  return { set, imgs: stack.querySelectorAll('img'), thumbs, cur: -1 };
+}
+function showPhotoAt(p){
+  /* Every frame of the sheet gets its turn in each rep:
+     - holds and carries (no rep to follow): step through the frames every 1.6 s;
+     - there-and-back lifts: frames 1-2 on the way out, 3-4 on the way back;
+     - ballistic cycles: the hand-tuned positions in the set. */
+  const ph = ANIM.photo, move = ANIM.move || {}, n = ph.set.src.length;
+  let best = 0;
+  if(ph.set.hold){
+    best = Math.floor(ANIM.raw * (move.ms||2400) / 1600) % n;
+  } else if(move.loop === 'pingpong'){
+    const out = ph.lastP == null ? true : (p > ph.lastP ? true : p < ph.lastP ? false : ph.out);
+    ph.out = out; ph.lastP = p;
+    best = out ? (p < 0.5 ? 0 : 1) : (p >= 0.5 ? 2 : 3);
+    best = Math.min(best, n-1);
+  } else {
+    let bd = 9;
+    ph.set.at.forEach(function(a){
+      let d = Math.abs(p - a[1]); d = Math.min(d, 1-d);
+      if(d < bd){ bd = d; best = a[0]; }
+    });
+  }
+  if(best === ph.cur) return;
+  ph.cur = best;
+  ph.imgs.forEach(function(im, i){ im.classList.toggle('on', i===best); });
+  (ph.thumbs||[]).forEach(function(t, i){ t.classList.toggle('on', i===best); });
+}
 function initExerciseAnimation(exId){
   const move = MOVES[exId];
   const cv = document.getElementById('figCanvas');
   if(!move || !cv) return;
   ANIM.id=exId; ANIM.move=move; ANIM.ctx=cv.getContext('2d');
   ANIM.playing=true; ANIM.raw=0; ANIM.last=null; ANIM.mounted=true; ANIM.sig='';
+  ANIM.photo = mountPhotos(exId, cv);
   renderAnimFrame(0);
   requestAnimationFrame(animTick);
 }
-function stopAnimation(){ ANIM.mounted=false; ANIM.ctx=null; ANIM.move=null; }
+function stopAnimation(){ ANIM.mounted=false; ANIM.ctx=null; ANIM.move=null; ANIM.photo=null; }
 function toggleAnimPlay(){
   ANIM.playing=!ANIM.playing; ANIM.last=null;
   const b=document.getElementById('animPlayBtn'); if(b) b.innerHTML=ANIM.playing?ICON.pause:ICON.play;
@@ -4695,9 +4829,12 @@ function renderAnimFrame(p){
   // viewing this sagittal rig from the opposite side is exactly the other limb
   applyCameraFit(ANIM.id, move, ANIM.ctx, !!window._figureMirror);
   const k = sampleKeys(move.keys, p, move.linear);
-  const pose = move.pose(k);
-  pose.load = k.load;
-  drawFigure(ANIM.ctx, pose, { face: facingFor(ANIM.id, move) });
+  if(ANIM.photo) showPhotoAt(p);
+  else {
+    const pose = move.pose(k);
+    pose.load = k.load;
+    drawFigure(ANIM.ctx, pose, { face: facingFor(ANIM.id, move) });
+  }
   updatePhaseChipHighlight(k.keyIndex);
   updateAnimReadout(k);
 }
@@ -4725,11 +4862,16 @@ function updateAnimReadout(k){
 }
 
 
+function techStrip(id){ const s=PHOTO_SETS[id]; if(!s||!photosWanted()) return '';
+  return '<div class="section"><div class="section-title">Technique</div><div class="card" style="padding:10px;"><div class="tech-strip">'
+   + s.src.map(function(src,i){ return '<figure><img alt="" style="aspect-ratio:'+(s.ar||'480/540')+'" src="'+src+'"><span class="tn">'+(i+1)+'</span><figcaption>'+esc(s.labels[i])+'</figcaption></figure>'; }).join('')
+   + '</div></div></div>'; }
 function renderExerciseDetail(id){
   const e = EX_BY_ID[id]; if(!e) return '<p>Exercise not found.</p>';
   const saved = STATE.savedExercises.includes(id);
   const swapEx = e.swap? EX_BY_ID[e.swap]:null;
-  return '<div class="top-row"><div class="back-btn" onclick="goBack()">'+ICON.back+'</div><h2>'+esc(e.name)+'</h2></div>'
+  return '<div class="top-row"'+(ROUTE.params.lib?' style="margin-bottom:12px;"':'')+'><div class="back-btn" onclick="goBack()">'+ICON.back+'</div><h2>'+esc(e.name)+'</h2></div>'
+  +exPager(id)
   +'<div class="chip-row" style="margin-bottom:14px;"><span class="badge '+difficultyBadgeClass(e.difficulty)+'">'+e.difficulty+'</span><span class="badge badge-neutral">'+esc(e.type)+'</span>'+e.equipment.map(q=>'<span class="badge badge-neutral">'+q+'</span>').join('')+'</div>'
   +'<div class="card" style="text-align:center;padding:20px 20px 16px;">'
   +figureMarkup()
@@ -4747,6 +4889,7 @@ function renderExerciseDetail(id){
   +'<div class="stat-tile"><div class="num" style="font-size:20px;">'+e.sets[0]+'\u2013'+e.sets[1]+'</div><div class="lbl">Sets</div></div>'
   +'</div>'
   +exerciseProgressLink(id)
+  +techStrip(id)
   +'<div class="section"><div class="section-title">Muscle Load Map</div><div class="card">'+muscleMap(e)+'</div></div>'
   +'<div class="section"><div class="section-title">Key Technique Points</div><div class="card">'+e.keyPoints.map(k=>'<div style="display:flex;gap:10px;padding:8px 0;font-size:14px;color:var(--text-2);"><span style="color:var(--blue);">\u2022</span>'+esc(k)+'</div>').join('')+'</div></div>'
   +'<div class="section"><div class="section-title">Common Mistakes</div><div class="card">'+e.mistakes.map(k=>'<div style="display:flex;gap:10px;padding:8px 0;font-size:14px;color:var(--text-2);"><span style="color:var(--red);">\u2022</span>'+esc(k)+'</div>').join('')+'</div></div>'
@@ -4825,7 +4968,7 @@ function renderWorkoutPreview(pr){
   const exRow = (id, meta)=>{
     const ex = EX_BY_ID[id]; if(!ex) return '';
     return '<div class="ex-row" style="cursor:pointer;" onclick="peekExercise(\''+id+'\')">'
-      +'<div class="ex-icon">'+poseIcon(ex.cat)+'</div>'
+      +'<div class="ex-icon">'+exIcon(ex)+'</div>'
       +'<div class="ex-row-body"><div class="ex-row-title">'+esc(ex.name)+'</div>'
       +'<div class="ex-row-meta">'+esc(meta)+'</div></div>'
       +'<span class="row-chev">'+ICON.chevron+'</span></div>';
@@ -4923,7 +5066,7 @@ function initSession(w){
   if(w.format==='amrap'){ SESSION.timeLeft = w.totalMinutes*60; }
   if(w.format==='complex'){ SESSION.round=0; SESSION.blockIndex=0; resetSide(); }
   if(w.format==='for_time'){ SESSION.rung=0; SESSION.timeElapsed=0; SESSION.ftDone=false; SESSION.ftCapped=false; }
-  if(readinessWanted()){ SESSION.afterReady = SESSION.phase; SESSION.phase = 'readiness'; SESSION._ready = {}; }
+  if(readinessWanted()){ SESSION.afterReady = SESSION.phase; SESSION.phase = 'readiness'; SESSION._ready = {sleep:2, energy:2, sore:2}; }   // start on the good answers: a normal day is two taps from Start
 }
 function totalSegments(){
   const w = SESSION.workout;
@@ -5545,10 +5688,11 @@ function renderReadinessPhase(){
   let html = '<div class="card ready-card">'
     + '<div class="eyebrow">Before you start</div>'
     + '<h2 style="font-size:23px;margin:8px 0 6px;">How are you today?</h2>'
-    + '<p class="ready-lede">Three taps. A bad night is a reason to train lighter, not to skip.</p>';
+    + '<p class="ready-lede">Feeling fine? Just hit Start. A bad night is a reason to train lighter, not to skip.</p>';
   READY_Q.forEach(function(q){
     html += '<div class="ready-q"><div class="ready-l">'+esc(q.q)+'</div><div class="ready-opts">'
-      + q.opts.map(function(o,i){ return '<button class="ready-o'+(a[q.k]===i?' on':'')+'" onclick="setReady(\''+q.k+'\','+i+')">'+esc(o)+'</button>'; }).join('')
+      // best answer first; the stored value stays 0 = worst .. 2 = best
+      + q.opts.map(function(o,i){ return {o:o, i:i}; }).reverse().map(function(x){ return '<button class="ready-o'+(a[q.k]===x.i?' on':'')+'" onclick="setReady(\''+q.k+'\','+x.i+')">'+esc(x.o)+'</button>'; }).join('')
       + '</div></div>';
   });
   const ans = readyAnswers();
@@ -5597,6 +5741,7 @@ function coachPrefsSection(){
   return '<div class="section"><div class="section-title">Coaching</div><div class="card card-tight" style="padding:4px 16px;">'
     + (coachSupported() ? row('voice','Voice coach','Calls the next set and beeps the countdown', !!VOICE.on) : '')
     + row('readiness','Readiness check','Three questions before each session', readinessWanted())
+    + row('photos','Exercise photos (test)','Still frames instead of the figure, where there are any', photosWanted())
     + '</div></div>';
 }
 
@@ -5664,7 +5809,7 @@ function renderSwapOverlay(){
     + '<div class="share-top"><div><div class="eyebrow">Swap for today</div><div class="wr-meta" style="margin-top:3px;">Instead of '+esc(ex?ex.name:'')+'</div></div>'
     + '<div class="back-btn" onclick="closeSwap()">'+ICON.x+'</div></div>'
     + opts.map(function(e){
-        return '<div class="ex-row swap-opt" onclick="doSwap(\''+e.id+'\')"><div class="ex-icon">'+poseIcon(e.cat)+'</div>'
+        return '<div class="ex-row swap-opt" onclick="doSwap(\''+e.id+'\')"><div class="ex-icon">'+exIcon(e)+'</div>'
           + '<div class="ex-row-body"><div class="ex-row-title">'+esc(e.name)+'</div><div class="ex-row-meta">'+esc(swapTag(e, ex))+'</div></div>'
           + ico(ICON.chevron)+'</div>';
       }).join('')
@@ -5832,7 +5977,7 @@ function renderComplexPhase(){
       const e = EX_BY_ID[c.ex];
       const cur = i===SESSION.blockIndex;
       return '<div class="ex-row" style="'+(cur?'border-color:var(--blue);background:var(--blue-glow);':'opacity:'+(i<SESSION.blockIndex?'0.45':'0.8')+';')+'">'
-        + '<div class="ex-icon">'+poseIcon(e.cat)+'</div>'
+        + '<div class="ex-icon">'+exIcon(e)+'</div>'
         + '<div class="ex-row-body"><div class="ex-row-title">'+esc(e.name)+'</div>'
         + '<div class="ex-row-meta">'+c.reps+' reps'+(isPerSide(e)?' this side':'')+'</div></div></div>';
     }).join('');
@@ -5974,7 +6119,7 @@ function renderAmrapPhase(){
   html += '<div class="card"><div class="eyebrow" style="margin-bottom:10px;">One Round</div>';
   html += w.round.map(r=>{ const ex=EX_BY_ID[r.ex];
     return '<div class="tap-row" onclick="peekExercise(\''+r.ex+'\')">'
-      + '<div class="ex-icon" style="width:38px;height:38px;">'+poseIcon(ex.cat)+'</div>'
+      + '<div class="ex-icon" style="width:38px;height:38px;">'+exIcon(ex)+'</div>'
       + '<div style="flex:1;text-align:left;"><div style="font-size:14.5px;font-weight:700;">'+esc(ex.name)+'</div>'
       + '<div class="wr-meta">'+esc(roundTarget(r.ex, r.target))+'</div></div>'
       + '<span class="row-chev">'+ICON.chevron+'</span></div>'; }).join('');
@@ -6028,7 +6173,7 @@ function renderForTimePhase(){
   html += '<div class="card"><div class="eyebrow" style="margin-bottom:10px;">This round</div>'
     + (w.chain||[]).map(c=>{ const ex=EX_BY_ID[c.ex]; if(!ex) return '';
         return '<div class="tap-row" onclick="peekExercise(\''+c.ex+'\')">'
-        + '<div class="ex-icon" style="width:38px;height:38px;">'+poseIcon(ex.cat)+'</div>'
+        + '<div class="ex-icon" style="width:38px;height:38px;">'+exIcon(ex)+'</div>'
         + '<div style="flex:1;text-align:left;"><div style="font-size:14.5px;font-weight:700;">'+esc(ex.name)+'</div>'
         + '<div class="wr-meta">'+ftReps(reps,c)+' reps'+(isPerSide(ex)?' per side':'')+'</div></div>'
         + '<span class="row-chev">'+ICON.chevron+'</span></div>'; }).join('')
@@ -6188,7 +6333,7 @@ function nextUpCard(){
   const tgt = n.rec ? targetDisplay(n.rec, n.ex).replace(' / side','') : '';
   const wt  = n.rec ? (n.rec.weight ? n.rec.weight+' '+STATE.profile.units : 'Bodyweight') : '';
   return '<div class="next-up"><div class="next-up-eye">Next up'+(n.side?' · '+sideLabel(n.side)+' side':'')+'</div>'
-    + '<div class="next-up-row"><div class="ex-icon">'+poseIcon(n.ex.cat)+'</div>'
+    + '<div class="next-up-row"><div class="ex-icon">'+exIcon(n.ex)+'</div>'
     + '<div class="next-up-body"><div class="next-up-name">'+esc(n.ex.name)+'</div>'
     + '<div class="next-up-meta">'+esc(n.detail)+'</div></div>'
     + (tgt||wt ? '<div class="next-up-load"><div class="next-up-t">'+esc(tgt)+'</div><div class="next-up-w">'+esc(wt)+'</div></div>' : '')
@@ -6400,10 +6545,10 @@ function renderFinisherIntro(){
   const list = f.format==='emom'
     ? (f.pattern||[]).map((id,i)=> id==='rest'
         ? '<div class="ex-row"><div class="ex-row-body"><div class="ex-row-title" style="color:var(--text-3);">Minute '+(i+1)+' — Rest</div></div></div>'
-        : '<div class="ex-row"><div class="ex-icon">'+poseIcon(EX_BY_ID[id].cat)+'</div><div class="ex-row-body">'
+        : '<div class="ex-row"><div class="ex-icon">'+exIcon(EX_BY_ID[id])+'</div><div class="ex-row-body">'
           +'<div class="ex-row-title">'+esc(EX_BY_ID[id].name)+'</div>'
           +'<div class="ex-row-meta">Minute '+(i+1)+'</div></div></div>').join('')
-    : (f.round||[]).map(r=>'<div class="ex-row"><div class="ex-icon">'+poseIcon(EX_BY_ID[r.ex].cat)+'</div>'
+    : (f.round||[]).map(r=>'<div class="ex-row"><div class="ex-icon">'+exIcon(EX_BY_ID[r.ex])+'</div>'
        +'<div class="ex-row-body"><div class="ex-row-title">'+esc(EX_BY_ID[r.ex].name)+'</div>'
        +'<div class="ex-row-meta">'+esc(roundTarget(r.ex, r.target))+'</div></div></div>').join('');
   return '<div class="card">'
@@ -7183,6 +7328,7 @@ function renderProfile(){
   +'<p style="margin:16px 0 0;text-align:center;font-size:11.5px;color:var(--text-3);'
     +'font-variant-numeric:tabular-nums;">Build '+BUILD
     +(('serviceWorker' in navigator) && navigator.serviceWorker.controller ? ' \u00b7 offline ready' : '')
+    +' \u00b7 '+(Object.keys(PHOTO_SETS).length ? Object.keys(PHOTO_SETS).length+' photo sets' : 'photos.js not loaded')
     +'</p>';
 }
 function updateProfileField(field,val){ STATE.profile[field]=val; saveState(); if(field==='units') render(); }
