@@ -11,13 +11,13 @@
  * Bump CACHE on every deploy. Old caches are deleted on activate, so an update
  * never leaves two versions fighting over the same origin.
  */
-const CACHE = 'nt-training-v47';
+const CACHE = 'nt-training-v59';
 /* The icons carry a version in their FILENAME. A cache can be told to refetch,
    but iOS keeps its own copy of a home-screen icon that no cache header
    reaches — and a file it has never seen before is the one thing it cannot
    serve from memory. Rename on every icon change. */
 const SHELL = ['./', './index.html', './manifest.json',
-               './icon-180-v2.png', './icon-192-v2.png', './icon-512-v2.png', './photos.js'];
+               './icon-180-v3.png', './icon-192-v3.png', './icon-512-v3.png', './icon-512-maskable-v3.png', './photos.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -50,17 +50,20 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       fetch(req)
         .then(res => {
+          // only the app itself is stored as the app; welcome.html keeps its own entry
+          const isApp = /\/(index\.html)?$/.test(url.pathname);
           const copy = res.clone();
-          caches.open(CACHE).then(c => c.put('./index.html', copy));
+          caches.open(CACHE).then(c => c.put(isApp ? './index.html' : req, copy));
           return res;
         })
-        .catch(() => caches.match('./index.html').then(r => r || caches.match('./')))
+        .catch(() => caches.match(req, {ignoreSearch:true}).then(r => r || caches.match('./index.html')).then(r => r || caches.match('./')))
     );
     return;
   }
 
+  // the cache is renamed every deploy, so a ?v= query never has to tell versions apart
   e.respondWith(
-    caches.match(req).then(hit => hit || fetch(req).then(res => {
+    caches.match(req, {ignoreSearch:true}).then(hit => hit || fetch(req).then(res => {
       if (res && res.status === 200) {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(req, copy));
