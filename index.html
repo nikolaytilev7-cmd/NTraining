@@ -301,6 +301,10 @@ h1,h2,h3,h4{font-family:var(--font-d);font-weight:700;margin:0;letter-spacing:0.
 p{margin:0;}
 button{font-family:var(--font-b);cursor:pointer;}
 input,select,textarea{font-family:var(--font-b);}
+/* No double-tap zoom: taps land as taps (pinch-zoom still works for anyone who needs it). */
+html{touch-action:manipulation;}
+/* iPhone zooms into any field under 16 px when it is focused, and does not zoom back out. */
+@supports (-webkit-touch-callout:none){ input,select,textarea{font-size:16px !important;} }
 a{color:inherit;text-decoration:none;}
 ::-webkit-scrollbar{width:8px;height:8px;}
 ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:8px;}
@@ -1633,7 +1637,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26a';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-26b';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
