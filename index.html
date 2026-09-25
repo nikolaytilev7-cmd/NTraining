@@ -175,6 +175,54 @@ html:not([data-theme]) .sum-tile .n{background:none;color:var(--text-1);}
 .lib-card .lv.intermediate{color:#F0B429;}.lib-card .lv.advanced{color:#FF7A7A;}.lib-card .lv.beginner{color:#5FE0A5;}
 .lib-card .noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-2);}
 .rest-overlay.has-bg{background:var(--bg);}
+/* home: latest PR row */
+.pr-row{display:flex;align-items:center;gap:14px;margin-top:12px;padding:12px 14px;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:var(--radius-m);cursor:pointer;}
+.pr-row.empty{cursor:default;}
+.pr-body{flex:1;min-width:0;}
+.pr-lbl{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;}
+.pr-name{font-weight:700;font-size:15.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pr-row.empty .pr-name{font-weight:600;font-size:13.5px;color:var(--text-2);white-space:normal;}
+.pr-val{text-align:right;flex-shrink:0;}
+.pr-big{font-family:var(--font-d);font-size:28px;font-weight:700;line-height:1;background:var(--grad-text,var(--grad));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.pr-big small{font-size:13px;margin-left:3px;font-weight:700;}
+.pr-sub{font-size:12.5px;color:var(--text-2);font-weight:600;margin-top:4px;}
+/* workout preview */
+.pv-top{margin-bottom:12px;gap:12px;}
+.pv-hero{position:relative;overflow:hidden;border-radius:var(--radius-l);background:var(--hero-bg);border:1px solid var(--border-soft);min-height:218px;display:flex;align-items:flex-end;}
+.pv-photo{position:absolute;top:0;right:0;bottom:0;width:62%;}
+.pv-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;}
+.pv-photo{-webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.55) 30%,#000 62%);mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.55) 30%,#000 62%);}
+.pv-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(var(--bg-rgb),.7),rgba(var(--bg-rgb),0) 50%);}
+.pv-hero-in{position:relative;padding:20px 18px 18px;width:100%;text-shadow:0 1px 10px rgba(var(--bg-rgb),.55);}
+.pv-eb{font-size:11.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--blue);}
+.pv-title{font-size:30px;line-height:1.05;margin:6px 0 10px;max-width:70%;}
+.pv-hero .chip-row{margin:0;}
+.pv-stats{display:flex;gap:22px;margin-top:16px;}
+.pv-stats b{display:block;font-family:var(--font-d);font-size:28px;font-weight:700;line-height:1;}
+.pv-stats span{display:block;font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px;margin-top:5px;}
+.pv-note{color:var(--text-2);font-size:13.5px;margin:14px 2px 0;line-height:1.5;}
+.pv-time{display:flex;gap:4px;height:8px;margin:18px 0 7px;}
+.pv-time i{border-radius:99px;background:var(--bg-3);}
+.pv-time i.m{background:var(--grad);}
+.pv-time i.f{background:var(--amber);}
+.pv-time-lbl{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;font-weight:700;color:var(--text-3);margin-bottom:18px;}
+.pv-time-lbl span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+.pv-time-lbl span::before{content:"";width:8px;height:8px;border-radius:99px;background:var(--bg-3);}
+.pv-time-lbl span.m{color:var(--text-2);}
+.pv-time-lbl span.m::before{background:var(--grad);}
+.pv-time-lbl span.f::before{background:var(--amber);}
+.pv-warm{background:var(--bg-1);border:1px solid var(--border-soft);border-radius:var(--radius-l);margin-bottom:24px;}
+.pv-warm summary{list-style:none;display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;}
+.pv-warm summary::-webkit-details-marker{display:none;}
+.pv-warm-b{flex:1;min-width:0;}
+.pv-warm .row-chev{transition:transform .2s;}
+.pv-warm[open] .row-chev{transform:rotate(90deg);}
+.pv-warm-list{padding:0 16px 10px;border-top:1px solid var(--border-soft);}
+.pv-ex .ex-icon{width:64px;height:64px;border-radius:14px;}
+.pv-main .card{padding:6px 16px;}
+.pv-main .ex-row:last-child{border-bottom:none;}
+.pv-dock{position:sticky;bottom:calc(72px + var(--safe-b));z-index:35;margin:6px -18px 0;padding:14px 18px 10px;background:linear-gradient(to top,var(--bg) 62%,rgba(var(--bg-rgb),0));}
+@media (min-width:900px){ .pv-dock{bottom:0;margin:6px -32px 0;padding:14px 32px 16px;} }
 .rest-bg{position:absolute;inset:0;z-index:-1;overflow:hidden;}
 .rest-bg img{width:100%;height:100%;object-fit:cover;opacity:.5;}
 .rest-bg.mirrored img{transform:scaleX(-1);}
@@ -796,7 +844,7 @@ a{color:inherit;text-decoration:none;}
 <body>
 <div id="bgLayer"></div><div id="safeTop"></div>
 <div id="app"></div>
-<script src="photos.js?v=2026-09-25i"></script>
+<script src="photos.js?v=2026-09-25k"></script>
 <script>
 'use strict';
 /* ============================= ICONS ============================= */
@@ -1540,7 +1588,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-25i';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-25k';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -1638,9 +1686,17 @@ function backupPayload(){
     sets:(STATE.history||[]).length, state:STATE
   }, null, 2);
 }
-function exportData(){
+async function exportData(){
   const name = 'nt-training-backup-'+todayISO()+'.json';
   const blob = new Blob([backupPayload()], {type:'application/json'});
+  markBackedUp();
+  try{
+    const file = new File([blob], name, {type:'application/json'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:'NT Training backup'});
+      toast('Backup saved \u00b7 '+(STATE.history||[]).length+' sets'); render(); return;
+    }
+  }catch(e){ if(e && e.name==='AbortError') return; }
   const url  = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = name; document.body.appendChild(a); a.click();
@@ -1651,6 +1707,7 @@ function exportData(){
    can be lifted as text and pasted anywhere. */
 function copyBackup(){
   const txt = backupPayload();
+  markBackedUp();
   const done = function(){ toast('Backup copied \u2014 paste it somewhere safe'); };
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(txt).then(done, function(){ fallbackCopy(txt, done); });
@@ -1667,7 +1724,7 @@ function pickBackupFile(){ const el=document.getElementById('restoreFile'); if(e
 function onBackupFile(input){
   const f = input.files && input.files[0]; if(!f) return;
   const r = new FileReader();
-  r.onload = function(){ applyBackup(String(r.result)); input.value=''; };
+  r.onload = function(){ PENDING_IMPORT = {text:String(r.result), sets:0}; confirmImport(); input.value=''; };
   r.onerror = function(){ toast('Could not read that file'); input.value=''; };
   r.readAsText(f);
 }
@@ -1705,6 +1762,89 @@ function applyBackup(text){
   STATE.history.forEach(function(h){ if(!h.noPR) updatePRs(h); });
   saveState(); render();
   toast(added ? ('Restored \u00b7 '+added+' new sets') : 'Already up to date \u2014 nothing new');
+}
+/* ----------------------------- MOVE TO ANOTHER DEVICE -----------------------------
+   The whole history packed into a link. Everything sits after the '#', and a
+   browser never sends that part to any server, so the data goes straight from
+   one screen to the other: open the link on the new phone or browser and it
+   merges in. Nothing is uploaded, nothing is stored anywhere else. */
+function b64url(bytes){ let s=''; for(let i=0;i<bytes.length;i+=0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i,i+0x8000)); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function unb64url(t){ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; const b=atob(t), out=new Uint8Array(b.length); for(let i=0;i<b.length;i++) out[i]=b.charCodeAt(i); return out; }
+async function packState(){
+  const json = JSON.stringify({app:BRAND.name, version:BACKUP_VERSION, exportedAt:new Date().toISOString(), state:STATE});
+  const raw = new TextEncoder().encode(json);
+  if(window.CompressionStream){
+    const buf = await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();
+    return 'z'+b64url(new Uint8Array(buf));
+  }
+  return 'j'+b64url(raw);
+}
+async function unpackState(code){
+  const bytes = unb64url(code.slice(1));
+  if(code[0]==='z'){
+    if(!window.DecompressionStream) throw new Error('old browser');
+    return await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+  }
+  return new TextDecoder().decode(bytes);
+}
+function markBackedUp(){ STATE.lastBackupAt = new Date().toISOString(); saveState(); }
+async function shareTransferLink(){
+  try{
+    const code = await packState();
+    const url = location.origin + location.pathname + '#import=' + code;
+    markBackedUp();
+    if(navigator.share){
+      try{ await navigator.share({title:'NT Training — my training data', text:'Open this link on the other phone or browser to bring your NT Training history over.', url:url}); return; }
+      catch(e){ if(e && e.name==='AbortError') return; }
+    }
+    const done = function(){ toast('Link copied — open it on the other device'); };
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function(){ fallbackCopy(url, done); });
+    else fallbackCopy(url, done);
+  }catch(e){ toast('Could not build the link — use Export instead'); }
+}
+let PENDING_IMPORT = null;
+async function checkImportLink(){
+  const h = location.hash || '';
+  if(h.indexOf('#import=') !== 0) return;
+  try{
+    const txt = await unpackState(h.slice(8));
+    const data = JSON.parse(txt), inc = data.state || data;
+    PENDING_IMPORT = {text: txt, sets: (inc.history||[]).length, name: inc.profile && inc.profile.name};
+  }catch(e){ toast('That transfer link is damaged — make a new one'); }
+  try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  render();
+}
+function importSheetMarkup(){
+  if(!PENDING_IMPORT) return '';
+  const P = PENDING_IMPORT;
+  return '<div class="fsheet-wrap"><div class="fsheet" role="dialog" aria-modal="true"><div class="grab"></div>'
+    + '<h3>Bring your training over?</h3>'
+    + '<p style="color:var(--text-2);font-size:14px;margin:0;">'+P.sets+' logged sets'+(P.name?' from '+esc(P.name):'')+'. They are added to what is already here; nothing on this device is deleted.</p>'
+    + '<button class="btn btn-primary btn-block" onclick="confirmImport()">Import</button>'
+    + '<button class="btn btn-ghost btn-block" onclick="PENDING_IMPORT=null;render()">Not now</button></div></div>';
+}
+function confirmImport(){
+  const P = PENDING_IMPORT; PENDING_IMPORT = null; if(!P) return;
+  let inc = null; try{ const d = JSON.parse(P.text); inc = d.state || d; }catch(e){}
+  applyBackup(P.text);
+  if(inc && inc.onboardingComplete && !STATE.onboardingComplete){
+    STATE.onboardingComplete = true;
+    if(inc.selectedProgramId && !STATE.selectedProgramId) STATE.selectedProgramId = inc.selectedProgramId;
+    saveState(); try{ applyTheme(); loadVoicePref(); }catch(e){}
+    ROUTE = {name:'home', params:{}}; render();
+  }
+}
+/* A week without a copy is a week that one Safari clean-up can take. */
+function backupDue(){
+  if(!(STATE.history||[]).length || STATE.history.length < 10) return false;
+  const last = STATE.lastBackupAt ? Date.parse(STATE.lastBackupAt) : 0;
+  return Date.now() - last > 7*24*3600*1000;
+}
+function backupNudge(){
+  if(!backupDue()) return '';
+  return '<div class="card card-tight" style="margin-top:14px;display:flex;align-items:center;gap:12px;">'
+    + '<div style="flex:1;min-width:0;"><div class="wr-title">Keep a copy of your training</div><div class="wr-meta">'+STATE.history.length+' sets live only in this browser.</div></div>'
+    + '<button class="btn btn-primary btn-sm" onclick="exportData()">Save</button></div>';
 }
 function progKey(id){ if(!STATE.programProgress[id]) STATE.programProgress[id] = {completed:{}}; return STATE.programProgress[id]; }
 
@@ -2268,7 +2408,7 @@ function render(){
   }
   let body = '';
   switch(ROUTE.name){
-    case 'onboarding': body = renderOnboarding(); app.innerHTML = shellless(body); attachOnboardingHandlers(); return;
+    case 'onboarding': body = renderOnboarding(); app.innerHTML = shellless(body) + importSheetMarkup(); attachOnboardingHandlers(); return;
     case 'recommend': body = renderRecommend(); app.innerHTML = shellless(body); return;
     case 'home': body = renderHome(); break;
     case 'programs': body = renderProgramsList(); break;
@@ -2289,7 +2429,7 @@ function render(){
     default: body = renderHome();
   }
   if(ROUTE.name!=='home') THEME_SHEET = false;
-  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name) + themeSheetMarkup();
+  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name) + themeSheetMarkup() + importSheetMarkup();
   if(ROUTE.name==='exercise_detail'){ initExerciseAnimation(ROUTE.params.id); }
 }
 
@@ -2433,7 +2573,9 @@ function onbThemeStep(){
   return '<div class="eyebrow">Welcome to NT Training</div><h1 style="font-size:32px;margin:8px 0 6px;">First, pick your look.</h1>'
   +'<p style="color:var(--text-2);margin-bottom:16px;">Tap one and the whole app changes with it. You can switch any time.</p>'
   +'<div class="tp-grid" style="margin-bottom:22px;">'+THEMES.map(function(t){ return themePreviewCard(t, "onbPickTheme('"+t[0]+"')"); }).join('')+'</div>'
-  +'<button class="btn btn-primary btn-block" onclick="onbThemeDone(true)">Continue</button>';
+  +'<button class="btn btn-primary btn-block" onclick="onbThemeDone(true)">Continue</button>'
+  +'<button class="btn btn-ghost btn-block" style="margin-top:10px;" onclick="pickBackupFile()">I already train with NT \u2014 restore a backup</button>'
+  +'<input type="file" id="restoreFile" accept="application/json,.json" style="display:none;" onchange="onBackupFile(this)">';
 }
 function onbStep0(){
   return '<div class="eyebrow">Welcome</div><h1 style="font-size:32px;margin:8px 0 6px;">Six questions. Then we train.</h1>'
@@ -2717,21 +2859,22 @@ function renderHome(){
   const dow = new Date().getDay();
   const revOff = dow===0 ? 0 : dow===1 ? -1 : null;
   const review = (revOff!==null && weekReview(revOff).sessions) ? weekReviewCard(revOff, true) : '';
-  const latestPR = latestPrText();
   return '<div class="brand-bar"><span class="brand-word">NT<span> TRAINING</span></span><span class="brand-tag">'+esc(BRAND.category)+'</span>'
     + '<button class="theme-btn" aria-label="Colour theme" title="Colour theme" onclick="openThemeSheet()"><i></i></button></div>'
   +'<div class="top-row" style="margin-bottom:6px;"><div><div class="eyebrow">'+greet.toUpperCase()+'</div><h1 style="font-size:30px;">'+esc(p.name||'Athlete')+'</h1></div></div>'
   +'<p style="color:var(--text-2);margin-bottom:20px;">Ready to train?</p>'
   +todayCard
   +weekRingCard()
+  +backupNudge()
   +(review ? '<div style="margin-top:16px;">'+review+'</div>' : '')
   +'<div class="section" style="margin-top:22px;">'
   +'<div class="section-title">Your Progress</div>'
-  +'<div class="stat-grid cols-3">'
+  +'<div class="stat-grid">'
   +'<div class="stat-tile"><div class="num">'+fmtVol(vol)+'</div><div class="lbl">Weekly Volume ('+esc(p.units||'kg')+')</div></div>'
   +'<div class="stat-tile"><div class="num">'+streak+'</div><div class="lbl">Week Streak</div></div>'
-  +'<div class="stat-tile"><div class="num" style="font-size:18px;">'+esc(latestPR)+'</div><div class="lbl">Latest PR</div></div>'
-  +'</div></div>'
+  +'</div>'
+  +latestPrRow()
+  +'</div>'
   +'<div class="section"><div class="section-title">Quick Actions</div>'
   +'<div class="card card-tight" style="display:flex;align-items:center;gap:12px;" onclick="navigate(\'generator\')">'
   +'<div class="ex-icon">'+ICON.bolt+'</div><div style="flex:1;"><div class="wr-title">Build My Workout</div><div class="wr-meta">Generate a one-off session</div></div>'+ico(ICON.chevron)
@@ -2754,6 +2897,22 @@ function computeStreak(){
     if(diffDays<=3) streak++; else break;
   }
   return streak;
+}
+/* The latest record gets a row of its own: the lift's photo, its name, and the
+   number big enough to read at a glance — it used to be squeezed into a third
+   of a tile and wrapped onto three lines. */
+function latestPrRow(){
+  const e = STATE.history.filter(h=>h.isPR).sort((a,b)=> b.id.localeCompare(a.id))[0];
+  if(!e) return '<div class="pr-row empty"><div class="ex-icon">'+ICON.bolt+'</div><div class="pr-body"><div class="pr-lbl">Latest PR</div>'
+    + '<div class="pr-name">None yet — your first record lands here</div></div></div>';
+  const ex = EX_BY_ID[e.exerciseId], u = STATE.profile.units||'kg';
+  const big = e.weight ? e.weight+'<small>'+esc(u)+'</small>' : e.result+'<small>'+(ex&&ex.timeBased?'sec':'reps')+'</small>';
+  const sub = e.weight ? '× '+e.result+(ex&&ex.timeBased?' sec':' reps') : '';
+  return '<div class="pr-row" onclick="navigate(\'progress\')">'
+    + '<div class="ex-icon">'+(ex?exIcon(ex):ICON.bolt)+'</div>'
+    + '<div class="pr-body"><div class="pr-lbl">Latest PR · '+esc(fmtDay(e.date))+'</div>'
+    + '<div class="pr-name">'+esc(ex?ex.name:'Exercise')+'</div></div>'
+    + '<div class="pr-val"><div class="pr-big">'+big+'</div>'+(sub?'<div class="pr-sub">'+sub+'</div>':'')+'</div></div>';
 }
 function latestPrText(){
   const prEntries = STATE.history.filter(h=>h.isPR).sort((a,b)=> b.id.localeCompare(a.id));
@@ -5288,7 +5447,7 @@ function renderWorkoutPreview(pr){
 
   const exRow = (id, meta)=>{
     const ex = EX_BY_ID[id]; if(!ex) return '';
-    return '<div class="ex-row" style="cursor:pointer;" onclick="peekExercise(\''+id+'\')">'
+    return '<div class="ex-row pv-ex" style="cursor:pointer;" onclick="peekExercise(\''+id+'\')">'
       +'<div class="ex-icon">'+exIcon(ex)+'</div>'
       +'<div class="ex-row-body"><div class="ex-row-title">'+esc(ex.name)+'</div>'
       +'<div class="ex-row-meta">'+esc(meta)+'</div></div>'
@@ -5341,30 +5500,47 @@ function renderWorkoutPreview(pr){
           : exRow(id,'minute '+(i+1))).join('')
       : (w.finisher.round||[]).map(r=>exRow(r.ex, roundTarget(r.ex, r.target))).join('')) : '';
 
-  return '<div class="top-row"><div class="back-btn" onclick="navigate(\'program_detail\',{id:\''+pr.progId+'\'})">'+ICON.back+'</div>'
-    +'<h2 style="font-size:20px;">'+esc(w.name)+'</h2></div>'
-  +'<div class="chip-row" style="margin-bottom:14px;">'
-    +'<span class="badge badge-blue">'+fmtLabel(w.format)+'</span>'
-    +'<span class="badge badge-neutral">Week '+pr.week+'</span>'
-    +'<span class="badge '+(isSpecialWeek(w.phaseName)?'badge-special':'badge-neutral')+'">'+esc(w.phaseName)+'</span>'
-    +(alreadyDone?'<span class="badge badge-beginner">Completed</span>':'')
-  +'</div>'
-  /* A week that is deliberately lighter has to say so on its own screen, or it
-     reads as the app having lost the thread. */
+  /* What the session actually contains, counted the same way for every format
+     (the old tile read "0 movements" for a complex). */
+  const mainIds = [];
+  const addId = id=>{ if(id && id!=='rest' && EX_BY_ID[id] && mainIds.indexOf(id)<0) mainIds.push(id); };
+  (w.blocks||[]).forEach(x=>addId(x.ex)); (w.pairs||[]).forEach(p=>p.forEach(addId));
+  (w.pattern||[]).forEach(addId); (w.round||[]).forEach(x=>addId(x.ex)); (w.chain||[]).forEach(x=>addId(x.ex));
+  const heroId = mainIds.find(id=>PHOTO_SETS[id]);
+  const hp = heroId && photosWanted() ? PHOTO_SETS[heroId] : null;
+  const third = w.format==='traditional' ? [(w.blocks||[]).reduce((n,x)=>n+(+x.sets||0),0),'Sets']
+              : (w.rounds ? [w.rounds,'Rounds'] : (w.capMin ? [w.capMin,'Min cap'] : null));
+  const warmN = (w.warmup||[]).length;
+  const segs = [[w.warmupMin,'Warm-up','w'],[w.mainMin,'Main','m']].concat(w.finisher?[[w.finisher.totalMinutes,'Finisher','f']]:[]).filter(x=>+x[0]>0);
+  const warmPh = (w.warmup||[]).map(x=>parseWarmItem(x).phase).filter((v,i,a)=>v&&a.indexOf(v)===i).map(v=>String(v).toLowerCase());
+  return '<div class="top-row pv-top"><div class="back-btn" onclick="navigate(\'program_detail\',{id:\''+pr.progId+'\'})">'+ICON.back+'</div>'
+    +'<div class="eyebrow">'+esc(prog.name)+'</div></div>'
+  +'<div class="pv-hero'+(hp?' has-photo':'')+'">'
+    +(hp?'<div class="pv-photo"><img alt="" src="'+hp.src[Math.min(hp.key||0,hp.src.length-1)]+'"></div>':'')
+    +'<div class="pv-hero-in">'
+      +'<div class="pv-eb">Week '+pr.week+' · '+esc(w.phaseName)+'</div>'
+      +'<h1 class="pv-title">'+esc(w.name)+'</h1>'
+      +'<div class="chip-row"><span class="badge badge-blue">'+fmtLabel(w.format)+'</span>'
+        +(alreadyDone?'<span class="badge badge-beginner">Completed</span>':'')+'</div>'
+      +'<div class="pv-stats">'
+        +'<div><b>'+w.totalMin+'</b><span>Minutes</span></div>'
+        +'<div><b>'+mainIds.length+'</b><span>Movements</span></div>'
+        +(third?'<div><b>'+third[0]+'</b><span>'+third[1]+'</span></div>':'')
+      +'</div>'
+    +'</div></div>'
   + specialWeekBanner(w)
-  +'<div class="stat-grid cols-3" style="margin-bottom:8px;">'
-    +'<div class="stat-tile"><div class="num">'+w.totalMin+'</div><div class="lbl">Minutes</div></div>'
-    +'<div class="stat-tile"><div class="num">'+mods.length+'</div><div class="lbl">Modules</div></div>'
-    +'<div class="stat-tile"><div class="num">'+(w.blocks?w.blocks.length:(w.pattern?w.pattern.filter(x=>x!=='rest').length:(w.round?w.round.length:(w.pairs?w.pairs.length*2:0))))+'</div><div class="lbl">Movements</div></div>'
-  +'</div>'
-  +(isSpecialWeek(w.phaseName)?''
-     :'<p style="color:var(--text-3);font-size:13px;margin:10px 0 18px;">'+esc(w.phaseNote||'')+'</p>')
-  +(warmList?'<div class="section"><div class="section-head"><div class="section-title">Warm-up \u00b7 '+w.warmupMin+' min</div></div><div class="card">'+warmList+'</div></div>':'')
-  +'<div class="section"><div class="section-head"><div class="section-title">Main \u00b7 '+w.mainMin+' min</div></div><div class="card">'+mainList+'</div></div>'
-  +(finList?'<div class="section"><div class="section-head"><div class="section-title" style="color:var(--amber);">Finisher \u00b7 '+w.finisher.totalMinutes+' min</div></div><div class="card">'
+  +(isSpecialWeek(w.phaseName)||!w.phaseNote?'':'<p class="pv-note">'+esc(w.phaseNote)+'</p>')
+  /* where the minutes go, drawn to scale */
+  +'<div class="pv-time">'+segs.map(x=>'<i class="'+x[2]+'" style="flex:'+x[0]+'"></i>').join('')+'</div>'
+  +'<div class="pv-time-lbl">'+segs.map(x=>'<span class="'+x[2]+'">'+x[1]+' · '+x[0]+' min</span>').join('')+'</div>'
+  +(warmList?'<details class="pv-warm"><summary><div class="ex-icon">'+ICON.flame+'</div><div class="pv-warm-b"><div class="ex-row-title">Warm-up · '+w.warmupMin+' min</div>'
+      +'<div class="ex-row-meta">'+warmN+' drills'+(warmPh.length?' · '+esc(warmPh.join(', ')):'')+'</div></div><span class="row-chev">'+ICON.chevron+'</span></summary>'
+      +'<div class="pv-warm-list">'+warmList+'</div></details>':'')
+  +'<div class="section pv-main"><div class="section-head"><div class="section-title">Main · '+w.mainMin+' min</div></div><div class="card">'+mainList+'</div></div>'
+  +(finList?'<div class="section pv-main"><div class="section-head"><div class="section-title" style="color:var(--amber);">Finisher · '+w.finisher.totalMinutes+' min</div></div><div class="card">'
       +(w.finisher.note?'<p style="color:var(--text-2);font-size:13.5px;margin-bottom:10px;line-height:1.55;">'+esc(w.finisher.note)+'</p>':'')
       +finList+'</div></div>':'')
-  +'<button class="btn btn-primary btn-block" style="margin-bottom:30px;" onclick="startWorkout(\''+pr.progId+'\','+pr.week+','+pr.idx+')">'+ICON.play+(alreadyDone?' Run It Again':' Start Workout')+'</button>'
+  +'<div class="pv-dock"><button class="btn btn-primary btn-block" onclick="startWorkout(\''+pr.progId+'\','+pr.week+','+pr.idx+')">'+ICON.play+(alreadyDone?' Run It Again':' Start Workout')+' · '+w.totalMin+' min</button></div>'
   + renderPeekOverlay();
 }
 
@@ -7808,8 +7984,10 @@ function renderProfile(){
   + '<p style="margin:0 0 14px;font-size:12.5px;color:var(--text-3);line-height:1.5;">'
     + 'All of it lives in this browser only. Safari clears storage for sites it has not seen in a while, '
     + 'so keep a copy somewhere you control.</p>'
-  + '<button class="btn btn-primary btn-block" onclick="exportData()">Export backup file</button>'
-  + '<button class="btn btn-secondary btn-block" style="margin-top:9px;" onclick="copyBackup()">Copy backup as text</button>'
+  + '<button class="btn btn-primary btn-block" onclick="shareTransferLink()">Move to another phone or browser</button>'
+  + '<p style="margin:8px 0 12px;font-size:12px;color:var(--text-3);line-height:1.5;">Makes a link that carries your history. Open it on the other device and it is added there. It is not uploaded anywhere.</p>'
+  + '<button class="btn btn-secondary btn-block" onclick="exportData()">Save a backup file (Files, iCloud, Drive)</button>'
+  + '<button class="btn btn-ghost btn-block" style="margin-top:9px;" onclick="copyBackup()">Copy backup as text</button>'
   + '<button class="btn btn-ghost btn-block" style="margin-top:9px;" onclick="pickBackupFile()">Restore from a backup</button>'
   + '<input type="file" id="restoreFile" accept="application/json,.json" style="display:none;" onchange="onBackupFile(this)">'
   + '<p style="margin:12px 0 0;font-size:12px;color:var(--text-3);line-height:1.5;">'
@@ -7866,6 +8044,8 @@ function boot(){
   deriveSessionLengths();
   loadState();
   render();
+  checkImportLink();
+  window.addEventListener('hashchange', checkImportLink);
 }
 boot();
 </script>
