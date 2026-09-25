@@ -77,9 +77,31 @@ html[data-theme="energy"]{
   --grad-text:linear-gradient(120deg,#C6F75A,#2EE6A6);
   --hero-bg:linear-gradient(135deg,rgba(184,243,61,.22),rgba(46,230,166,.16)),var(--bg-1);
 }
-html[data-theme="berry"] .fh-num,html[data-theme="energy"] .fh-num{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;}
-html[data-theme="berry"] .fh-eb,html[data-theme="energy"] .fh-eb{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;}
-.tp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+html[data-theme="sunset"]{
+  --bg:#170D1C;--bg-1:#22142A;--bg-2:#2C1B35;--bg-3:#362241;--border:#452C50;--border-soft:#2F1D39;
+  --text-2:#C5AFBF;--text-3:#8A7285;
+  --blue:#FF7A3D;--blue-2:#E85C2A;--blue-dim:#5A2A1E;--blue-glow:rgba(255,122,61,0.16);
+  --accent-rgb:255,122,61;--bg-rgb:23,13,28;--on-accent:#FFFFFF;
+  --green:#FFC247;--amber:#FFC247;
+  --grad:linear-gradient(120deg,#FF7A3D,#FF3D8B);
+  --grad-x:linear-gradient(90deg,#FF7A3D,#FF3D8B);
+  --grad-text:linear-gradient(120deg,#FF9A5C,#FF5C9E);
+  --hero-bg:linear-gradient(135deg,rgba(255,122,61,.34),rgba(255,61,139,.28)),var(--bg-1);
+}
+html[data-theme="ocean"]{
+  --bg:#051519;--bg-1:#0B2127;--bg-2:#112C34;--bg-3:#173742;--border:#1F4450;--border-soft:#142F38;
+  --text-2:#9DBCC2;--text-3:#62818A;
+  --blue:#1ED6C4;--blue-2:#17AFA1;--blue-dim:#0E4A48;--blue-glow:rgba(30,214,196,0.15);
+  --accent-rgb:30,214,196;--bg-rgb:5,21,25;--on-accent:#04161A;
+  --green:#B6F36B;
+  --grad:linear-gradient(120deg,#1ED6C4,#3D8BFF);
+  --grad-x:linear-gradient(90deg,#1ED6C4,#3D8BFF);
+  --grad-text:linear-gradient(120deg,#3DE3D2,#6AA6FF);
+  --hero-bg:linear-gradient(135deg,rgba(30,214,196,.26),rgba(61,139,255,.24)),var(--bg-1);
+}
+html[data-theme] .fh-num{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;}
+html[data-theme] .fh-eb{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.tp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:9px;}
 .tp-card{position:relative;border:2px solid rgba(255,255,255,.08);border-radius:16px;padding:8px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;text-align:center;transition:transform .15s,border-color .15s;}
 .tp-card.on{border-color:#fff;transform:translateY(-2px);}
 .tp-card:active{transform:scale(.97);}
@@ -92,10 +114,74 @@ html[data-theme="berry"] .fh-eb,html[data-theme="energy"] .fh-eb{background:var(
 .tp-tick{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:#fff;color:#111;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;}
 .theme-btn{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);padding:4px;background:var(--bg-2);cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .theme-btn i{display:block;width:100%;height:100%;border-radius:50%;background:conic-gradient(#4C7EFF 0 33%,#A278FF 0 50%,#EC4899 0 66%,#B8F33D 0 83%,#2EE6A6 0);}
-.theme-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px 0 12px;}
+.theme-seg{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:6px;padding:4px 0 12px;}
 .theme-seg button{background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);border-radius:10px;padding:9px 4px;font-weight:700;font-size:13px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;}
 .theme-seg button i{width:34px;height:10px;border-radius:5px;display:block;}
 .theme-seg button.on{border-color:var(--blue);color:var(--text-1);box-shadow:0 0 0 1px var(--blue) inset;}
+.heat-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--bg-2);border-radius:11px;padding:3px;margin-bottom:12px;}
+.heat-seg button{background:none;border:0;color:var(--text-2);font-weight:700;font-size:12.5px;padding:8px 4px;border-radius:9px;cursor:pointer;}
+.heat-seg button.on{background:var(--bg-1);color:var(--text-1);box-shadow:0 1px 0 rgba(255,255,255,.04);}
+.heat-bodies{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.heat-bodies .v{text-align:center;font-size:10.5px;font-weight:800;letter-spacing:1px;color:var(--text-3);margin-bottom:4px;}
+.heat-scale{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:var(--text-3);margin-top:10px;}
+.heat-scale i{display:block;width:120px;height:8px;border-radius:4px;}
+.heat-list{display:flex;flex-direction:column;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-soft);}
+.heat-row{display:grid;grid-template-columns:96px 1fr 58px;gap:10px;align-items:center;font-size:13px;color:var(--text-1);}
+.heat-row .t{height:8px;border-radius:4px;background:var(--bg-3);overflow:hidden;}
+.heat-row .t i{display:block;height:100%;border-radius:4px;}
+.heat-row .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--text-2);font-size:12px;}
+.heat-note{display:flex;gap:9px;align-items:flex-start;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.45;margin-top:14px;color:var(--text-1);}
+.heat-note.warn{background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.32);}
+.heat-note.ok{background:var(--blue-glow);border:1px solid rgba(var(--accent-rgb),.3);}
+.wk-ring{display:flex;align-items:center;gap:16px;}
+.wk-ring svg{flex-shrink:0;}
+.wk-ring .t b{display:block;font-size:18px;color:var(--text-1);}
+.wk-ring .t span{color:var(--text-2);font-size:13px;line-height:1.4;}
+.wk-days{display:flex;gap:6px;margin-top:14px;}
+.wk-days div{flex:1;text-align:center;font-size:11px;font-weight:800;color:var(--text-3);}
+.wk-days i{display:block;height:30px;border-radius:9px;background:var(--bg-3);margin-bottom:4px;}
+.wk-days .d i{background:var(--grad);}
+.wk-days .today i{box-shadow:0 0 0 2px var(--text-1) inset;}
+.wk-days .today.d i{box-shadow:0 0 0 2px rgba(255,255,255,.85) inset;}
+.sum-hero{border-radius:var(--radius-l);padding:26px 18px 22px;text-align:center;background:var(--grad);color:var(--on-accent);}
+.sum-hero .eb{font-size:12px;font-weight:800;letter-spacing:1.6px;opacity:.85;}
+.sum-hero h2{font-size:30px;margin:6px 0 2px;color:inherit !important;}
+.sum-hero p{margin:6px 0 0;font-size:13.5px;opacity:.9;color:inherit !important;}
+.sum-hero.early{background:linear-gradient(120deg,#8A6414,#B5831B);color:#fff;}
+.sum-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.sum-tile{background:var(--bg-1);border:1px solid var(--border-soft);border-radius:var(--radius-m);padding:12px 8px;text-align:center;}
+.sum-tile .n{font-family:var(--font-d);font-size:30px;font-weight:800;line-height:1;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;}
+html:not([data-theme]) .sum-tile .n{background:none;color:var(--text-1);}
+.sum-tile .l{font-size:11.5px;color:var(--text-3);font-weight:700;margin-top:5px;}
+.sum-block{background:var(--bg-1);border:1px solid var(--border-soft);border-radius:var(--radius-l);padding:16px;margin-top:12px;}
+.sum-pr{display:flex;align-items:center;gap:12px;padding:8px;border-radius:var(--radius-m);background:var(--bg-2);}
+.sum-pr + .sum-pr{margin-top:8px;}
+.sum-pr img{width:54px;height:54px;border-radius:11px;object-fit:cover;flex-shrink:0;}
+.sum-pr b{display:block;font-size:14.5px;color:var(--text-1);}
+.sum-pr small{color:var(--text-2);font-size:12px;}
+.sum-pr .tro{margin-left:auto;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(240,180,41,.16);flex-shrink:0;}
+.reveal{opacity:0;transform:translateY(10px);animation:revealIn .45s ease forwards;}
+@keyframes revealIn{to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion: reduce){.reveal{animation:none;opacity:1;transform:none;}}
+.lib-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media (min-width:600px){.lib-grid{grid-template-columns:repeat(3,1fr);}}
+.lib-card{position:relative;border-radius:18px;overflow:hidden;background:#000;aspect-ratio:3/4;cursor:pointer;border:1px solid var(--border-soft);}
+.lib-card img{width:100%;height:100%;object-fit:cover;display:block;}
+.lib-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 45%,rgba(0,0,0,.86));pointer-events:none;}
+.lib-card .t{position:absolute;left:10px;right:10px;bottom:9px;z-index:2;}
+.lib-card b{display:block;font-size:14px;color:#fff;line-height:1.2;}
+.lib-card small{font-size:11px;color:rgba(255,255,255,.75);font-weight:700;}
+.lib-card .lv{position:absolute;top:8px;left:8px;z-index:2;font-size:9.5px;font-weight:800;letter-spacing:.5px;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;text-transform:uppercase;}
+.lib-card .lv.intermediate{color:#F0B429;}.lib-card .lv.advanced{color:#FF7A7A;}.lib-card .lv.beginner{color:#5FE0A5;}
+.lib-card .noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-2);}
+.rest-overlay.has-bg{background:var(--bg);}
+.rest-bg{position:absolute;inset:0;z-index:-1;overflow:hidden;}
+.rest-bg img{width:100%;height:100%;object-fit:cover;opacity:.5;}
+.rest-bg.mirrored img{transform:scaleX(-1);}
+.rest-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(var(--bg-rgb),.72) 0%,rgba(var(--bg-rgb),.25) 38%,rgba(var(--bg-rgb),.9) 70%,var(--bg) 100%);}
+.rest-overlay.has-bg{isolation:isolate;}
+.rest-overlay.has-bg .next-up{background:rgba(var(--bg-rgb),.55);backdrop-filter:blur(8px);}
+#safeTop{position:fixed;left:0;right:0;top:0;height:var(--safe-t);background:var(--bg);z-index:95;pointer-events:none;}
 #bgLayer{position:fixed;inset:0;z-index:0;background:var(--bg);pointer-events:none;}
 #app{position:relative;z-index:1;color:var(--text-1);}
 /* Headings inherited their colour from body. A viewer that repaints body's
@@ -708,9 +794,9 @@ a{color:inherit;text-decoration:none;}
 <link rel="apple-touch-icon" href="icon-180-v2.png">
 <link rel="icon" href="data:image/png;base64,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"></head>
 <body>
-<div id="bgLayer"></div>
+<div id="bgLayer"></div><div id="safeTop"></div>
 <div id="app"></div>
-<script src="photos.js?v=2026-09-25e"></script>
+<script src="photos.js?v=2026-09-25i"></script>
 <script>
 'use strict';
 /* ============================= ICONS ============================= */
@@ -1454,7 +1540,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-25e';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-25i';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -1484,6 +1570,7 @@ function loadState(){
   migrateRussianSwing();
   registerCustomPrograms();
   loadVoicePref();
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
   try{ applyTheme(); }catch(e){}
 }
 /* Older builds logged a bell against bodyweight movements. Those weights are
@@ -2310,7 +2397,8 @@ function renderOnboarding(){
         '<span class="'+(i<ONB_STEP?'on':'')+'"></span>').join('')+'</div>'
     : '';
   let content='';
-  if(ONB_STEP===0) content = onbStep0();
+  if(ONB_STEP===0 && !ONB_DATA.themePicked) content = onbThemeStep();
+  else if(ONB_STEP===0) content = onbStep0();
   else if(ONB_STEP===1) content = onbStep1();
   else if(ONB_STEP===2) content = onbStep2();
   else if(ONB_STEP===3) content = onbStep3();
@@ -2339,15 +2427,20 @@ function tokenGrid(items){
     return '<div class="tok'+(it[2]?' sel':'')+'" onclick="'+it[1]+'">'+esc(it[0])+'</div>';
   }).join('')+'</div>';
 }
-function onbPickTheme(t){ const el = document.getElementById('onbName'); if(el) ONB_DATA.name = el.value; setTheme(t); }
-function onbStep0(){
+function onbPickTheme(t){ setTheme(t); }
+function onbThemeDone(v){ ONB_DATA.themePicked = v; render(); window.scrollTo(0,0); }
+function onbThemeStep(){
   return '<div class="eyebrow">Welcome to NT Training</div><h1 style="font-size:32px;margin:8px 0 6px;">First, pick your look.</h1>'
-  +'<p style="color:var(--text-2);margin-bottom:14px;">Tap one and the whole app changes with it. You can switch any time.</p>'
-  +'<div class="tp-grid" style="margin-bottom:26px;">'+THEMES.map(function(t){ return themePreviewCard(t, "onbPickTheme('"+t[0]+"')"); }).join('')+'</div>'
-  +'<h2 style="font-size:22px;margin:0 0 6px;">Six questions. Then we train.</h2>'
-  +'<p style="color:var(--text-2);margin-bottom:26px;">Enough to coach you properly \u2014 which weight, how many reps, when to go up. Not a list of exercises with a stopwatch.</p>'
+  +'<p style="color:var(--text-2);margin-bottom:16px;">Tap one and the whole app changes with it. You can switch any time.</p>'
+  +'<div class="tp-grid" style="margin-bottom:22px;">'+THEMES.map(function(t){ return themePreviewCard(t, "onbPickTheme('"+t[0]+"')"); }).join('')+'</div>'
+  +'<button class="btn btn-primary btn-block" onclick="onbThemeDone(true)">Continue</button>';
+}
+function onbStep0(){
+  return '<div class="eyebrow">Welcome</div><h1 style="font-size:32px;margin:8px 0 6px;">Six questions. Then we train.</h1>'
+  +'<p style="color:var(--text-2);margin-bottom:26px;">Enough to coach you properly — which weight, how many reps, when to go up. Not a list of exercises with a stopwatch.</p>'
   +'<div class="field"><label>What should we call you?</label><input type="text" id="onbName" placeholder="Your name" value="'+esc(ONB_DATA.name)+'"></div>'
-  +'<button class="btn btn-primary btn-block" onclick="onbNext0()">Get Started</button>';
+  +'<button class="btn btn-primary btn-block" onclick="onbNext0()">Get Started</button>'
+  +'<button class="btn btn-ghost btn-block" style="margin-top:10px;" onclick="onbThemeDone(false)">Back</button>';
 }
 function onbNext0(){ ONB_DATA.name = document.getElementById('onbName').value.trim(); ONB_STEP=1; render(); }
 function onbStep1(){
@@ -2630,6 +2723,7 @@ function renderHome(){
   +'<div class="top-row" style="margin-bottom:6px;"><div><div class="eyebrow">'+greet.toUpperCase()+'</div><h1 style="font-size:30px;">'+esc(p.name||'Athlete')+'</h1></div></div>'
   +'<p style="color:var(--text-2);margin-bottom:20px;">Ready to train?</p>'
   +todayCard
+  +weekRingCard()
   +(review ? '<div style="margin-top:16px;">'+review+'</div>' : '')
   +'<div class="section" style="margin-top:22px;">'
   +'<div class="section-title">Your Progress</div>'
@@ -2996,12 +3090,21 @@ function renderExercisesList(){
   +'<div class="chip-row" style="margin-bottom:16px;">'
   +['all','beginner','intermediate','advanced'].map(v=>'<div class="chip '+(EX_FILTER.difficulty===v?'selected':'')+'" onclick="EX_FILTER.difficulty=\''+v+'\';render()">'+(v==='all'?'All Levels':v.charAt(0).toUpperCase()+v.slice(1))+'</div>').join('')
   +'</div>'
-  +'<div class="card">'+(filtered.length?filtered.map(e=>exRowHtml(e)).join(''):'<div class="empty-state">No exercises match your filters.</div>')+'</div>';
+  +(filtered.length ? '<div class="lib-grid">'+filtered.map(e=>libCardHtml(e)).join('')+'</div>' : '<div class="card"><div class="empty-state">No exercises match your filters.</div>')+'</div>';
 }
 function filterExercises(val){
   EX_FILTER.q = val; render();
   const el = document.getElementById('exSearchInput');
   if(el){ el.focus(); const len=el.value.length; el.setSelectionRange(len,len); }
+}
+function libCardHtml(e){
+  const set = PHOTO_SETS[e.id];
+  const img = set ? set.src[Math.min(set.key||0, set.src.length-1)] : null;
+  const mus = (e.primary||[]).slice(0,2).map(function(m){ return MUSCLE_LABELS[m]||m; }).join(' · ');
+  return '<div class="lib-card" role="button" tabindex="0" onclick="navigate(\'exercise_detail\',{id:\''+e.id+'\',lib:1})">'
+    + (img ? '<img alt="" loading="lazy" src="'+img+'">' : '<div class="noimg">'+exIcon(e)+'</div>')
+    + '<span class="lv '+e.difficulty+'">'+esc(e.difficulty)+'</span>'
+    + '<div class="t"><b>'+esc(e.name)+'</b><small>'+esc(mus)+'</small></div></div>';
 }
 function exRowHtml(e){
   return '<div class="ex-row" style="cursor:pointer;" onclick="navigate(\'exercise_detail\',{id:\''+e.id+'\',lib:1})">'
@@ -4870,7 +4973,9 @@ const PHOTO_PACE = 1.8;
 function photosWanted(){ return true; }
 const THEMES = [['night','Night','linear-gradient(90deg,#3563DB,#4C7EFF)','#0A0E13','#121822','#fff','Calm and focused'],
                 ['berry','Berry','linear-gradient(90deg,#9B6BFF,#EC4899)','#120C22','#1C1433','#fff','Bold and vivid'],
-                ['energy','Energy','linear-gradient(90deg,#B8F33D,#2EE6A6)','#0B0F09','#141A10','#0B0F09','Loud and sporty']];
+                ['energy','Energy','linear-gradient(90deg,#B8F33D,#2EE6A6)','#0B0F09','#141A10','#0B0F09','Loud and sporty'],
+                ['sunset','Sunset','linear-gradient(90deg,#FF7A3D,#FF3D8B)','#170D1C','#22142A','#fff','Warm and fiery'],
+                ['ocean','Ocean','linear-gradient(90deg,#1ED6C4,#3D8BFF)','#051519','#0B2127','#04161A','Cool and fresh']];
 /* A small live preview of a theme: the look, before you commit to it. */
 function themePreviewCard(t, onclick){
   const on = themeName()===t[0];
@@ -4900,6 +5005,32 @@ function applyTheme(){
   const m = document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute('content', row[3]);
 }
 function setTheme(t){ if(!STATE.profile) return; STATE.profile.theme = t; saveState(); applyTheme(); render(); }
+const THEME_HEX = {night:['#3563DB','#8FB0FF'], berry:['#9B6BFF','#EC4899'], energy:['#8FD12A','#2EE6A6'], sunset:['#FF7A3D','#FF3D8B'], ocean:['#1ED6C4','#3D8BFF']};
+function hexRGB(h){ return [1,3,5].map(function(i){ return parseInt(h.slice(i,i+2),16); }); }
+function mixHex(a,b,t){ const A=hexRGB(a), B=hexRGB(b); return '#'+A.map(function(v,i){ return Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0'); }).join(''); }
+/* 0 = untouched, 1 = the most-worked muscle: dim accent, accent, then the theme's second colour. */
+function heatColor(t){
+  if(!(t>0)) return null;
+  const h = THEME_HEX[themeName()] || THEME_HEX.night, base = '#34405A';
+  return t < .5 ? mixHex(base, h[0], .35 + t*1.3) : mixHex(h[0], h[1], (t-.5)*2);
+}
+function heatScaleCss(){ const h = THEME_HEX[themeName()] || THEME_HEX.night; return 'linear-gradient(90deg,'+mixHex('#34405A',h[0],.35)+','+h[0]+','+h[1]+')'; }
+/* Hard sets per muscle: a primary muscle counts the whole set, a helper half. */
+function muscleSets(entries){
+  const out = {};
+  entries.forEach(function(h){
+    const ex = EX_BY_ID[h.exerciseId]; if(!ex) return;
+    (ex.primary||[]).forEach(function(m){ out[m] = (out[m]||0) + 1; });
+    (ex.secondary||[]).forEach(function(m){ out[m] = (out[m]||0) + 0.5; });
+  });
+  return out;
+}
+function heatMapMarkup(sets){
+  const max = Math.max.apply(null, [0].concat(Object.keys(sets).map(function(k){ return sets[k]; })));
+  const hl = {};
+  Object.keys(sets).forEach(function(m){ const c = heatColor(max ? sets[m]/max : 0); if(c) (MUSCLE_TO_REGION[m]||[]).forEach(function(r){ hl[r] = c; }); });
+  return '<div class="heat-bodies"><div><div class="v">FRONT</div>'+bodySvg('front', hl)+'</div><div><div class="v">BACK</div>'+bodySvg('back', hl)+'</div></div>';
+}
 function accentRGB(){ try{ return getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '76,126,255'; }catch(e){ return '76,126,255'; } }
 /* How the frames move: 'anim' follows the rep, 'slow' holds each frame 2.5 s,
    'manual' holds the key position and changes only when a frame is tapped. */
@@ -5348,7 +5479,7 @@ function loadVoicePref(){ VOICE.on = !!(STATE.profile && STATE.profile.voice); }
 function toggleVoice(){
   VOICE.on = !VOICE.on;
   STATE.profile.voice = VOICE.on; STATE.profile.voiceHintSeen = true; saveState();
-  if(VOICE.on){ unlockAudio(); beep(880,90); say('Voice coach on.', true); } else stopVoice();
+  if(VOICE.on){ AUDIO.unlocked = false; unlockAudio(); beep(880,90); say('Voice coach on.', true); } else stopVoice();
   render();
 }
 function dismissVoiceHint(){ STATE.profile.voiceHintSeen = true; saveState(); render(); }
@@ -5358,10 +5489,16 @@ function say(text, force){
   if(!force && text===VOICE.last) return;          // never repeat the same line twice
   VOICE.last = text;
   try{
+    const syn = window.speechSynthesis;
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 1.02; u.pitch = 1.0; u.volume = 1.0; u.lang = 'en-US';
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    const v = pickVoice(); if(v) u.voice = v;
+    VOICE.u = u;                                   // Safari drops utterances that are garbage-collected mid-sentence
+    if(syn.paused) syn.resume();
+    /* WebKit silently ignores speak() issued in the same tick as cancel(),
+       so only cancel when something is actually talking, then speak a beat later. */
+    if(syn.speaking || syn.pending){ syn.cancel(); setTimeout(function(){ try{ syn.speak(u); }catch(e){} }, 80); }
+    else syn.speak(u);
   }catch(e){ /* a browser that refuses to speak should never break the workout */ }
 }
 function unitWord(){ return (STATE.profile.units||'kg')==='lb' ? 'pounds' : 'kilos'; }
@@ -5395,13 +5532,41 @@ function countBeep(n){ if(n>0) beep(660,110); else beep(990,420,0.34); }
 /* iOS keeps both audio and speech locked until the page has been touched once.
    The first tap anywhere opens them, so a cue fired later from a timer is
    allowed to play. */
+let VOICE_CACHE = null;
+function pickVoice(){
+  try{
+    if(VOICE_CACHE) return VOICE_CACHE;
+    const vs = window.speechSynthesis.getVoices() || [];
+    VOICE_CACHE = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang) && v.localService; })[0]
+               || vs.filter(function(v){ return /^en/i.test(v.lang); })[0] || null;
+    return VOICE_CACHE;
+  }catch(e){ return null; }
+}
+try{ if('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = function(){ VOICE_CACHE = null; }; }catch(e){}
+/* iOS plays Web Audio through the ringer channel, so the silent switch mutes
+   every beep. Declaring the session as playback puts it on the media channel. */
+try{ if(navigator.audioSession) navigator.audioSession.type = 'playback'; }catch(e){}
+function testCoach(){
+  const wasOn = VOICE.on;
+  if(!wasOn){ VOICE.on = true; }
+  AUDIO.unlocked = false; unlockAudio();
+  beep(880,120); setTimeout(function(){ beep(990,300,0.34); }, 250);
+  say('Voice coach is working. You will hear me call every set.', true);
+  if(!wasOn) setTimeout(function(){ VOICE.on = false; }, 6000);
+  toast(voiceSupported() ? 'Playing a test \u2014 turn the volume up' : 'This browser has no voice; beeps only');
+}
 function unlockAudio(){
   if(AUDIO.unlocked) return;
   const c = audioCtx();
   if(c){ try{ const b=c.createBuffer(1,1,22050), s=c.createBufferSource(); s.buffer=b; s.connect(c.destination); s.start(0); }catch(e){} }
-  if(voiceSupported() && VOICE.on){ try{ const u=new SpeechSynthesisUtterance(' '); u.volume=0; window.speechSynthesis.speak(u); }catch(e){} }
-  AUDIO.unlocked = true;
+  if(voiceSupported() && VOICE.on){ try{ const u=new SpeechSynthesisUtterance('ready'); u.volume=0.01; u.rate=2; VOICE.u=u; window.speechSynthesis.speak(u); }catch(e){} }
+  // with the voice off there is nothing to unlock yet: the next tap after it is turned on does it
+  if(VOICE.on) AUDIO.unlocked = true;
 }
+/* Coming back from the lock screen, iOS leaves the audio context interrupted. */
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState==='visible' && AUDIO.ctx && AUDIO.ctx.state!=='running'){ try{ AUDIO.ctx.resume(); }catch(e){} }
+});
 if(typeof document!=='undefined'){
   ['touchend','click'].forEach(function(ev){ document.addEventListener(ev, unlockAudio, {capture:true, passive:true}); });
 }
@@ -5985,7 +6150,8 @@ function coachPrefsSection(){
       + '<button class="switch'+(on?' on':'')+'" role="switch" aria-checked="'+(on?'true':'false')+'" onclick="setCoachPref(\''+k+'\','+(!on)+')"><span></span></button></div>';
   };
   return '<div class="section"><div class="section-title">Coaching</div><div class="card card-tight" style="padding:4px 16px;">'
-    + (coachSupported() ? row('voice','Voice coach','Calls the next set and beeps the countdown', !!VOICE.on) : '')
+    + (coachSupported() ? row('voice','Voice coach','Calls the next set and beeps the countdown', !!VOICE.on)
+        + '<div style="padding:0 0 10px;"><button class="btn btn-ghost btn-sm" onclick="testCoach()">'+ICON.soundOn+' Test the sound</button></div>' : '')
     + row('readiness','Readiness check','Three questions before each session', readinessWanted())
     + '<div class="pref-row" style="border-bottom:0;padding-bottom:4px;"><div style="flex:1;min-width:0;"><div class="wr-title">Colour theme</div><div class="wr-meta">How the app looks</div></div></div>'
     + '<div class="theme-seg">' + THEMES.map(function(t){ return '<button class="'+(themeName()===t[0]?'on':'')+'" onclick="setTheme(\''+t[0]+'\')"><i style="background:'+t[2]+'"></i>'+t[1]+'</button>'; }).join('') + '</div>'
@@ -6583,7 +6749,9 @@ function renderRestOverlay(){
                Skill:'Rest for quality of movement, not fatigue.',
                Endurance:'Short rest is part of the training effect.',
                'Switch sides':'Same set, other side.'}[SESSION.restLabel] || '';
-  return '<div class="rest-overlay"><div class="eyebrow">'+esc(SESSION.restLabel||'Rest')+(SESSION.restLabel==='Switch sides'?'':' · Rest')+'</div>'
+  const nx = nextUpInfo(), ps = nx && PHOTO_SETS[nx.ex.id];
+  const bg = ps ? '<div class="rest-bg'+(nx.side==='L'?' mirrored':'')+'"><img alt="" src="'+ps.src[Math.min(ps.key||0, ps.src.length-1)]+'"></div>' : '';
+  return '<div class="rest-overlay'+(bg?' has-bg':'')+'">'+bg+'<div class="eyebrow">'+esc(SESSION.restLabel||'Rest')+(SESSION.restLabel==='Switch sides'?'':' · Rest')+'</div>'
   + restRingMarkup()
   + (why ? '<p class="rest-why">'+esc(why)+'</p>' : '')
   + nextUpCard()
@@ -7038,9 +7206,13 @@ function renderShareOverlay(){
 function renderWorkoutSummary(){
   const w = SESSION.workout;
   const early = !!SESSION.endedEarly;
-  const setsLogged = STATE.history.filter(h=>h.date===todayISO() && h.workoutName===w.name);
-  const totalVol = setsLogged.reduce((s,h)=> s+((h.weight||0)*(h.result||0)),0);
-  const prCount = setsLogged.filter(h=>h.isPR).length;
+  const S = sessionSummary();
+  const setsLogged = S.sets;
+  const totalVol = S.vol;
+  const mins = S.mins;
+  const anim = !SESSION._revealed;
+  if(anim){ SESSION._revealed = true; setTimeout(runSummaryCount, 60); }
+  const rv = function(i){ return anim ? ' reveal" style="animation-delay:'+(i*0.18).toFixed(2)+'s' : ''; };
   let feedbackBlock;
   if(!SESSION.workoutFeedbackGiven){
     feedbackBlock = '<div class="divider"></div><div class="eyebrow" style="margin-bottom:10px;">How was the whole workout?</div>'
@@ -7051,20 +7223,36 @@ function renderWorkoutSummary(){
     feedbackBlock = '<div class="divider"></div><p style="color:var(--text-3);font-size:13.5px;">Thanks \u2014 that helps plan your next session.</p>'
     +'<button class="btn btn-primary btn-block" style="margin-top:14px;" onclick="closeWorkout()">Done</button>';
   }
-  return '<div class="card" style="text-align:center;padding:32px 20px;">'
-  +'<div class="eyebrow" style="color:'+(early?'var(--amber)':'var(--green)')+';">'
-    +(early?'Ended Early \u2014 '+overallPct()+'% done':'Workout Complete')+'</div>'
-  +'<h2 style="font-size:26px;margin:10px 0 4px;">'+esc(w.name)+'</h2>'
-  +(early?'<p style="color:var(--text-3);font-size:13.5px;margin-top:6px;">Everything you logged is saved. This day stays open, so you can come back to it.</p>':'')
-  +'<div class="stat-grid" style="margin-top:20px;text-align:left;">'
-  +'<div class="stat-tile"><div class="num">'+setsLogged.length+'</div><div class="lbl">Sets Logged</div></div>'
-  +'<div class="stat-tile"><div class="num">'+Math.round(totalVol)+'</div><div class="lbl">Volume (kg)</div></div>'
-  +'<div class="stat-tile"><div class="num">'+prCount+'</div><div class="lbl">New PRs</div></div>'
-  +'<div class="stat-tile"><div class="num">'+Math.max(1, Math.round(((SESSION.endedAt||Date.now())-SESSION.startedAt)/60000))+'</div><div class="lbl">Minutes</div></div>'
-  +'</div>'
-  +(setsLogged.length ? '<button class="btn btn-secondary btn-block share-cta" onclick="openShareCard()">'+ICON.share+' Share this session</button>' : '')
-  +feedbackBlock
-  +'</div>';
+  const sub = [w.programName, w.week ? 'Week '+w.week : ''].filter(Boolean).join(' · ');
+  const u = STATE.profile.units||'kg';
+  const tiles = [[mins, mins===1?'minute':'minutes'],[setsLogged.length, setsLogged.length===1?'set':'sets'],[Math.round(totalVol), u+' moved']];
+  const today = muscleSets(setsLogged.filter(function(h){ return !h.skipped && h.result>0; }));
+  const prs = S.prs.map(function(l){
+    const b = l.best, img = PHOTO_SETS[l.ex.id] ? PHOTO_SETS[l.ex.id].src[Math.min(PHOTO_SETS[l.ex.id].key||0, PHOTO_SETS[l.ex.id].src.length-1)] : null;
+    const what = b ? (b.weight ? b.weight+' '+u+' × '+b.result : b.result+(l.ex.timeBased?' sec':' reps')) : '';
+    return '<div class="sum-pr"'+'>'+(img?'<img alt="" src="'+img+'">':'<div class="ex-icon">'+exIcon(l.ex)+'</div>')+'<div><b>'+esc(l.ex.name)+'</b><small>'+esc(what)+' · new record</small></div><span class="tro">🏆</span></div>';
+  }).join('');
+  return '<div class="sum-hero'+(early?' early':'')+rv(0)+'"><div class="eb">'+(early?'ENDED EARLY — '+overallPct()+'% DONE':'WORKOUT COMPLETE')+'</div>'
+    + '<h2>'+esc(w.name)+'</h2>'+(sub?'<p>'+esc(sub)+'</p>':'')
+    + (early?'<p>Everything you logged is saved. This day stays open, so you can come back to it.</p>':'')+'</div>'
+    + '<div class="sum-tiles">'+tiles.map(function(t,i){ return '<div class="sum-tile'+rv(i+1)+'"><div class="n" data-to="'+t[0]+'">'+(anim?0:t[0].toLocaleString('en'))+'</div><div class="l">'+esc(t[1])+'</div></div>'; }).join('')+'</div>'
+    + (Object.keys(today).length ? '<div class="sum-block'+rv(4)+'"><div class="eyebrow" style="margin-bottom:10px;">What you worked today</div>'+heatMapMarkup(today)+'</div>' : '')
+    + (prs ? '<div class="sum-block'+rv(5)+'"><div class="eyebrow" style="margin-bottom:10px;">New records</div>'+prs+'</div>' : '')
+    + '<div class="card'+rv(6)+'" style="margin-top:12px;text-align:center;">'
+    + (setsLogged.length ? '<button class="btn btn-secondary btn-block share-cta" onclick="openShareCard()">'+ICON.share+' Share this session</button>' : '')
+    + feedbackBlock + '</div>';
+}
+function runSummaryCount(){
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.sum-tile .n[data-to]').forEach(function(n, i){
+    const to = +n.getAttribute('data-to');
+    if(reduce){ n.textContent = to.toLocaleString('en'); return; }
+    setTimeout(function(){
+      const t0 = performance.now();
+      (function step(){ const k = Math.min(1,(performance.now()-t0)/750), e = 1-Math.pow(1-k,3);
+        n.textContent = Math.round(to*e).toLocaleString('en'); if(k<1) requestAnimationFrame(step); })();
+    }, 180*(i+1));
+  });
 }
 function submitWorkoutFeedback(diff){
   const w = SESSION.workout;
@@ -7087,6 +7275,7 @@ function renderProgress(){
   const weeks = last8WeeksVolume();
   return '<h1 style="font-size:28px;margin-bottom:18px;">Progress</h1>'
   + weekReviewCard(0, false)
+  + muscleHeatSection()
   + '<div class="section"><div class="section-title">Consistency</div><div class="card">'+consistencyCalendar()+'</div></div>'
   + '<div class="section"><div class="section-title">Your lifts</div><div class="card card-tight lifts-card">'+liftsList()+'</div></div>'
   + '<div class="section"><div class="section-title">Weekly Volume</div><div class="card">'+volumeChart(weeks)+'</div></div>'
@@ -7423,6 +7612,62 @@ function weekStreak(){
   while(trained(mon) && n < 520){ n++; mon = addDays(mon, -7); }
   return n;
 }
+let HEAT_RANGE = 0;
+function setHeatRange(r){ HEAT_RANGE = r; render(); }
+function heatEntries(r){
+  const today = todayISO(), mon = mondayOf(today);
+  let from, to = today;
+  if(r===0) from = isoLocal(mon);
+  else if(r===1) from = isoLocal(addDays(new Date(today+'T00:00:00'), -27));
+  else { from = isoLocal(addDays(mon,-7)); to = isoLocal(addDays(mon,-1)); }
+  return (STATE.history||[]).filter(function(h){ return h.date>=from && h.date<=to && !h.skipped && h.result>0; });
+}
+function muscleHeatSection(){
+  const sets = muscleSets(heatEntries(HEAT_RANGE));
+  const keys = Object.keys(sets).sort(function(a,b){ return sets[b]-sets[a]; });
+  const max = keys.length ? sets[keys[0]] : 0;
+  const fmtN = function(n){ return (Math.round(n*2)/2).toString().replace('.5','½'); };
+  let body;
+  if(!keys.length){
+    body = '<div class="empty-state">'+(HEAT_RANGE===2 ? 'Nothing logged last week.' : 'Train this week and the muscles you work light up here.')+'</div>';
+  } else {
+    body = heatMapMarkup(sets)
+      + '<div class="heat-scale">Rested <i style="background:'+heatScaleCss()+'"></i> Worked hard</div>'
+      + '<div class="heat-list">'+keys.slice(0,8).map(function(m){
+          return '<div class="heat-row"><span>'+esc(MUSCLE_LABELS[m]||m)+'</span><span class="t"><i style="width:'+Math.max(4,sets[m]/max*100)+'%;background:'+(heatColor(sets[m]/max)||'var(--bg-3)')+'"></i></span><span class="n">'+fmtN(sets[m])+' sets</span></div>';
+        }).join('')+'</div>';
+    const MAJOR = ['glutes','hamstrings','quads','back','shoulders','chest','core'];
+    const lows = MAJOR.map(function(m){ return [m, sets[m]||0]; }).sort(function(a,b){ return a[1]-b[1]; });
+    const low = lows[0];
+    if(max >= 6 && low[1] < max*0.35){
+      body += '<div class="heat-note warn">⚠️ <span><b>'+esc(MUSCLE_LABELS[low[0]]||low[0])+' is falling behind.</b> '+fmtN(low[1])+' set'+(low[1]===1?'':'s')+' against '+fmtN(max)+' for '+esc((MUSCLE_LABELS[keys[0]]||keys[0]).toLowerCase())+'.</span></div>';
+    } else if(max >= 6){
+      body += '<div class="heat-note ok">✅ <span><b>Balanced.</b> Every major group got real work.</span></div>';
+    }
+  }
+  return '<div class="section"><div class="section-title">Muscles worked</div><div class="card">'
+    + '<div class="heat-seg">'+['This week','4 weeks','Last week'].map(function(l,i){ return '<button class="'+(HEAT_RANGE===i?'on':'')+'" onclick="setHeatRange('+i+')">'+l+'</button>'; }).join('')+'</div>'
+    + body + '</div></div>';
+}
+function weekRingCard(){
+  const today = todayISO(), mon = mondayOf(today), dc = dayCounts().c;
+  const target = Math.max(1, (STATE.profile && STATE.profile.days) || 3);
+  const days = Array.from({length:7}).map(function(_,i){ const iso = isoLocal(addDays(mon,i)); return {iso:iso, d:!!dc[iso], today: iso===today}; });
+  const done = days.filter(function(x){ return x.d; }).length;
+  const frac = Math.min(1, done/target), R = 44, C = 2*Math.PI*R;
+  const h = THEME_HEX[themeName()] || THEME_HEX.night;
+  const left = target - done, st = weekStreak();
+  const title = left<=0 ? 'Week complete' : left===1 ? 'One more this week' : left+' more this week';
+  const sub = left<=0 ? 'Ring closed.'+(st>1?' '+st+' weeks in a row.':'')+' Anything extra is a bonus.'
+            : (st>0 ? 'Keep the '+st+'-week streak going.' : 'Every session fills the ring.');
+  return '<div class="card" style="margin-top:14px;"><div class="wk-ring">'
+    + '<svg width="104" height="104" viewBox="0 0 104 104" aria-label="'+done+' of '+target+' sessions this week"><defs><linearGradient id="wkg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+h[0]+'"/><stop offset="1" stop-color="'+h[1]+'"/></linearGradient></defs>'
+    + '<circle cx="52" cy="52" r="'+R+'" fill="none" stroke="var(--bg-3)" stroke-width="11"/>'
+    + '<circle cx="52" cy="52" r="'+R+'" fill="none" stroke="url(#wkg)" stroke-width="11" stroke-linecap="round" transform="rotate(-90 52 52)" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-frac)).toFixed(1)+'"'+(left<=0?' style="filter:drop-shadow(0 0 6px '+h[1]+')"':'')+'/>'
+    + '<text x="52" y="59" text-anchor="middle" fill="var(--text-1)" font-size="22" font-weight="800" font-family="var(--font-d)">'+done+'/'+target+'</text></svg>'
+    + '<div class="t"><b>'+title+'</b><span>'+sub+'</span></div></div>'
+    + '<div class="wk-days">'+days.map(function(x,i){ return '<div class="'+(x.d?'d ':'')+(x.today?'today':'')+'"><i></i>'+'MTWTFSS'[i]+'</div>'; }).join('')+'</div></div>';
+}
 function consistencyCalendar(){
   const WEEKS = 16, dc = dayCounts(), today = todayISO();
   const start = addDays(mondayOf(today), -(WEEKS-1)*7);
@@ -7449,7 +7694,7 @@ function consistencyCalendar(){
   const st = weekStreak();
   return '<div class="cal-head"><div><div class="cal-big">'+st+'<small> week'+(st===1?'':'s')+'</small></div><div class="cal-sub">training streak</div></div>'
     + '<div style="text-align:right;"><div class="cal-big">'+sessions30+'</div><div class="cal-sub">sessions · 30 days</div></div></div>'
-    + '<div class="cal-grid" style="grid-template-columns:14px repeat('+WEEKS+',1fr);">'
+    + '<div class="cal-grid" style="grid-template-columns:14px repeat('+WEEKS+',minmax(0,1fr));">'
     + '<span></span>'+months.replace(/<span>/g,'<span class="cal-m">')+cells+'</div>'
     + '<div class="cal-key">Less <span class="cal-c l0"></span><span class="cal-c l1"></span><span class="cal-c l2"></span><span class="cal-c l3"></span> More</div>';
 }
