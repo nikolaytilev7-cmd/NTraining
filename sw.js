@@ -1,29 +1,25 @@
 /* NT Training service worker.
  *
- * Network-first for the page itself, cache-first for the icons.
+ * Network-first for the page itself, cache-first for everything else.
+ * The page always comes from the network when there is signal, so a new build
+ * shows up on the next launch; the cache is the fallback for the gym basement.
  *
- * The usual mistake is cache-first for everything: the gym works offline but
- * the app then freezes on whatever version happened to be cached, and a fix
- * shipped weeks ago never arrives. Going to the network first and falling back
- * to the cache gives both — the newest build whenever there is signal, and the
- * last good build in a basement with none.
- *
- * Bump CACHE on every deploy. Old caches are deleted on activate, so an update
- * never leaves two versions fighting over the same origin.
+ * CACHE and PHOTOS are rewritten on every build (integrate2.py). Old caches are
+ * deleted on activate, so two versions never fight over the same origin.
  */
-const CACHE = 'nt-training-v62';
-/* The icons carry a version in their FILENAME. A cache can be told to refetch,
-   but iOS keeps its own copy of a home-screen icon that no cache header
-   reaches — and a file it has never seen before is the one thing it cannot
-   serve from memory. Rename on every icon change. */
-const SHELL = ['./', './index.html', './manifest.json',
-               './icon-180-v3.png', './icon-192-v3.png', './icon-512-v3.png', './icon-512-maskable-v3.png', './photos.js'];
+const CACHE = 'nt-training-v68';
+const PHOTOS = './photos.js?v=2026-09-26d';
+/* The icons carry a version in their FILENAME: iOS keeps its own copy of a
+   home-screen icon that no cache header reaches. Rename on every icon change. */
+const SHELL = ['./index.html', './manifest.json', PHOTOS,
+               './icon-180-v3.png', './icon-192-v3.png', './icon-512-v3.png', './icon-512-maskable-v3.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE)
-      // one missing icon must not fail the whole install, so each is added on its own
-      .then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => null))))
+      // 'reload' skips the browser's HTTP cache, so a new build never precaches last build's files;
+      // one missing file must not fail the whole install, so each is added on its own
+      .then(c => Promise.all(SHELL.map(u => c.add(new Request(u, {cache: 'reload'})).catch(() => null))))
       .then(() => self.skipWaiting())
   );
 });
@@ -36,6 +32,12 @@ self.addEventListener('activate', e => {
   );
 });
 
+function isGoodPage(res) {
+  // never store an error page, a redirect or a captive-portal login as "the app"
+  return res && res.ok && res.type === 'basic' && !res.redirected &&
+         (res.headers.get('content-type') || '').includes('text/html');
+}
+
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
@@ -47,28 +49,31 @@ self.addEventListener('fetch', e => {
                  (req.headers.get('accept') || '').includes('text/html');
 
   if (isPage) {
+    // only the app itself is stored as the app; welcome.html keeps its own entry
+    const isApp = /\/(index\.html)?$/.test(url.pathname);
     e.respondWith(
       fetch(req)
         .then(res => {
-          // only the app itself is stored as the app; welcome.html keeps its own entry
-          const isApp = /\/(index\.html)?$/.test(url.pathname);
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(isApp ? './index.html' : req, copy));
+          if (isGoodPage(res)) {
+            const copy = res.clone();
+            e.waitUntil(caches.open(CACHE).then(c => c.put(isApp ? './index.html' : req, copy)));
+          }
           return res;
         })
-        .catch(() => caches.match(req, {ignoreSearch:true}).then(r => r || caches.match('./index.html')).then(r => r || caches.match('./')))
+        .catch(() => (isApp ? caches.match('./index.html') : caches.match(req, {ignoreSearch: true}))
+          .then(r => r || caches.match('./index.html')))
     );
     return;
   }
 
-  // the cache is renamed every deploy, so a ?v= query never has to tell versions apart
+  // exact match: photos.js?v=BUILD is a different file from last build's photos.js?v=OLD
   e.respondWith(
-    caches.match(req, {ignoreSearch:true}).then(hit => hit || fetch(req).then(res => {
-      if (res && res.status === 200) {
+    caches.match(req).then(hit => hit || fetch(req).then(res => {
+      if (res && res.ok && res.type === 'basic') {
         const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(req, copy));
+        e.waitUntil(caches.open(CACHE).then(c => c.put(req, copy)));
       }
       return res;
-    }).catch(() => hit))
+    }).catch(() => caches.match(req, {ignoreSearch: true})))
   );
 });
