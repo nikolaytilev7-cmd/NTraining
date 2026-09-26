@@ -887,6 +887,14 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .test-banner{display:flex;align-items:center;gap:12px;margin-bottom:14px;border-color:#FF9F0A;}
 .test-banner .wr-title{color:#FF9F0A;}
 .test-card{border-color:#FF9F0A;}
+.nt-series-title{display:flex;align-items:center;gap:8px;}
+.nt-mark{display:inline-flex;align-items:center;justify-content:center;padding:2px 7px;border-radius:6px;background:var(--blue);color:var(--on-accent);font-size:11px;font-weight:900;letter-spacing:.04em;}
+.nt-series-title{margin-bottom:6px;}
+.nt-series-sub{color:var(--text-3);font-size:13px;line-height:1.45;margin:0 0 12px;}
+.nt-card{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue-glow) inset;}
+.short-pick{margin:18px 0 6px;padding:14px;border:1px solid var(--border);border-radius:var(--radius-s,12px);background:var(--bg-2);}
+.short-pick .wr-title{margin-bottom:8px;}
+.reco-mini{margin-bottom:10px;}
 .save-alert{margin-bottom:10px;border-color:var(--red);
   background:color-mix(in srgb, var(--red) 14%, transparent);color:var(--text-1);
   font-size:13px;line-height:1.5;font-weight:600;}
@@ -1321,9 +1329,114 @@ const MUSCLE_TO_REGION = {
 
 /* ============================= PROGRAMS ============================= */
 const PROGRAMS = [
- {id:'foundation',name:'FOUNDATION',tagline:'6 Week Kettlebell Fundamentals',weeks:6,daysPerWeek:3,level:'beginner',
+ /* ---------------- NT STRENGTH & SIZE — the house series ----------------
+    Three days a week (four with two bells), every day in a different mode so
+    no two sessions feel alike: A is heavy straight sets, B is supersets for
+    size, C mixes a complex or a ladder with work on the clock. */
+ {id:'nt_ss_1',brand:'NT',name:'NT STRENGTH & SIZE I',tagline:'Muscle & strength · Beginner',weeks:6,daysPerWeek:3,level:'beginner',
+  goals:['build_muscle','build_strength','general_fitness'],sessionMin:[40,45],
+  desc:'For your first months with a kettlebell, if you want to get stronger and put on muscle. Three different days a week — a heavy day, a pump day of supersets and a day on the clock — with the same movements coming back a little heavier each week, so you can see the progress.',
+  templates:[
+   {name:'A · Strength',format:'traditional',mainMin:34,
+    blocks:[{ex:'goblet_squat',sets:4,reps:[6,10]},{ex:'one_arm_row',sets:4,reps:[8,12]},{ex:'overhead_press',sets:3,reps:[6,10]},{ex:'sumo_deadlift',sets:3,reps:[8,12]}],
+    finisher:{name:'Swing Clock',format:'emom',totalMinutes:5,pattern:['kb_swing','kb_swing','rest','kb_swing','kb_swing'],note:'Ten crisp swings a minute. Hips, not arms.'}},
+   {name:'B · Size',format:'superset',mainMin:26,rounds:2,
+    repScheme:{kb_floor_press:[10,15],bent_over_row:[10,15],reverse_lunge:[8,12],glute_bridge:[12,15],kb_curl:[10,15],tricep_ext:[10,15]},
+    pairs:[['kb_floor_press','bent_over_row'],['reverse_lunge','glute_bridge'],['kb_curl','tricep_ext']],
+    finisher:{name:'Carry Out',format:'emom',totalMinutes:4,pattern:['suitcase_carry','suitcase_carry','rest','suitcase_carry'],note:'Walk tall. Switch hands every minute.'}},
+   {name:'C · On the Clock',format:'emom',mainMin:20,totalMinutes:20,
+    pattern:['goblet_squat','push_up','one_arm_row','kb_swing','rest'],
+    finisher:{name:'Core Close',format:'amrap',totalMinutes:5,round:[{ex:'plank',target:'20 sec'},{ex:'around_world',target:8}],note:'Easy pace. Good shapes only.'}},
+  ]},
+ {id:'nt_ss_2',brand:'NT',name:'NT STRENGTH & SIZE II',tagline:'Muscle & strength · Intermediate',weeks:8,daysPerWeek:3,level:'intermediate',
+  goals:['build_muscle','build_strength'],sessionMin:[45,50],
+  desc:'For lifters who know the basics and now want real size and strength. A heavy day built on the front squat and the clean & press, a size day of supersets with arms included, and a complex that never lets the bell touch the floor.',
+  templates:[
+   {name:'A · Heavy',format:'traditional',mainMin:38,
+    blocks:[{ex:'kb_front_squat',sets:5,reps:[5,8]},{ex:'clean_press',sets:4,reps:[5,8]},{ex:'romanian_deadlift',sets:4,reps:[8,10]},{ex:'one_arm_row',sets:4,reps:[8,10]}],
+    finisher:{name:'Engine',format:'amrap',totalMinutes:5,round:[{ex:'kb_swing',target:15},{ex:'push_up',target:10}],note:'As many rounds as you can with clean reps.'}},
+   {name:'B · Size',format:'superset',mainMin:28,rounds:2,
+    repScheme:{kb_floor_press:[8,12],bent_over_row:[10,12],cossack_squat:[6,8],single_leg_deadlift:[8,10],kb_curl:[10,15],tricep_ext:[10,15]},
+    pairs:[['kb_floor_press','bent_over_row'],['cossack_squat','single_leg_deadlift'],['kb_curl','tricep_ext']],
+    finisher:{name:'Grip Close',format:'emom',totalMinutes:5,pattern:['suitcase_carry','overhead_carry','rest','suitcase_carry','overhead_carry'],note:'Walk tall. Put it down before the posture goes.'}},
+   {name:'C · Complex',format:'complex',mainMin:28,rounds:5,restSec:75,
+    chain:[{ex:'kb_clean',reps:2},{ex:'kb_front_squat',reps:3},{ex:'overhead_press',reps:2}],
+    note:'Two cleans, three front squats, two presses — then the other side. The bell only touches the floor between rounds.',
+    finisher:{name:'Swing Clock',format:'emom',totalMinutes:6,pattern:['kb_swing','push_up','figure_8','kb_swing','push_up','rest'],note:'Steady minutes. Finish every one with a few seconds to spare.'}},
+  ]},
+ {id:'nt_ss_3',brand:'NT',name:'NT STRENGTH & SIZE III',tagline:'Muscle & strength · Advanced · one bell',weeks:8,daysPerWeek:3,level:'advanced',
+  goals:['build_muscle','build_strength','explosive'],sessionMin:[45,55],
+  desc:'For experienced lifters with one bell who want to keep growing. Heavy front squats and push presses, a size day with no rest between pairs, and a pressing ladder that adds volume rung by rung. Snatches close the heavy day.',
+  templates:[
+   {name:'A · Heavy',format:'traditional',mainMin:40,
+    blocks:[{ex:'kb_front_squat',sets:5,reps:[4,6]},{ex:'push_press',sets:5,reps:[4,6]},{ex:'romanian_deadlift',sets:4,reps:[6,8]},{ex:'windmill',sets:3}],
+    finisher:{name:'Snatch Close',format:'emom',totalMinutes:5,pattern:['kb_snatch','rest','kb_snatch','rest','kb_snatch'],note:'Five a side, crisp. Technique first — this is the tired end of the session.'}},
+   {name:'B · Size',format:'superset',mainMin:28,rounds:2,
+    repScheme:{kb_floor_press:[8,12],one_arm_row:[8,12],front_rack_lunge:[8,10],kb_good_morning:[10,12],kb_curl:[8,12],tricep_ext:[8,12]},
+    pairs:[['kb_floor_press','one_arm_row'],['front_rack_lunge','kb_good_morning'],['kb_curl','tricep_ext']],
+    finisher:{name:'Burn Out',format:'amrap',totalMinutes:5,round:[{ex:'goblet_squat',target:10},{ex:'push_up',target:10},{ex:'kb_high_pull',target:'5/side'}],note:'Move well, then move fast.'}},
+   {name:'C · Ladder',format:'traditional',mainMin:36,
+    blocks:[{ex:'overhead_press',ladder:[1,2,3,4,5]},{ex:'kb_clean',ladder:[2,3,4]},{ex:'turkish_getup',sets:3,reps:[1,1]}],
+    finisher:{name:'Engine',format:'emom',totalMinutes:6,pattern:['kb_swing','goblet_squat','push_up','kb_swing','goblet_squat','rest'],note:'Fast hands, no wasted seconds.'}},
+  ]},
+ {id:'nt_ss_4',brand:'NT',name:'NT STRENGTH & SIZE IV',tagline:'Muscle & strength · Advanced · two bells',weeks:8,daysPerWeek:4,level:'advanced',
+  goals:['build_muscle','build_strength'],sessionMin:[45,55],
+  desc:'For advanced lifters with a matched pair who want the most size and strength. Two bells double the load on every rep: a double-squat day, an upper size day, an engine on the clock and a lower size day. Needs solid single-bell technique first.',
+  templates:[
+   {name:'A · Double Squat',format:'traditional',mainMin:40,
+    blocks:[{ex:'double_front_squat',sets:5,reps:[5,8]},{ex:'gorilla_row',sets:4,reps:[8,10]},{ex:'kb_good_morning',sets:3,reps:[8,12]},{ex:'windmill',sets:3}],
+    finisher:{name:'Farmer Clock',format:'emom',totalMinutes:5,pattern:['farmer_carry','farmer_carry','rest','farmer_carry','farmer_carry'],note:'Heavy pair, tall walk.'}},
+   {name:'B · Upper Size',format:'superset',mainMin:28,rounds:2,
+    repScheme:{kb_floor_press:[8,12],renegade_row:[6,8],push_press:[6,8],gorilla_row:[8,10],kb_curl:[10,12],tricep_ext:[10,12]},
+    pairs:[['kb_floor_press','renegade_row'],['push_press','gorilla_row'],['kb_curl','tricep_ext']],
+    finisher:{name:'Core Close',format:'amrap',totalMinutes:5,round:[{ex:'push_up',target:10},{ex:'around_world',target:8}],note:'Steady. Stop while the shapes are still good.'}},
+   {name:'C · Engine',format:'emom',mainMin:25,totalMinutes:25,
+    pattern:['double_front_squat','gorilla_row','kb_swing','renegade_row','rest'],
+    finisher:{name:'Get-Up Close',format:'emom',totalMinutes:5,pattern:['turkish_getup','rest','turkish_getup','rest','turkish_getup'],note:'One slow rep a minute. Eyes on the bell.'}},
+   {name:'D · Lower Size',format:'superset',mainMin:28,rounds:2,
+    repScheme:{front_rack_lunge:[8,10],romanian_deadlift:[10,12],cossack_squat:[6,8],glute_bridge:[12,15],kb_high_pull:[6,8],hollow_hold:[20,30]},
+    pairs:[['front_rack_lunge','romanian_deadlift'],['cossack_squat','glute_bridge'],['kb_high_pull','hollow_hold']],
+    finisher:{name:'Snatch Close',format:'emom',totalMinutes:5,pattern:['kb_snatch','rest','kb_snatch','rest','kb_snatch'],note:'Crisp and relaxed. Put it down when the lockout gets soft.'}},
+  ]},
+ /* NT DAD STRONG: the same idea in 35-40 minutes, for people whose training
+    time is whatever is left after work and bedtime. Every day is full body and
+    in a different mode; the volume stays put (flat) so the session never
+    outgrows the slot — the bell gets heavier instead. */
+ {id:'nt_dad_1',brand:'NT',name:'NT DAD STRONG I',tagline:'Busy dads · 35 min · Intermediate',weeks:8,daysPerWeek:3,level:'intermediate',
+  progression:'flat',minSession:35,goals:['build_strength','build_muscle','general_fitness','lose_fat'],sessionMin:[35,40],
+  desc:'For dads who juggle work and family and struggle to find time to train. Shortened versions of our most popular programmes, built so you keep looking and feeling great in 35\u201340 minutes, three days a week. Every day is full body and in a different mode \u2014 paired strength, work on the clock, a complex \u2014 and the time never grows: the bell does.',
+  templates:[
+   {name:'A · Strength Pairs',format:'superset',mainMin:24,rounds:3,
+    repScheme:{goblet_squat:[8,12],one_arm_row:[8,12],clean_press:[5,8],glute_bridge:[12,15]},
+    pairs:[['goblet_squat','one_arm_row'],['clean_press','glute_bridge']],
+    finisher:{name:'Swing Clock',format:'emom',totalMinutes:4,pattern:['kb_swing','kb_swing','rest','kb_swing'],note:'Ten to fifteen crisp swings a minute.'}},
+   {name:'B · On the Clock',format:'emom',mainMin:24,totalMinutes:24,
+    pattern:['kb_swing','push_up','reverse_lunge','one_arm_row','rest'],
+    finisher:{name:'Core Close',format:'amrap',totalMinutes:4,round:[{ex:'plank',target:'20 sec'},{ex:'figure_8',target:8}],note:'Easy pace, good shapes.'}},
+   {name:'C · Complex',format:'complex',mainMin:22,rounds:4,restSec:60,
+    chain:[{ex:'kb_clean',reps:2},{ex:'kb_front_squat',reps:3},{ex:'push_press',reps:2}],
+    note:'Two cleans, three front squats, two push presses — then the other side. The bell stays in the hand.',
+    finisher:{name:'Carry Out',format:'emom',totalMinutes:4,pattern:['suitcase_carry','overhead_carry','rest','suitcase_carry'],note:'Walk tall. Put it down before the posture goes.'}},
+  ]},
+ {id:'nt_dad_2',brand:'NT',name:'NT DAD STRONG II',tagline:'Busy dads · 35 min · Advanced',weeks:8,daysPerWeek:3,level:'advanced',
+  progression:'flat',minSession:35,goals:['build_strength','build_muscle','explosive','general_fitness'],sessionMin:[35,40],
+  desc:'For experienced lifters who are now dads with a job and a family, and forty minutes instead of ninety. The short version of our hardest programmes, built to keep you strong, lean and looking great: heavy pairs with an arm finish, a snatch EMOM and a four-movement complex, three days a week.',
+  templates:[
+   {name:'A · Heavy Pairs',format:'superset',mainMin:24,rounds:4,
+    repScheme:{kb_front_squat:[5,8],one_arm_row:[6,10],push_press:[5,8],romanian_deadlift:[8,10]},
+    pairs:[['kb_front_squat','one_arm_row'],['push_press','romanian_deadlift']],
+    finisher:{name:'Arm Pump',format:'amrap',totalMinutes:5,round:[{ex:'kb_curl',target:10},{ex:'tricep_ext',target:10}],note:'Strict reps. Stop before the elbows complain.'}},
+   {name:'B · Engine',format:'emom',mainMin:25,totalMinutes:25,
+    pattern:['kb_snatch','goblet_squat','push_up','kb_high_pull','rest'],
+    finisher:{name:'Windmill Close',format:'emom',totalMinutes:4,pattern:['windmill','windmill','rest','windmill'],note:'Slow and controlled. Eyes on the bell.'}},
+   {name:'C · Complex',format:'complex',mainMin:24,rounds:5,restSec:60,
+    chain:[{ex:'kb_clean',reps:2},{ex:'kb_front_squat',reps:3},{ex:'push_press',reps:3},{ex:'reverse_lunge',reps:2}],
+    note:'Clean, front squat, push press, reverse lunge — all on one side, then the other. The bell never touches the floor inside a round.',
+    finisher:{name:'Carry Out',format:'emom',totalMinutes:4,pattern:['overhead_carry','suitcase_carry','rest','overhead_carry'],note:'Arm locked, ribs down.'}},
+  ]},
+ {id:'foundation',name:'FOUNDATION',tagline:'Learn the basics · Beginner',weeks:6,daysPerWeek:3,level:'beginner',
   goals:['general_fitness','lose_fat','build_strength'],sessionMin:[40,45],
-  desc:'Learn the core kettlebell patterns with a sustainable, beginner-friendly structure.',
+  desc:'For complete beginners who want to learn the kettlebell properly. The squat, the hinge, the swing, the press and the row, taught over six weeks at a pace you can keep — the weight goes up only once the technique is there.',
   templates:[
    {name:'Full Body Fundamentals',format:'traditional',warmupMin:8,mainMin:32,
     blocks:[{ex:'goblet_squat',sets:3},{ex:'kb_deadlift',sets:3},{ex:'one_arm_row',sets:3},{ex:'push_up',sets:3},{ex:'plank',sets:3}]},
@@ -1332,9 +1445,9 @@ const PROGRAMS = [
    {name:'Technique Circuit',format:'superset',warmupMin:8,mainMin:32,rounds:3,
     pairs:[['goblet_squat','push_up'],['kb_deadlift','plank']]},
   ]},
- {id:'iron_engine',name:'IRON ENGINE',tagline:'8 Week Strength & Conditioning',weeks:8,daysPerWeek:3,level:'intermediate',
+ {id:'iron_engine',name:'IRON ENGINE',tagline:'Strength & fitness · Intermediate',weeks:8,daysPerWeek:3,level:'intermediate',
   goals:['build_strength','conditioning','build_muscle','general_fitness'],sessionMin:[45,55],
-  desc:'A balanced blend of strength days and conditioning finishers to build a well-rounded engine.',
+  desc:'For anyone who wants to be strong and fit at the same time. A heavy strength day, an EMOM and an AMRAP every week — the mix of muscle and engine that makes everyday life feel easy.',
   templates:[
    {name:'Full Body Strength',format:'traditional',warmupMin:8,mainMin:37,finisher:{name:'Swing Ladder',format:'emom',totalMinutes:5,pattern:['kb_swing','kb_swing','rest','kb_swing','kb_swing'],note:'Five minutes of hip drive to close. Keep every set crisp \u2014 stop the set if the snap goes.'},
     blocks:[{ex:'kb_deadlift',sets:4},{ex:'goblet_squat',sets:4},{ex:'clean_press',sets:3},{ex:'one_arm_row',sets:3}]},
@@ -1342,9 +1455,9 @@ const PROGRAMS = [
    {name:'Power & Volume',format:'amrap',warmupMin:9,mainMin:22,totalMinutes:22,finisher:{name:'Carry Out',format:'emom',totalMinutes:5,pattern:['farmer_carry','suitcase_carry','rest','farmer_carry','suitcase_carry'],note:'Walk tall. Put them down before the shoulders round.'},
     round:[{ex:'kb_swing',target:10},{ex:'goblet_squat',target:8},{ex:'push_up',target:8},{ex:'one_arm_row',target:'6/side'}]},
   ]},
- {id:'kb_athlete',name:'KETTLEBELL ATHLETE',tagline:'6 Week Power & Conditioning',weeks:6,daysPerWeek:4,level:'advanced',
+ {id:'kb_athlete',name:'KETTLEBELL ATHLETE',tagline:'Power & conditioning · Advanced',weeks:6,daysPerWeek:4,level:'advanced',
   goals:['explosive','conditioning','build_strength','general_fitness'],sessionMin:[50,60],
-  desc:'High-output power work paired with hard conditioning for experienced kettlebell athletes.',
+  desc:'For experienced kettlebell users who want to be explosive and hard to tire. Snatches, cleans and push presses for power, then EMOM and AMRAP days that push the engine. Four demanding days a week.',
   templates:[
    {name:'Power Development',format:'traditional',warmupMin:10,mainMin:40,finisher:{name:'Engine Blast',format:'amrap',totalMinutes:5,round:[{ex:'kb_swing',target:15},{ex:'push_up',target:10},{ex:'reverse_lunge',target:'6/side'}],note:'Five hard minutes. Count rounds, not reps \u2014 and keep the back flat on every swing.'},
     blocks:[{ex:'kb_snatch',sets:4},{ex:'clean_press',sets:4},{ex:'push_press',sets:3},{ex:'turkish_getup',sets:2}]},
@@ -1354,9 +1467,9 @@ const PROGRAMS = [
    {name:'Strength Superset',format:'superset',warmupMin:8,mainMin:36,rounds:4,
     pairs:[['kb_deadlift','overhead_press'],['cossack_squat','one_arm_row']]},
   ]},
- {id:'forge',name:'FORGE',tagline:'12 Week Kettlebell Muscle Build',weeks:12,daysPerWeek:4,level:'intermediate',
+ {id:'forge',name:'FORGE',tagline:'Build muscle · Intermediate',weeks:12,daysPerWeek:4,level:'intermediate',
   goals:['build_muscle','build_strength'],sessionMin:[50,60],
-  desc:'A longer hypertrophy-leaning block that cycles upper, lower, superset and finisher days.',
+  desc:'For intermediate lifters who want visible muscle over a full season. Twelve weeks of upper, lower and superset days in the 8–15 rep range, plus a conditioning day to stay lean. The longest muscle block in the app.',
   templates:[
    {name:'Upper Body Strength',format:'traditional',warmupMin:8,mainMin:42,finisher:{name:'Press Pump',format:'emom',totalMinutes:5,pattern:['overhead_press','push_up','bent_over_row','rest','push_up'],note:'Light bell, high quality. This is for blood flow, not for a new max.'},
     blocks:[{ex:'overhead_press',sets:4,reps:[8,12]},{ex:'one_arm_row',sets:4,reps:[10,15]},{ex:'kb_floor_press',sets:3,reps:[10,15]},{ex:'bent_over_row',sets:3,reps:[10,15]}]},
@@ -1366,9 +1479,9 @@ const PROGRAMS = [
     pairs:[['goblet_squat','push_up'],['kb_deadlift','one_arm_row']]},
    {name:'Conditioning Finisher',format:'emom',warmupMin:9,mainMin:24,totalMinutes:24,pattern:['kb_swing','push_up','sumo_deadlift','around_world','rest'],finisher:{name:'Core Close',format:'amrap',totalMinutes:5,round:[{ex:'plank',target:'30 sec'},{ex:'glute_bridge',target:12},{ex:'hollow_hold',target:'20 sec'}],note:'Steady. Stop each hold while the shape is still good.'}},
   ]},
- {id:'simple_strength',name:'SIMPLE STRENGTH',tagline:'6 Week Six-Pattern Base',weeks:6,daysPerWeek:3,level:'beginner',
+ {id:'simple_strength',name:'SIMPLE STRENGTH',tagline:'Get strong · Beginner',weeks:6,daysPerWeek:3,level:'beginner',
   goals:['build_strength','general_fitness'],sessionMin:[35,45],
-  desc:'One bell, six patterns, straight sets. The least complicated way to get strong enough that everything else becomes possible.',
+  desc:'For beginners who simply want to get strong. One bell, six basic movements and straight sets, nothing fancy — the least complicated route to the strength that makes everything else possible.',
   templates:[
    {name:'Push & Squat',format:'traditional',warmupMin:7,mainMin:30,
     blocks:[{ex:'goblet_squat',sets:3},{ex:'overhead_press',sets:3},{ex:'push_up',sets:3},{ex:'plank',sets:3}]},
@@ -1379,9 +1492,9 @@ const PROGRAMS = [
       note:'Four easy minutes. If the hip snap fades, stop the set early.'},
     blocks:[{ex:'goblet_squat',sets:3},{ex:'sumo_deadlift',sets:3},{ex:'kb_floor_press',sets:3},{ex:'kb_sit_up',sets:3}]},
   ]},
- {id:'steady_five',name:'STEADY FIVE',tagline:'5 Week Four-Day Base',weeks:5,daysPerWeek:4,level:'beginner',
+ {id:'steady_five',name:'STEADY FIVE',tagline:'General fitness · Beginner · 4 days',weeks:5,daysPerWeek:4,level:'beginner',
   goals:['general_fitness','lose_fat'],sessionMin:[36,42],
-  desc:'Four full sessions a week, each split by pattern so nothing gets trained into the ground. A sane first block for someone training most days.',
+  desc:'For beginners who want to train most days without burning out. Four short sessions, each on a different part of the body, so nothing gets overworked and every day feels doable.',
   templates:[
    {name:'Hinge & Swing',format:'traditional',warmupMin:8,mainMin:28,
     finisher:{name:'Swing Close',format:'emom',totalMinutes:5,pattern:['kb_swing','kb_swing','rest','kb_swing','kb_swing'],
@@ -1397,9 +1510,9 @@ const PROGRAMS = [
       note:'Five steady minutes. Stop each hold while the shape still looks right.'},
     blocks:[{ex:'goblet_squat',sets:3},{ex:'reverse_lunge',sets:3},{ex:'single_leg_deadlift',sets:3}]},
   ]},
- {id:'fat_loss_engine',name:'FAT LOSS ENGINE',tagline:'8 Week Conditioning Block',weeks:8,daysPerWeek:4,level:'intermediate',
+ {id:'fat_loss_engine',name:'FAT LOSS ENGINE',tagline:'Lose fat · Intermediate',weeks:8,daysPerWeek:4,level:'intermediate',
   goals:['lose_fat','conditioning'],sessionMin:[35,45],
-  desc:'Conditioning-led, with just enough strength work to keep the muscle you already have while the work rate climbs.',
+  desc:'For anyone whose main goal is losing fat. Mostly work on the clock — EMOMs, supersets and a long AMRAP — with one strength day so you keep your muscle while the weight comes off.',
   templates:[
    {name:'Engine Builder',format:'emom',warmupMin:9,mainMin:26,totalMinutes:26,
     finisher:{name:'Carry Close',format:'emom',totalMinutes:5,pattern:['farmer_carry','suitcase_carry','rest','farmer_carry','suitcase_carry'],
@@ -1415,9 +1528,9 @@ const PROGRAMS = [
    {name:'Long Grind',format:'amrap',warmupMin:10,mainMin:26,totalMinutes:26,
     round:[{ex:'kb_swing',target:15},{ex:'goblet_squat',target:10},{ex:'renegade_row',target:'5/side'},{ex:'figure_8',target:10}]},
   ]},
- {id:'press_pull',name:'PRESS & PULL',tagline:'8 Week Upper Body Focus',weeks:8,daysPerWeek:3,level:'intermediate',
+ {id:'press_pull',name:'PRESS & PULL',tagline:'Upper body · Intermediate',weeks:8,daysPerWeek:3,level:'intermediate',
   goals:['build_muscle','build_strength'],sessionMin:[40,50],
-  desc:'An upper-body block that still trains the legs enough to keep them honest. For anyone whose pressing has stalled.',
+  desc:'For lifters who want bigger shoulders, chest and back, or whose press has stalled. Pressing and pulling days in the muscle-building range, with enough leg work to keep things balanced.',
   templates:[
    {name:'Vertical Push',format:'traditional',warmupMin:8,mainMin:36,
     finisher:{name:'Shoulder Pump',format:'emom',totalMinutes:5,
@@ -1429,9 +1542,9 @@ const PROGRAMS = [
    {name:'Push Pull Super',format:'superset',warmupMin:8,mainMin:34,rounds:4,
     pairs:[['overhead_press','bent_over_row'],['push_up','one_arm_row']]},
   ]},
- {id:'double_bell',name:'DOUBLE BELL POWER',tagline:'8 Week Two-Bell Block',weeks:8,daysPerWeek:4,level:'advanced',
+ {id:'double_bell',name:'DOUBLE BELL POWER',tagline:'Strength & power · Advanced · two bells',weeks:8,daysPerWeek:4,level:'advanced',
   goals:['build_strength','explosive','build_muscle'],sessionMin:[45,60],
-  desc:'Two bells change everything: the load doubles and the trunk becomes the limiting factor. Needs a matched pair and solid single-bell technique.',
+  desc:'For advanced lifters with a matched pair. Double front squats, cleans, snatches and heavy rows — two bells double the load and turn every rep into a full-body effort. Needs solid single-bell technique first.',
   templates:[
    {name:'Double Squat Strength',format:'traditional',warmupMin:10,mainMin:40,
     blocks:[{ex:'double_front_squat',sets:4},{ex:'kb_thruster',sets:3},{ex:'single_leg_deadlift',sets:3},{ex:'hollow_hold',sets:3}]},
@@ -1447,9 +1560,9 @@ const PROGRAMS = [
       note:'One slow rep a minute. Eyes on the bell.'},
     pattern:['one_arm_swing','kb_thruster','kb_high_pull','rest']},
   ]},
- {id:'first_forge',name:'FIRST FORGE',tagline:'8 Week Beginner Muscle Build',weeks:8,daysPerWeek:3,level:'beginner',
+ {id:'first_forge',name:'FIRST FORGE',tagline:'Build muscle · Beginner',weeks:8,daysPerWeek:3,level:'beginner',
   goals:['build_muscle','build_strength','general_fitness'],sessionMin:[45,50],
-  desc:'Size comes from hard sets repeated often, not from heavy singles. One bell, higher reps than a strength block, and every pattern trained three times a week.',
+  desc:'For beginners whose main goal is muscle. Every pattern three times a week with one bell, higher reps than a strength plan and supersets for the pump — the simplest way to start growing.',
   templates:[
    {name:'Squat & Press',format:'traditional',warmupMin:8,mainMin:36,
     blocks:[{ex:'goblet_squat',sets:4,reps:[10,15]},{ex:'overhead_press',sets:3,reps:[8,12]},
@@ -1469,9 +1582,9 @@ const PROGRAMS = [
       round:[{ex:'hollow_hold',target:'20 sec'},{ex:'mountain_climber',target:20},{ex:'plank',target:'30 sec'}],
       note:'Five steady minutes. Leave a little in the tank on every round.'}},
   ]},
- {id:'anvil',name:'ANVIL',tagline:'10 Week Advanced Muscle Block',weeks:10,daysPerWeek:4,level:'advanced',
+ {id:'anvil',name:'ANVIL',tagline:'Build muscle · Advanced',weeks:10,daysPerWeek:4,level:'advanced',
   goals:['build_muscle','build_strength'],sessionMin:[49,56],
-  desc:'Upper and lower twice each per week: a heavier day in the 8\u201312 range and a volume day in the 12\u201320 range. Doubles for the front squats if you have them \u2014 swap to the single-bell front squat if you do not.',
+  desc:'For advanced lifters chasing maximum muscle. Upper and lower body twice a week each — a heavy day and a high-volume day — for ten weeks. Works best with a pair of bells for the front squats.',
   templates:[
    {name:'Lower Heavy',format:'traditional',warmupMin:10,mainMin:42,
     blocks:[{ex:'double_front_squat',sets:4,reps:[8,12]},{ex:'romanian_deadlift',sets:4,reps:[8,12]},
@@ -1490,9 +1603,9 @@ const PROGRAMS = [
     finisher:{name:'Grip Close',format:'emom',totalMinutes:5,pattern:['farmer_carry','suitcase_carry','rest','farmer_carry','suitcase_carry'],
       note:'Heavy as you can hold with the shoulders back.'}},
   ]},
- {id:'armor',name:'ARMOR',tagline:'6 Week Complex Block',weeks:6,daysPerWeek:3,level:'intermediate',
+ {id:'armor',name:'ARMOR',tagline:'Muscle & grip · Intermediate',weeks:6,daysPerWeek:3,level:'intermediate',
   goals:['build_muscle','conditioning','build_strength'],sessionMin:[40,50],
-  desc:'Built on the complex: clean, press and front squat without ever putting the bell down. The template Dan John made famous, run with one bell so it needs no matched pair. Brutal on the shoulders and the grip, and it builds them.',
+  desc:'For lifters who like hard, efficient sessions. Built on the complex — clean, press and front squat without putting the bell down — the classic Dan John template with one bell. Brutal on the shoulders and the grip, and it builds both.',
   templates:[
    {name:'The Complex',format:'complex',warmupMin:9,mainMin:30,rounds:5,restSec:75,
     chain:[{ex:'kb_clean',reps:2},{ex:'overhead_press',reps:1},{ex:'kb_front_squat',reps:3}],
@@ -1507,9 +1620,9 @@ const PROGRAMS = [
       pattern:['suitcase_carry','overhead_carry','rest','suitcase_carry','overhead_carry'],
       note:'Walk tall. Put it down before the shoulder rounds.'}},
   ]},
- {id:'daily_minimum',name:'DAILY MINIMUM',tagline:'5 Week Everyday Practice',weeks:5,daysPerWeek:5,level:'intermediate',
+ {id:'daily_minimum',name:'DAILY MINIMUM',tagline:'Strength & health · Intermediate · 5 days',weeks:5,daysPerWeek:5,level:'intermediate',
   goals:['conditioning','build_strength','general_fitness'],sessionMin:[35,45],
-  desc:'Two movements, almost every day: one-arm swings and get-ups. The template Pavel Tsatsouline made famous as a daily minimum. It is not exciting and that is the point \u2014 it is the programme you can still be running in six months.',
+  desc:'For people who want a short daily habit that keeps them strong for years. Two movements almost every day — one-arm swings and get-ups — the famous Pavel Tsatsouline minimum. Not exciting, and that is exactly why it lasts.',
   templates:[
    {name:'Swings & Get-Ups',format:'traditional',warmupMin:9,mainMin:30,
     blocks:[{ex:'one_arm_swing',sets:5,reps:[10,10]},{ex:'turkish_getup',sets:5,reps:[1,1]}]},
@@ -1520,9 +1633,9 @@ const PROGRAMS = [
     blocks:[{ex:'kb_swing',sets:4,reps:[12,15]},{ex:'turkish_getup',sets:3,reps:[1,1]},
             {ex:'windmill',sets:3}]},
   ]},
- {id:'benchmark_week',name:'BENCHMARK WEEK',tagline:'1 Week Test & Retest',weeks:1,daysPerWeek:5,level:'intermediate',
+ {id:'benchmark_week',name:'BENCHMARK WEEK',tagline:'Test your level · 1 week',weeks:1,daysPerWeek:5,level:'intermediate',
   progression:'test',goals:['general_fitness','conditioning','build_strength'],sessionMin:[20,40],
-  desc:'Five tests, written to be repeated. Run this week before a block and again after it, and the history screen stops being decoration \u2014 it becomes the answer to whether the last two months worked.',
+  desc:'For measuring your progress. Five tests — swings, press, squats, a chipper and carries — to run before a block and again after it, so you know in numbers whether the last months worked.',
   templates:[
    {name:'The Swing Test',format:'for_time',mainMin:12,capMin:12,
     ladder:[25,25,25,25],chain:[{ex:'kb_swing'}],
@@ -1539,9 +1652,9 @@ const PROGRAMS = [
    {name:'The Carry Test',format:'traditional',mainMin:26,
     blocks:[{ex:'farmer_carry',sets:5},{ex:'suitcase_carry',sets:4},{ex:'plank',sets:3}]},
   ]},
- {id:'reset_week',name:'RESET WEEK',tagline:'1 Week Back Off',weeks:1,daysPerWeek:4,level:'beginner',
+ {id:'reset_week',name:'RESET WEEK',tagline:'Recover · 1 week',weeks:1,daysPerWeek:4,level:'beginner',
   progression:'reset',goals:['general_fitness','build_strength'],sessionMin:[35,40],
-  desc:'The week after a hard block. Half the work, all of the technique, and nothing that leaves a mark. Coming back to a programme flat is not discipline \u2014 it is the reason the next block stalls.',
+  desc:'For the week after a hard block, or when you come back tired or sore. Half the work, all of the technique, nothing that leaves a mark — so the next programme starts fresh instead of flat.',
   templates:[
    {name:'Move & Breathe',format:'traditional',mainMin:26,
     blocks:[{ex:'glute_bridge',sets:4,reps:[12,12]},{ex:'kb_halo',sets:4},{ex:'plank',sets:4}]},
@@ -1555,9 +1668,9 @@ const PROGRAMS = [
     blocks:[{ex:'goblet_squat',sets:4,reps:[8,8]},{ex:'reverse_lunge',sets:4,reps:[8,8]},
             {ex:'glute_bridge',sets:4,reps:[12,12]}]},
   ]},
- {id:'the_ladder',name:'THE LADDER',tagline:'4 Week Rung Progression',weeks:4,daysPerWeek:3,level:'intermediate',
+ {id:'the_ladder',name:'THE LADDER',tagline:'Get strong · Intermediate',weeks:4,daysPerWeek:3,level:'intermediate',
   progression:'ladder',goals:['build_strength','build_muscle'],sessionMin:[40,55],
-  desc:'One rep, then two, then three, then back to one. The load never moves \u2014 the ladder gets taller every week instead. Volume climbs from twenty-odd reps to nearly fifty without a single heavier bell.',
+  desc:'For lifters who want more strength without a heavier bell. Ladders of 1-2-3-4-5 reps that grow by a rung every week, so your volume nearly doubles in four weeks with the same kettlebell.',
   templates:[
    {name:'Press Ladder',format:'traditional',mainMin:34,
     blocks:[{ex:'overhead_press',ladder:[1,2,3,4,5]},{ex:'one_arm_row',ladder:[3,4,5,6]},
@@ -1569,9 +1682,9 @@ const PROGRAMS = [
     blocks:[{ex:'one_arm_row',ladder:[2,3,4,5,6]},{ex:'bent_over_row',ladder:[3,4,5]},
             {ex:'farmer_carry',sets:3}]},
   ]},
- {id:'ten_thousand',name:'TEN THOUSAND SWINGS',tagline:'4 Week Swing Block',weeks:4,daysPerWeek:5,level:'intermediate',
+ {id:'ten_thousand',name:'TEN THOUSAND SWINGS',tagline:'Lose fat & conditioning · Intermediate',weeks:4,daysPerWeek:5,level:'intermediate',
   progression:'flat',goals:['lose_fat','conditioning','build_strength'],sessionMin:[45,55],
-  desc:'Five hundred swings a session, twenty sessions, ten thousand swings. One grind between the swing sets and nothing else. It is not clever and it is not varied \u2014 it just works, and it is over in four weeks.',
+  desc:'For anyone who wants a short, hard challenge. Ten thousand swings in four weeks — five hundred a session — with one strength movement between the sets. Simple, brutal, and it works.',
   templates:[
    {name:'Swings & Press',format:'traditional',mainMin:42,
     blocks:[{ex:'kb_swing',sets:10,reps:[50,50]},{ex:'overhead_press',sets:5,reps:[5,5]}]},
@@ -1584,9 +1697,9 @@ const PROGRAMS = [
    {name:'Swings & Carry',format:'traditional',mainMin:42,
     blocks:[{ex:'kb_swing',sets:10,reps:[50,50]},{ex:'farmer_carry',sets:5}]},
   ]},
- {id:'crucible',name:'CRUCIBLE',tagline:'4 Week Chipper Block',weeks:4,daysPerWeek:4,level:'advanced',
+ {id:'crucible',name:'CRUCIBLE',tagline:'Conditioning · Advanced',weeks:4,daysPerWeek:4,level:'advanced',
   progression:'block',goals:['conditioning','lose_fat','explosive'],sessionMin:[25,55],
-  desc:'One long piece against the clock every week, and three days of work that make it survivable. The chipper is the point \u2014 everything else is there so the chipper does not break you.',
+  desc:'For advanced athletes who love a hard test. One long piece against the clock every week and three days that make it survivable. Built to push your engine and your will.',
   templates:[
    {name:'The Long Piece',format:'for_time',mainMin:30,capMin:30,
     ladder:[21,18,15,12,9,6,3],chain:[{ex:'kb_swing'},{ex:'goblet_squat'},{ex:'burpee'}],
@@ -1603,9 +1716,9 @@ const PROGRAMS = [
       pattern:['farmer_carry','suitcase_carry','rest','overhead_carry','farmer_carry'],
       note:'Walk tall. Put them down before the posture goes.'}},
   ]},
- {id:'grease_groove',name:'GREASE THE GROOVE',tagline:'4 Week Frequency Block',weeks:4,daysPerWeek:6,level:'beginner',
+ {id:'grease_groove',name:'GREASE THE GROOVE',tagline:'Get strong · Beginner · 6 short days',weeks:4,daysPerWeek:6,level:'beginner',
   progression:'flat',goals:['build_strength','general_fitness'],sessionMin:[35,45],
-  desc:'Many easy sets, often, and never anywhere near failure. You are not trying to tire the muscle \u2014 you are teaching the movement. The strength shows up as a side effect of the practice.',
+  desc:'For beginners who can train little but often. Many easy sets, never near failure, six short days a week — you practise the movement and the strength arrives as a side effect.',
   templates:[
    {name:'Grease \u2014 Press',format:'traditional',mainMin:28,
     blocks:[{ex:'overhead_press',sets:8,reps:[3,3]},{ex:'push_up',sets:6,reps:[5,5]}]},
@@ -1620,9 +1733,9 @@ const PROGRAMS = [
    {name:'Grease \u2014 Carry',format:'traditional',mainMin:28,
     blocks:[{ex:'farmer_carry',sets:6},{ex:'suitcase_carry',sets:6}]},
   ]},
- {id:'half_hour',name:'HALF HOUR',tagline:'4 Week Short Sessions',weeks:4,daysPerWeek:3,level:'beginner',
+ {id:'half_hour',name:'HALF HOUR',tagline:'General fitness · Beginner · 30 min',weeks:4,daysPerWeek:3,level:'beginner',
   progression:'flat',goals:['general_fitness','build_strength','lose_fat','conditioning'],sessionMin:[35,35],
-  desc:'Three sessions a week that never outgrow the half hour you have. Paired movements so the rest between them is spent working, and no week that quietly runs to fifty minutes because the block decided to ramp.',
+  desc:'For anyone who has half an hour and not a minute more. Three full-body sessions with paired movements, so rest time is working time — and the session never grows past the half hour.',
   templates:[
    {name:'Push & Squat',format:'superset',mainMin:26,rounds:4,
     pairs:[['goblet_squat','overhead_press'],['push_up','kb_swing']]},
@@ -1632,9 +1745,9 @@ const PROGRAMS = [
     blocks:[{ex:'goblet_squat',sets:3,reps:[10,12]},{ex:'one_arm_row',sets:3,reps:[10,12]},
             {ex:'kb_swing',sets:3,reps:[15,20]},{ex:'plank',sets:2}]},
   ]},
- {id:'two_days',name:'TWO DAYS',tagline:'6 Week Minimum Dose',weeks:6,daysPerWeek:2,level:'beginner',
+ {id:'two_days',name:'TWO DAYS',tagline:'General fitness · Beginner · 2 days',weeks:6,daysPerWeek:2,level:'beginner',
   minSession:38,goals:['general_fitness','build_strength'],sessionMin:[40,48],
-  desc:'Two full-body sessions a week, and that is the whole programme. Not a compromise you apologise for \u2014 twice a week, held for six weeks, beats four days a week abandoned in the third.',
+  desc:'For busy weeks with room for only two sessions. Two full-body workouts held for six weeks — twice a week done consistently beats four days a week abandoned by week three.',
   templates:[
    {name:'Full Body A',format:'traditional',mainMin:32,
     blocks:[{ex:'goblet_squat',sets:4,reps:[8,10]},{ex:'overhead_press',sets:4,reps:[6,8]},
@@ -1643,9 +1756,9 @@ const PROGRAMS = [
     blocks:[{ex:'kb_deadlift',sets:4,reps:[6,8]},{ex:'kb_floor_press',sets:4,reps:[8,10]},
             {ex:'reverse_lunge',sets:3,reps:[8,10]},{ex:'suitcase_carry',sets:3}]},
   ]},
- {id:'quick_strength',name:'QUICK STRENGTH',tagline:'4 Week Short Heavy Sets',weeks:4,daysPerWeek:3,level:'intermediate',
+ {id:'quick_strength',name:'QUICK STRENGTH',tagline:'Get strong · Intermediate · 30 min',weeks:4,daysPerWeek:3,level:'intermediate',
   minSession:30,goals:['build_strength'],sessionMin:[33,38],
-  desc:'Three movements a session, low reps, honest rest. Strength is the one quality that does not need volume to move \u2014 it needs load and it needs you to turn up.',
+  desc:'For lifters who want strength in short sessions. Three movements, low reps and proper rest — strength needs load and consistency, not long workouts.',
   templates:[
    {name:'Squat & Press',format:'traditional',mainMin:22,
     blocks:[{ex:'goblet_squat',sets:4,reps:[5,6]},{ex:'overhead_press',sets:4,reps:[5,6]},
@@ -1657,9 +1770,9 @@ const PROGRAMS = [
     blocks:[{ex:'kb_front_squat',sets:4,reps:[5,6]},{ex:'push_press',sets:3,reps:[5,6]},
             {ex:'overhead_carry',sets:3}]},
   ]},
- {id:'short_engine',name:'SHORT ENGINE',tagline:'4 Week Clock Work',weeks:4,daysPerWeek:3,level:'intermediate',
+ {id:'short_engine',name:'SHORT ENGINE',tagline:'Conditioning · Intermediate · 30 min',weeks:4,daysPerWeek:3,level:'intermediate',
   minSession:30,goals:['conditioning','lose_fat','explosive'],sessionMin:[32,38],
-  desc:'Twenty minutes on a clock, three times a week. Nothing to decide once it starts \u2014 the clock decides, and you either keep up or you do not.',
+  desc:'For anyone who wants fitness fast. Twenty minutes on the clock, three times a week — EMOMs and AMRAPs with nothing to decide once it starts. Keep up with the clock and the fitness comes.',
   templates:[
    {name:'Swing EMOM',format:'emom',mainMin:20,totalMinutes:20,
     pattern:['kb_swing','goblet_squat','push_up','rest']},
@@ -1669,9 +1782,9 @@ const PROGRAMS = [
    {name:'Burpee Clock',format:'emom',mainMin:20,totalMinutes:20,
     pattern:['burpee','kb_clean','hollow_hold','rest']},
   ]},
- {id:'minimal_muscle',name:'MINIMAL MUSCLE',tagline:'4 Week Short Hypertrophy',weeks:4,daysPerWeek:3,level:'beginner',
+ {id:'minimal_muscle',name:'MINIMAL MUSCLE',tagline:'Build muscle · Beginner · 30 min',weeks:4,daysPerWeek:3,level:'beginner',
   minSession:30,progression:'flat',goals:['build_muscle','general_fitness'],sessionMin:[34,34],
-  desc:'Paired movements, reps in the range that builds tissue, and the rest between them spent working the other side of the body. The shortest way to real volume that exists.',
+  desc:'For people who want muscle but have little time. Supersets in the muscle-building rep range, so the rest is spent working the other side of the body — the shortest route to real volume.',
   templates:[
    {name:'Push & Pull',format:'superset',mainMin:26,rounds:4,
     repScheme:{overhead_press:[8,12],one_arm_row:[10,15],push_up:[10,15],bent_over_row:[10,15]},
@@ -1683,9 +1796,9 @@ const PROGRAMS = [
     repScheme:{kb_front_squat:[10,12],kb_floor_press:[10,15],kb_swing:[15,20],hollow_hold:[20,30]},
     pairs:[['kb_front_squat','kb_floor_press'],['kb_swing','hollow_hold']]},
   ]},
- {id:'swing_school',name:'SWING SCHOOL',tagline:'4 Week Ballistics Primer',weeks:4,daysPerWeek:3,level:'beginner',
+ {id:'swing_school',name:'SWING SCHOOL',tagline:'Learn the swing · Beginner',weeks:4,daysPerWeek:3,level:'beginner',
   goals:['explosive','conditioning','lose_fat'],sessionMin:[38,46],
-  desc:'The swing, then the clean, then the high pull \u2014 learned in that order, because each one is the last one with somewhere else to go. Short clock work at the end of every session, so the engine gets built while the technique is still being taught.',
+  desc:'For beginners who want to learn the kettlebell’s signature move. The swing, then the clean, then the high pull, taught in that order, with short clock work at the end so the fitness builds while you learn.',
   templates:[
    {name:'The Hinge',format:'traditional',mainMin:28,
     blocks:[{ex:'kb_deadlift',sets:3,reps:[8,10]},{ex:'kb_swing',sets:5,reps:[10,12]},
@@ -1710,7 +1823,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26l';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-26n';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -3097,6 +3210,7 @@ function scorePrograms(){
     }
     // And a programme built on two bells is not a match for one bell, however
     // well its goals line up.
+    if(prog.brand==='NT' && (p.goals||[]).some(function(g){ return g==='build_muscle' || g==='build_strength'; })) score += 2.5;
     const gate = missingGearFor(prog);
     if(gate) score -= 12;
     return {prog, score, gate};
@@ -3121,13 +3235,31 @@ function missingGearFor(prog){
   return 'Needs two kettlebells of the same weight \u2014 for '
        + names.join(' and ') + (needPair.length>2 ? ' and others' : '');
 }
+let RECO_MORE = false;
 function renderRecommend(){
   const ranked = scorePrograms();
-  const best = ranked[0], rest = ranked.slice(1,4);
+  const best = ranked[0], rest = ranked.slice(1,4), more = ranked.slice(4);
   return '<div class="eyebrow">Recommended For You</div><h2 style="font-size:26px;margin:8px 0 18px;">Choose your program</h2>'
   +programCard(best.prog, true, best.gate)
   +'<div class="section-title" style="margin:22px 0 10px;">Other Options</div>'
-  +rest.map(r=>programCard(r.prog,false,r.gate)).join('');
+  +rest.map(r=>programCard(r.prog,false,r.gate)).join('')
+  /* None of these feel right? Everything else, still in order of fit, one tap away. */
+  +(more.length ? (RECO_MORE
+      ? '<div class="section-title" style="margin:22px 0 10px;">More programs</div>'+more.map(r=>programMiniCard(r.prog, r.gate)).join('')
+      : '<button class="btn btn-secondary btn-block" style="margin-top:4px;" onclick="RECO_MORE=true;render()">Show '+more.length+' more programs</button>')
+    : '');
+}
+function programMiniCard(prog, gate){
+  return '<div class="card reco-mini'+(prog.brand==='NT'?' nt-card':'')+'">'
+    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">'
+    + '<div style="min-width:0;"><div class="wr-title" style="font-size:16px;">'+esc(prog.name)+'</div>'
+    + '<div class="wr-meta">'+esc(prog.tagline)+'</div></div>'
+    + '<span class="badge badge-neutral">'+prog.level.toUpperCase()+'</span></div>'
+    + '<p style="color:var(--text-3);font-size:13px;line-height:1.5;margin:8px 0 0;">'+esc(prog.desc)+'</p>'
+    + '<div class="wr-meta" style="margin-top:8px;">'+prog.weeks+' weeks \u00b7 '+prog.daysPerWeek+' days/wk \u00b7 '+prog.sessionMin[0]+(prog.sessionMin[1]!==prog.sessionMin[0]?'\u2013'+prog.sessionMin[1]:'')+' min</div>'
+    + (gate?'<p style="margin-top:8px;font-size:12.5px;color:var(--amber);font-weight:600;">'+esc(gate)+'</p>':'')
+    + '<button class="btn btn-ghost btn-block btn-sm" style="margin-top:10px;" onclick="selectProgram(\''+prog.id+'\')">Choose '+esc(prog.name)+'</button>'
+    + '</div>';
 }
 function programCard(prog, isBest, gate){
   return '<div class="program-hero" style="margin-bottom:14px;">'
@@ -3470,7 +3602,7 @@ function deleteCustom(id){
 function programListCard(prog){
   const stats = programStats(prog);
   const active = STATE.selectedProgramId===prog.id;
-  return '<div class="card" style="cursor:pointer;" onclick="navigate(\'program_detail\',{id:\''+prog.id+'\'})">'
+  return '<div class="card'+(prog.brand==='NT'?' nt-card':'')+'" style="cursor:pointer;" onclick="navigate(\'program_detail\',{id:\''+prog.id+'\'})">'
     +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
     +'<div><h2 style="font-size:21px;">'+esc(prog.name)+'</h2><p style="color:var(--text-3);font-size:13px;font-weight:600;margin-top:2px;">'+esc(prog.tagline)+'</p></div>'
     +(active?'<span class="badge badge-blue">ACTIVE</span>':'')
@@ -3488,8 +3620,11 @@ function renderProgramsList(){
   +'<div class="ex-icon">'+ICON.plus+'</div><div style="flex:1;"><div class="wr-title">Build your own program</div>'
   +'<div class="wr-meta">Pick the days and exercises \u2014 the app handles warm-ups, load and deloads</div></div>'+ico(ICON.chevron)+'</div>'
   +(mine.length ? '<div class="section-title" style="margin-top:22px;">Your programs</div>'+mine.map(programListCard).join('') : '')
+  +'<div class="section-title nt-series-title" style="margin-top:22px;"><span class="nt-mark">NT</span> Our programmes</div>'
+  +'<p class="nt-series-sub">Our own programmes: Strength &amp; Size for every level, and Dad Strong for 35\u201340 minute days.</p>'
+  +PROGRAMS.filter(function(p){ return p.brand==='NT'; }).map(programListCard).join('')
   +'<div class="section-title" style="margin-top:22px;">Program library</div>'
-  +PROGRAMS.map(programListCard).join('');
+  +PROGRAMS.filter(function(p){ return p.brand!=='NT'; }).map(programListCard).join('');
 }
 function renderProgramDetail(id){
   const prog = PROG_BY_ID[id]; if(!prog) return '<p>Program not found.</p>';
@@ -5913,14 +6048,16 @@ function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.
 /* ============================= ACTIVE WORKOUT ENGINE ============================= */
 /* Preview — what you are about to do, before you are in it. Mirrors the shape
    of the session itself: the modules this day carries, in order. */
-function previewWorkout(progId, week, idx){ navigate('workout_preview', {progId, week, idx}); }
+function previewWorkout(progId, week, idx){ SHORT_PICK = false; navigate('workout_preview', {progId, week, idx}); }
 /* A built workout has no programme behind it, so it waits here until Start. */
 let PENDING_CUSTOM = null;
 function renderWorkoutPreview(pr){
   const custom = !!pr.custom && PENDING_CUSTOM;
   const prog = custom ? {id:'', name:'Build My Workout'} : PROG_BY_ID[pr.progId];
   if(!prog) return '<p>Program not found.</p>';
-  const w = custom ? PENDING_CUSTOM : buildWorkoutInstance(prog, +pr.week, +pr.idx);
+  const canShort = !custom && hasShortVersion(prog);
+  let w = custom ? PENDING_CUSTOM : buildWorkoutInstance(prog, +pr.week, +pr.idx);
+  if(canShort && SHORT_PICK) w = shortenWorkout(w);
   const mods = workoutModules(w);
   const alreadyDone = custom ? false : isWorkoutDone(prog, +pr.week, +pr.idx);
   if(custom) pr = {progId:'', week:0, idx:0};
@@ -5998,7 +6135,7 @@ function renderWorkoutPreview(pr){
   +'<div class="pv-hero'+(hp?' has-photo':'')+'">'
     +(hp?'<div class="pv-photo"><img alt="" src="'+hp.src[Math.min(hp.key||0,hp.src.length-1)]+'"></div>':'')
     +'<div class="pv-hero-in">'
-      +'<div class="pv-eb">'+(custom ? 'Built for today' : 'Week '+pr.week+' · '+esc(w.phaseName))+'</div>'
+      +'<div class="pv-eb">'+(custom ? 'Built for today' : (w.short ? 'Short version · ' : '')+'Week '+pr.week+' · '+esc(w.phaseName))+'</div>'
       +'<h1 class="pv-title">'+esc(w.name)+'</h1>'
       +'<div class="chip-row"><span class="badge badge-blue">'+fmtLabel(w.format)+'</span>'
         +(alreadyDone?'<span class="badge badge-beginner">Completed</span>':'')+'</div>'
@@ -6020,13 +6157,38 @@ function renderWorkoutPreview(pr){
   +(finList?'<div class="section pv-main"><div class="section-head"><div class="section-title" style="color:var(--amber);">Finisher · '+w.finisher.totalMinutes+' min</div></div><div class="card">'
       +(w.finisher.note?'<p style="color:var(--text-2);font-size:13.5px;margin-bottom:10px;line-height:1.55;">'+esc(w.finisher.note)+'</p>':'')
       +finList+'</div></div>':'')
-  +'<div class="pv-dock"><button class="btn btn-primary btn-block" onclick="'+(custom ? 'startCustomWorkout(PENDING_CUSTOM)' : 'startWorkout(\''+pr.progId+'\','+pr.week+','+pr.idx+')')+'">'+ICON.play+(alreadyDone?' Run It Again':' Start Workout')+' · '+w.totalMin+' min</button></div>'
+  +(canShort ? '<div class="short-pick"><div class="wr-title" style="font-size:14px;">Short on time today?</div>'
+      + '<div class="frame-seg" style="grid-template-columns:1fr 1fr;padding-bottom:0;">'
+      + '<button class="'+(!SHORT_PICK?'on':'')+'" onclick="SHORT_PICK=false;render()">Full<small>'+buildWorkoutInstance(prog,+pr.week,+pr.idx).totalMin+' min</small></button>'
+      + '<button class="'+(SHORT_PICK?'on':'')+'" onclick="SHORT_PICK=true;render()">Short<small>'+shortenWorkout(buildWorkoutInstance(prog,+pr.week,+pr.idx)).totalMin+' min</small></button>'
+      + '</div></div>' : '')
+  +'<div class="pv-dock"><button class="btn btn-primary btn-block" onclick="'+(custom ? 'startCustomWorkout(PENDING_CUSTOM)' : 'startWorkout(\''+pr.progId+'\','+pr.week+','+pr.idx+(canShort&&SHORT_PICK?',{short:true}':'')+')')+'">'+ICON.play+(alreadyDone?' Run It Again':' Start Workout')+' · '+w.totalMin+' min</button></div>'
   + renderPeekOverlay();
 }
 
-function startWorkout(progId, week, idx){
+/* The 20-minute version of a day: same movements, half the sets or rounds, a
+   twelve-minute clock, no finisher. It still completes the day \u2014 a short
+   session done beats a full one skipped. */
+function hasShortVersion(prog){ return !!prog && /^nt_dad_/.test(prog.id); }
+function shortenWorkout(w){
+  w = JSON.parse(JSON.stringify(w));
+  delete w.finisher;
+  if(w.blocks){ w.blocks = w.blocks.slice(0,3).map(function(b){ return b.ladder ? Object.assign({},b,{ladder:b.ladder.slice(0,Math.ceil(b.ladder.length/2))}) : Object.assign({},b,{sets:Math.max(2,Math.ceil(b.sets/2))}); }); }
+  if(w.rounds) w.rounds = Math.max(2, Math.ceil(w.rounds/2));
+  if(w.format==='emom' || w.format==='amrap'){ w.totalMinutes = 12; }
+  w.mainMin = (w.format==='emom' || w.format==='amrap') ? 12 : 14;
+  w.short = true;
+  attachWarmup(w);
+  w.warmupMin = Math.min(w.warmupMin, 6);
+  w.totalMin = w.warmupMin + w.mainMin;
+  return w;
+}
+let SHORT_PICK = false;
+function startWorkout(progId, week, idx, opts){
   const prog = PROG_BY_ID[progId];
-  const w = buildWorkoutInstance(prog, week, idx);
+  let w = buildWorkoutInstance(prog, week, idx);
+  if(opts && opts.short) w = shortenWorkout(w);
+  SHORT_PICK = false;
   initSession(w);
   navigate('active_workout');
 }
@@ -8040,12 +8202,16 @@ function renderWorkoutSummary(){
   const anim = !SESSION._revealed;
   if(anim){ SESSION._revealed = true; setTimeout(runSummaryCount, 60); }
   const rv = function(i){ return anim ? ' reveal" style="animation-delay:'+(i*0.18).toFixed(2)+'s' : ''; };
+  /* Optional: Just Right is already picked, so Done is always one tap away.
+     A different answer is a tap on the chip; it is saved when you leave. */
   let feedbackBlock;
   if(!SESSION.workoutFeedbackGiven){
-    feedbackBlock = '<div class="divider"></div><div class="eyebrow" style="margin-bottom:10px;">How was the whole workout?</div>'
-    +'<div class="diff-grid" style="grid-template-columns:1fr 1fr;">'
-    + [['too_easy','Too Easy'],['just_right','Just Right'],['hard','Hard'],['too_hard','Too Hard']].map(([id,l])=>'<div class="diff-opt" onclick="submitWorkoutFeedback(\''+id+'\')">'+l+'</div>').join('')
-    +'</div>';
+    const pick = SESSION._wfPick || 'just_right';
+    feedbackBlock = '<div class="divider"></div><div class="eyebrow" style="margin-bottom:10px;">How was the whole workout? <span style="text-transform:none;letter-spacing:0;font-weight:600;color:var(--text-3);">optional</span></div>'
+    +'<div class="diff-grid" id="wfGrid" style="grid-template-columns:1fr 1fr;">'
+    + [['too_easy','Too Easy'],['just_right','Just Right'],['hard','Hard'],['too_hard','Too Hard']].map(([id,l])=>'<div class="diff-opt'+(pick===id?' selected':'')+'" data-wf="'+id+'" onclick="pickWorkoutFeel(\''+id+'\')">'+l+'</div>').join('')
+    +'</div>'
+    +'<button class="btn btn-primary btn-block" style="margin-top:14px;" onclick="finishWithFeedback()">Done</button>';
   } else {
     feedbackBlock = '<div class="divider"></div><p style="color:var(--text-3);font-size:13.5px;">Thanks \u2014 that helps plan your next session.</p>'
     +'<button class="btn btn-primary btn-block" style="margin-top:14px;" onclick="closeWorkout()">Done</button>';
@@ -8106,6 +8272,18 @@ function runSummaryCount(){
         n.textContent = Math.round(to*e).toLocaleString('en'); if(k<1) requestAnimationFrame(step); })();
     }, 180*(i+1));
   });
+}
+function pickWorkoutFeel(id){
+  SESSION._wfPick = id;
+  document.querySelectorAll('#wfGrid .diff-opt').forEach(function(c){ c.classList.toggle('selected', c.dataset.wf===id); });
+}
+function finishWithFeedback(){
+  if(SESSION && !SESSION.workoutFeedbackGiven){
+    const w = SESSION.workout;
+    STATE.workoutFeedback.push({workoutName:w.name, programId:w.programId, date:todayISO(), difficulty:SESSION._wfPick || 'just_right'});
+    SESSION.workoutFeedbackGiven = true; saveState();
+  }
+  closeWorkout();
 }
 function submitWorkoutFeedback(diff){
   const w = SESSION.workout;
