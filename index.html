@@ -883,6 +883,10 @@ a{color:inherit;text-decoration:none;}
   padding:18px 18px calc(16px + env(safe-area-inset-bottom, 0px));}
 .onb-nav .row{display:flex;gap:10px;max-width:520px;margin:0 auto;}
 .onb-hint{max-width:520px;margin:0 auto 9px;font-size:12.5px;color:var(--text-3);text-align:center;}
+body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A;pointer-events:none;z-index:9999;}
+.test-banner{display:flex;align-items:center;gap:12px;margin-bottom:14px;border-color:#FF9F0A;}
+.test-banner .wr-title{color:#FF9F0A;}
+.test-card{border-color:#FF9F0A;}
 .save-alert{margin-bottom:10px;border-color:var(--red);
   background:color-mix(in srgb, var(--red) 14%, transparent);color:var(--text-1);
   font-size:13px;line-height:1.5;font-weight:600;}
@@ -1643,12 +1647,18 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26e';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-26f';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
 const BRAND = { name:'NT Training', category:'Kettlebell' };
-const STORE_KEY='ironbell_state_v1';
+const REAL_STORE_KEY='ironbell_state_v1';
+/* Test profile: a second, separate save under its own key, so trying things out
+   never moves the real progression. The real key above is never touched. */
+const TEST_FLAG='nt_test_profile';
+const TEST_MODE=(function(){ try{ return localStorage.getItem(TEST_FLAG)==='1'; }catch(e){ return false; } })();
+const STORE_KEY = TEST_MODE ? REAL_STORE_KEY+'_test' : REAL_STORE_KEY;
+let STORAGE_FROZEN = false;   // set just before a profile switch reloads, so nothing writes on the way out
 function defaultState(){
   return {
     onboardingComplete:false,
@@ -1724,6 +1734,7 @@ function migrateUnloadedWeights(){
 let SAVE_FAILED = null;
 let LOAD_DAMAGED = false;
 function saveState(){
+  if(STORAGE_FROZEN) return true;
   try{
     localStorage.setItem(STORE_KEY, JSON.stringify(STATE));
     if(SAVE_FAILED){ SAVE_FAILED = null; render(); }
@@ -1979,7 +1990,7 @@ function openA2hs(){
   STATE.profile.a2hsSeen = false; saveState(); navigate('home');
 }
 function backupNudge(){
-  if(!backupDue()) return '';
+  if(TEST_MODE || !backupDue()) return '';
   return '<div class="card card-tight" style="margin-top:14px;display:flex;align-items:center;gap:12px;">'
     + '<div style="flex:1;min-width:0;"><div class="wr-title">Keep a copy of your training</div><div class="wr-meta">'+STATE.history.length+' sets live only in this browser.</div></div>'
     + '<button class="btn btn-primary btn-sm" onclick="exportData()">Save</button></div>';
@@ -3095,6 +3106,7 @@ function renderHome(){
   +'<div class="top-row" style="margin-bottom:6px;"><div><div class="eyebrow">'+greet.toUpperCase()+'</div><h1 style="font-size:30px;">'+esc(p.name||'Athlete')+'</h1></div></div>'
   +'<p style="color:var(--text-2);margin-bottom:20px;">Ready to train?</p>'
   +todayCard
+  +testBanner()
   +resumeCard()
   +(LOAD_DAMAGED ? '<div class="card card-tight save-alert" style="margin-bottom:14px;">Your saved training could not be read on this device. The original was kept untouched — restore a backup from Profile, or keep going and the app starts fresh.</div>' : '')
   +a2hsCard()
@@ -7822,6 +7834,7 @@ function submitWorkoutFeedback(diff){
    not restored running: the clock waits for you to press Resume. */
 const SESSION_KEY = STORE_KEY + '_session';
 function snapshotSession(){
+  if(STORAGE_FROZEN) return;
   if(!SESSION || SESSION.finished){ clearSessionSnapshot(); return; }
   try{ localStorage.setItem(SESSION_KEY, JSON.stringify(SESSION, function(k,v){ return /Handle$/.test(k) ? undefined : v; })); }catch(e){}
 }
@@ -8418,7 +8431,8 @@ function renderProfile(){
   + '<p style="margin:12px 0 0;font-size:12px;color:var(--text-3);line-height:1.5;">'
     + 'Restoring adds anything missing. It never removes a session you already have.</p>'
   + '</div></div>'
-  +'<button class="btn btn-danger btn-block" style="margin-top:20px;" onclick="resetAllData()">Reset All Data</button>'
+  +testProfileCard()
+  +'<button class="btn btn-danger btn-block" style="margin-top:20px;" onclick="resetAllData()">'+(TEST_MODE?'Reset test profile data':'Reset All Data')+'</button>'
   +'<p style="margin:16px 0 0;text-align:center;font-size:11.5px;color:var(--text-3);'
     +'font-variant-numeric:tabular-nums;">Build '+BUILD
     +(('serviceWorker' in navigator) && navigator.serviceWorker.controller ? ' \u00b7 offline ready' : '')
@@ -8430,6 +8444,56 @@ function toggleInventory(w){
   const inv = STATE.profile.inventory; const i=inv.indexOf(w);
   if(i>=0) inv.splice(i,1); else { inv.push(w); inv.sort((a,b)=>a-b); }
   saveState(); render();
+}
+function switchProfile(fn){
+  try{ fn(); }catch(e){ toast('Could not switch — this browser is not storing data'); return; }
+  STORAGE_FROZEN = true;
+  location.reload();
+}
+function enterTestProfile(){
+  saveState(); snapshotSession();
+  switchProfile(function(){
+    const tk = REAL_STORE_KEY+'_test';
+    // the first time, the test profile starts as a copy of the real one
+    if(!localStorage.getItem(tk)){
+      const real = localStorage.getItem(REAL_STORE_KEY);
+      if(real) localStorage.setItem(tk, real);
+    }
+    localStorage.setItem(TEST_FLAG, '1');
+  });
+}
+function leaveTestProfile(){
+  saveState(); snapshotSession();
+  switchProfile(function(){ localStorage.removeItem(TEST_FLAG); });
+}
+function resetTestProfile(fromReal){
+  if(!TEST_MODE) return;
+  if(!confirm(fromReal ? 'Replace the test profile with a fresh copy of your real data?'
+                       : 'Wipe the test profile and start it from the beginning?')) return;
+  switchProfile(function(){
+    localStorage.removeItem(STORE_KEY+'_session');
+    const real = localStorage.getItem(REAL_STORE_KEY);
+    if(fromReal && real) localStorage.setItem(STORE_KEY, real); else localStorage.removeItem(STORE_KEY);
+  });
+}
+function testProfileCard(){
+  if(!TEST_MODE) return '<div class="section"><div class="section-title">Test profile</div><div class="card">'
+    + '<p style="margin:0 0 12px;font-size:13px;color:var(--text-2);line-height:1.5;">Try workouts and settings without moving your real progression. '
+    + 'The test profile starts as a copy of your data; whatever you log there stays there.</p>'
+    + '<button class="btn btn-secondary btn-block" onclick="enterTestProfile()">Switch to test profile</button>'
+    + '</div></div>';
+  return '<div class="section"><div class="section-title">Test profile</div><div class="card test-card">'
+    + '<p style="margin:0 0 12px;font-size:13px;color:var(--text-2);line-height:1.5;">You are in the <b>test profile</b>. Your real progress is untouched and waiting.</p>'
+    + '<button class="btn btn-primary btn-block" onclick="leaveTestProfile()">Back to my real profile</button>'
+    + '<button class="btn btn-ghost btn-block" style="margin-top:9px;" onclick="resetTestProfile(true)">Refresh test from my real data</button>'
+    + '<button class="btn btn-ghost btn-block" style="margin-top:9px;" onclick="resetTestProfile(false)">Start test from scratch</button>'
+    + '</div></div>';
+}
+function testBanner(){
+  if(!TEST_MODE) return '';
+  return '<div class="card card-tight test-banner"><div style="flex:1;min-width:0;"><div class="wr-title">Test profile</div>'
+    + '<div class="wr-meta">Nothing logged here touches your real progress.</div></div>'
+    + '<button class="btn btn-secondary btn-sm" onclick="leaveTestProfile()">Back to real</button></div>';
 }
 function resetAllData(){
   if(confirm('This will erase your profile, program progress and workout history. Continue?')){
@@ -8505,6 +8569,7 @@ function photosArrived(){
   }, true);
 })();
 function boot(){
+  if(TEST_MODE) document.body.classList.add('test-mode');
   registerWorker();
   deriveSessionLengths();
   loadState();
