@@ -1379,7 +1379,7 @@ const PROGRAMS = [
     blocks:[{ex:'overhead_press',ladder:[1,2,3,4,5]},{ex:'kb_clean',ladder:[2,3,4]},{ex:'turkish_getup',sets:3,reps:[1,1]}],
     finisher:{name:'Engine',format:'emom',totalMinutes:6,pattern:['kb_swing','goblet_squat','push_up','kb_swing','goblet_squat','rest'],note:'Fast hands, no wasted seconds.'}},
   ]},
- {id:'nt_ss_4',brand:'NT',name:'NT STRENGTH & SIZE IV',tagline:'Muscle & strength · Advanced · two bells',weeks:8,daysPerWeek:4,level:'advanced',
+ {id:'nt_ss_4',needsPair:true,brand:'NT',name:'NT STRENGTH & SIZE IV',tagline:'Muscle & strength · Advanced · two bells',weeks:8,daysPerWeek:4,level:'advanced',
   goals:['build_muscle','build_strength'],sessionMin:[45,55],
   desc:'For advanced lifters with a matched pair who want the most size and strength. Two bells double the load on every rep: a double-squat day, an upper size day, an engine on the clock and a lower size day. Needs solid single-bell technique first.',
   templates:[
@@ -1542,7 +1542,7 @@ const PROGRAMS = [
    {name:'Push Pull Super',format:'superset',warmupMin:8,mainMin:34,rounds:4,
     pairs:[['overhead_press','bent_over_row'],['push_up','one_arm_row']]},
   ]},
- {id:'double_bell',name:'DOUBLE BELL POWER',tagline:'Strength & power · Advanced · two bells',weeks:8,daysPerWeek:4,level:'advanced',
+ {id:'double_bell',needsPair:true,name:'DOUBLE BELL POWER',tagline:'Strength & power · Advanced · two bells',weeks:8,daysPerWeek:4,level:'advanced',
   goals:['build_strength','explosive','build_muscle'],sessionMin:[45,60],
   desc:'For advanced lifters with a matched pair. Double front squats, cleans, snatches and heavy rows — two bells double the load and turn every rep into a full-body effort. Needs solid single-bell technique first.',
   templates:[
@@ -1582,7 +1582,7 @@ const PROGRAMS = [
       round:[{ex:'hollow_hold',target:'20 sec'},{ex:'mountain_climber',target:20},{ex:'plank',target:'30 sec'}],
       note:'Five steady minutes. Leave a little in the tank on every round.'}},
   ]},
- {id:'anvil',name:'ANVIL',tagline:'Build muscle · Advanced',weeks:10,daysPerWeek:4,level:'advanced',
+ {id:'anvil',needsPair:true,name:'ANVIL',tagline:'Build muscle · Advanced',weeks:10,daysPerWeek:4,level:'advanced',
   goals:['build_muscle','build_strength'],sessionMin:[49,56],
   desc:'For advanced lifters chasing maximum muscle. Upper and lower body twice a week each — a heavy day and a high-volume day — for ten weeks. Works best with a pair of bells for the front squats.',
   templates:[
@@ -1823,7 +1823,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26n';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-26p';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -2733,8 +2733,29 @@ function attachWarmup(w){
   return w;
 }
 
+/* Without a matched pair, a programme that is not built around two bells
+   gets the one-bell version of each two-bell movement (the exercise's own
+   swap: farmer carry -> suitcase carry, double front squat -> front squat...). */
+function oneBellVersion(t){
+  const sw = function(id){ const e = EX_BY_ID[id]; return (e && e.pair && e.swap && EX_BY_ID[e.swap]) ? e.swap : id; };
+  const fix = function(o){
+    if(!o) return o;
+    o = Object.assign({}, o);
+    if(o.blocks)  o.blocks  = o.blocks.map(function(b){ return Object.assign({}, b, {ex:sw(b.ex)}); });
+    if(o.pairs)   o.pairs   = o.pairs.map(function(pr){ return pr.map(sw); });
+    if(o.pattern) o.pattern = o.pattern.map(function(id){ return id==='rest' ? id : sw(id); });
+    if(o.round)   o.round   = o.round.map(function(r){ return Object.assign({}, r, {ex:sw(r.ex)}); });
+    if(o.chain)   o.chain   = o.chain.map(function(c){ return Object.assign({}, c, {ex:sw(c.ex)}); });
+    if(o.repScheme){ const rs = {}; Object.keys(o.repScheme).forEach(function(k){ rs[sw(k)] = o.repScheme[k]; }); o.repScheme = rs; }
+    return o;
+  };
+  const out = fix(t);
+  if(out.finisher) out.finisher = fix(out.finisher);
+  return out;
+}
 function buildWorkoutInstance(program, week, idx){
-  const tmpl = program.templates[idx % program.templates.length];
+  let tmpl = program.templates[idx % program.templates.length];
+  if(!program.needsPair && !(STATE.profile && STATE.profile.pairs)) tmpl = oneBellVersion(tmpl);
   const ph = weekPhase(program, week);
   const w = Object.assign({}, tmpl, {
     programId:program.id, programName:program.name, week, idx,
@@ -3210,7 +3231,7 @@ function scorePrograms(){
     }
     // And a programme built on two bells is not a match for one bell, however
     // well its goals line up.
-    if(prog.brand==='NT' && (p.goals||[]).some(function(g){ return g==='build_muscle' || g==='build_strength'; })) score += 2.5;
+    if(prog.brand==='NT' && !/^nt_dad_/.test(prog.id) && (p.goals||[]).some(function(g){ return g==='build_muscle' || g==='build_strength'; })) score += 2.5;
     const gate = missingGearFor(prog);
     if(gate) score -= 12;
     return {prog, score, gate};
@@ -3222,6 +3243,11 @@ function scorePrograms(){
 function missingGearFor(prog){
   const p = STATE.profile;
   if(p.pairs) return null;
+  /* Only a programme built around two bells needs them. Everywhere else a
+     two-bell movement is simply swapped for its one-bell version when the
+     bells are not a pair (see oneBellVersion) \u2014 a single farmer carry used
+     to hide a whole beginner programme from everyone with one kettlebell. */
+  if(!prog.needsPair) return null;
   const ids = new Set();
   prog.templates.forEach(t=>{
     (t.blocks||[]).forEach(b=>ids.add(b.ex));
@@ -3236,13 +3262,32 @@ function missingGearFor(prog){
        + names.join(' and ') + (needPair.length>2 ? ' and others' : '');
 }
 let RECO_MORE = false;
-function renderRecommend(){
+/* Order of the recommendation screen, all by fit (goal, time, level, days,
+   gear \u2014 scorePrograms):
+   1. Best for you: the two that fit best;
+   2. the next three;
+   3. last, the one Dad Strong for your level \u2014 there for whoever needs it,
+      never pushed ahead of a better fit;
+   4. everything else behind "Show more", still in order of fit. */
+function recommendPlan(){
   const ranked = scorePrograms();
-  const best = ranked[0], rest = ranked.slice(1,4), more = ranked.slice(4);
+  const isDad = r => /^nt_dad_/.test(r.prog.id);
+  const pool = ranked.filter(r=>!isDad(r) && r.prog.weeks > 1);   // a one-week test or reset is not a plan to start on
+  const best = pool.filter(r=>!r.gate).slice(0,2);
+  const others = pool.filter(r=>best.indexOf(r)<0).slice(0,3);
+  const lv = (STATE.profile && STATE.profile.experience)==='advanced' ? 'nt_dad_2' : 'nt_dad_1';
+  const dad = ranked.find(r=>r.prog.id===lv);
+  const shown = best.concat(others, dad?[dad]:[]);
+  const more = ranked.filter(r=>shown.indexOf(r)<0);
+  return {best, others, dad, more};
+}
+function renderRecommend(){
+  const plan = recommendPlan(), more = plan.more;
   return '<div class="eyebrow">Recommended For You</div><h2 style="font-size:26px;margin:8px 0 18px;">Choose your program</h2>'
-  +programCard(best.prog, true, best.gate)
+  +plan.best.map((r,i)=>programCard(r.prog, i===0, r.gate, i>0)).join('')
   +'<div class="section-title" style="margin:22px 0 10px;">Other Options</div>'
-  +rest.map(r=>programCard(r.prog,false,r.gate)).join('')
+  +plan.others.map(r=>programCard(r.prog,false,r.gate)).join('')
+  +(plan.dad ? '<div class="section-title" style="margin:22px 0 10px;">Short on time?</div>'+programCard(plan.dad.prog,false,plan.dad.gate) : '')
   /* None of these feel right? Everything else, still in order of fit, one tap away. */
   +(more.length ? (RECO_MORE
       ? '<div class="section-title" style="margin:22px 0 10px;">More programs</div>'+more.map(r=>programMiniCard(r.prog, r.gate)).join('')
@@ -3251,20 +3296,20 @@ function renderRecommend(){
 }
 function programMiniCard(prog, gate){
   return '<div class="card reco-mini'+(prog.brand==='NT'?' nt-card':'')+'">'
-    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">'
-    + '<div style="min-width:0;"><div class="wr-title" style="font-size:16px;">'+esc(prog.name)+'</div>'
-    + '<div class="wr-meta">'+esc(prog.tagline)+'</div></div>'
-    + '<span class="badge badge-neutral">'+prog.level.toUpperCase()+'</span></div>'
+    + '<div class="wr-title" style="font-size:16px;">'+esc(prog.name)+'</div>'
+    + '<div class="wr-meta">'+esc(prog.tagline)+'</div>'
     + '<p style="color:var(--text-3);font-size:13px;line-height:1.5;margin:8px 0 0;">'+esc(prog.desc)+'</p>'
     + '<div class="wr-meta" style="margin-top:8px;">'+prog.weeks+' weeks \u00b7 '+prog.daysPerWeek+' days/wk \u00b7 '+prog.sessionMin[0]+(prog.sessionMin[1]!==prog.sessionMin[0]?'\u2013'+prog.sessionMin[1]:'')+' min</div>'
     + (gate?'<p style="margin-top:8px;font-size:12.5px;color:var(--amber);font-weight:600;">'+esc(gate)+'</p>':'')
-    + '<button class="btn btn-ghost btn-block btn-sm" style="margin-top:10px;" onclick="selectProgram(\''+prog.id+'\')">Choose '+esc(prog.name)+'</button>'
+    + '<button class="btn btn-secondary btn-block" style="margin-top:12px;" onclick="selectProgram(\''+prog.id+'\')">Choose '+esc(prog.name)+'</button>'
     + '</div>';
 }
-function programCard(prog, isBest, gate){
+function programCard(prog, isBest, gate, alsoBest){
   return '<div class="program-hero" style="margin-bottom:14px;">'
   +'<div class="glow"></div>'
-  +((isBest&&!gate)?'<div class="badge badge-best" style="margin-bottom:10px;">\u2605 Best For Your Needs</div>':'<div class="badge badge-neutral" style="margin-bottom:10px;">'+prog.level.toUpperCase()+'</div>')
+  +((isBest&&!gate)?'<div class="badge badge-best" style="margin-bottom:10px;">\u2605 Best For Your Needs</div>'
+    : (alsoBest&&!gate)?'<div class="badge badge-best" style="margin-bottom:10px;">\u2605 Also a great fit</div>'
+    : '<div class="badge badge-neutral" style="margin-bottom:10px;">'+prog.level.toUpperCase()+'</div>')
   +'<h2 style="font-size:26px;position:relative;">'+esc(prog.name)+'</h2>'
   +'<p style="color:var(--text-2);font-weight:600;margin-top:2px;position:relative;">'+esc(prog.tagline)+'</p>'
   +'<p style="color:var(--text-3);font-size:13.5px;margin-top:10px;position:relative;">'+esc(prog.desc)+'</p>'
