@@ -1710,7 +1710,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26k';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-26l';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -3167,7 +3167,7 @@ function renderHome(){
       +'<div class="eyebrow">Today\u2019s Workout</div>'
       +'<h2 style="font-size:24px;margin:8px 0 4px;">'+esc(w.name)+'</h2>'
       +'<p style="color:var(--text-3);font-size:13.5px;">'+w.totalMin+' min \u00b7 '+fmtLabel(w.format)+' \u00b7 Week '+pos.week+'</p>'
-      +'<button class="btn btn-primary btn-block" style="margin-top:16px;" onclick="startWorkout(\''+prog.id+'\','+pos.week+','+pos.idx+')">'+ICON.play+' Start Workout</button>'
+      +'<button class="btn btn-primary btn-block" style="margin-top:16px;" onclick="previewWorkout(\''+prog.id+'\','+pos.week+','+pos.idx+')">'+ICON.play+' Start Workout</button>'
       +'</div>';
     } else {
       todayCard = '<div class="card"><div class="eyebrow">Program Complete</div><h2 style="font-size:22px;margin:8px 0;">You finished '+esc(prog.name)+'!</h2>'
@@ -5905,7 +5905,8 @@ function generateWorkout(){
   attachWarmup(workout);           // a built workout gets the same warm-up as a programmed one
   workout.mainMin = Math.max(12, GEN.duration - workout.warmupMin);
   workout.totalMin = workout.warmupMin+workout.mainMin;
-  startCustomWorkout(workout);
+  PENDING_CUSTOM = workout;
+  navigate('workout_preview', {custom:1});
 }
 function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
 
@@ -5913,12 +5914,16 @@ function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.
 /* Preview — what you are about to do, before you are in it. Mirrors the shape
    of the session itself: the modules this day carries, in order. */
 function previewWorkout(progId, week, idx){ navigate('workout_preview', {progId, week, idx}); }
+/* A built workout has no programme behind it, so it waits here until Start. */
+let PENDING_CUSTOM = null;
 function renderWorkoutPreview(pr){
-  const prog = PROG_BY_ID[pr.progId];
+  const custom = !!pr.custom && PENDING_CUSTOM;
+  const prog = custom ? {id:'', name:'Build My Workout'} : PROG_BY_ID[pr.progId];
   if(!prog) return '<p>Program not found.</p>';
-  const w = buildWorkoutInstance(prog, +pr.week, +pr.idx);
+  const w = custom ? PENDING_CUSTOM : buildWorkoutInstance(prog, +pr.week, +pr.idx);
   const mods = workoutModules(w);
-  const alreadyDone = isWorkoutDone(prog, +pr.week, +pr.idx);
+  const alreadyDone = custom ? false : isWorkoutDone(prog, +pr.week, +pr.idx);
+  if(custom) pr = {progId:'', week:0, idx:0};
 
   const exRow = (id, meta)=>{
     const ex = EX_BY_ID[id]; if(!ex) return '';
@@ -5988,12 +5993,12 @@ function renderWorkoutPreview(pr){
   const warmN = (w.warmup||[]).length;
   const segs = [[w.warmupMin,'Warm-up','w'],[w.mainMin,'Main','m']].concat(w.finisher?[[w.finisher.totalMinutes,'Finisher','f']]:[]).filter(x=>+x[0]>0);
   const warmPh = (w.warmup||[]).map(x=>parseWarmItem(x).phase).filter((v,i,a)=>v&&a.indexOf(v)===i).map(v=>String(v).toLowerCase());
-  return '<div class="top-row pv-top"><div class="back-btn" onclick="navigate(\'program_detail\',{id:\''+pr.progId+'\'})">'+ICON.back+'</div>'
+  return '<div class="top-row pv-top"><div class="back-btn" onclick="'+(custom ? 'navigate(\'generator\')' : 'navigate(\'program_detail\',{id:\''+pr.progId+'\'})')+'">'+ICON.back+'</div>'
     +'<div class="eyebrow">'+esc(prog.name)+'</div></div>'
   +'<div class="pv-hero'+(hp?' has-photo':'')+'">'
     +(hp?'<div class="pv-photo"><img alt="" src="'+hp.src[Math.min(hp.key||0,hp.src.length-1)]+'"></div>':'')
     +'<div class="pv-hero-in">'
-      +'<div class="pv-eb">Week '+pr.week+' · '+esc(w.phaseName)+'</div>'
+      +'<div class="pv-eb">'+(custom ? 'Built for today' : 'Week '+pr.week+' · '+esc(w.phaseName))+'</div>'
       +'<h1 class="pv-title">'+esc(w.name)+'</h1>'
       +'<div class="chip-row"><span class="badge badge-blue">'+fmtLabel(w.format)+'</span>'
         +(alreadyDone?'<span class="badge badge-beginner">Completed</span>':'')+'</div>'
@@ -6015,7 +6020,7 @@ function renderWorkoutPreview(pr){
   +(finList?'<div class="section pv-main"><div class="section-head"><div class="section-title" style="color:var(--amber);">Finisher · '+w.finisher.totalMinutes+' min</div></div><div class="card">'
       +(w.finisher.note?'<p style="color:var(--text-2);font-size:13.5px;margin-bottom:10px;line-height:1.55;">'+esc(w.finisher.note)+'</p>':'')
       +finList+'</div></div>':'')
-  +'<div class="pv-dock"><button class="btn btn-primary btn-block" onclick="startWorkout(\''+pr.progId+'\','+pr.week+','+pr.idx+')">'+ICON.play+(alreadyDone?' Run It Again':' Start Workout')+' · '+w.totalMin+' min</button></div>'
+  +'<div class="pv-dock"><button class="btn btn-primary btn-block" onclick="'+(custom ? 'startCustomWorkout(PENDING_CUSTOM)' : 'startWorkout(\''+pr.progId+'\','+pr.week+','+pr.idx+')')+'">'+ICON.play+(alreadyDone?' Run It Again':' Start Workout')+' · '+w.totalMin+' min</button></div>'
   + renderPeekOverlay();
 }
 
