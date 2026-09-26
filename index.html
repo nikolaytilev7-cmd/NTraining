@@ -1643,7 +1643,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26d';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-26e';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -5447,11 +5447,9 @@ function paintPhoto(best){
     document.querySelectorAll('.tech-strip figure').forEach(function(f, i){ f.classList.toggle('on', i===best); });
     document.querySelectorAll('#fhDots i').forEach(function(d, i){ d.classList.toggle('on', i===best); });
   }
-  if(frameMode()!=='anim'){
-    const cueEl = document.getElementById('animCue');
-    const lab = ph.set.labels[best] || '';
-    if(cueEl && cueEl.textContent!==lab) cueEl.textContent = lab;
-  }
+  const cueEl = document.getElementById('animCue');
+  const lab = ph.set.labels[best] || '';
+  if(cueEl && cueEl.textContent!==lab) cueEl.textContent = lab;
 }
 function mountPhotos(exId, cv){
   const set = PHOTO_SETS[exId];
@@ -5579,15 +5577,23 @@ function renderAnimFrame(p){
 }
 function updateAnimReadout(k){
   const cueEl=document.getElementById('animCue');
-  if(cueEl && cueEl.textContent!==k.cue && !(ANIM.photo && frameMode()!=='anim')) cueEl.textContent=k.cue;
+  if(cueEl && cueEl.textContent!==k.cue && !ANIM.photo) cueEl.textContent=k.cue;   // with photos the caption is the frame's own label
   const box=document.getElementById('animMuscles');
-  if(!box) return;
-  const cap = box.classList.contains('mus-compact') ? 3 : 4;   // one row while training
-  const active=Object.keys(k.load).filter(m=>k.load[m]>0.3)
-                     .sort((a,b)=>k.load[b]-k.load[a]).slice(0,cap);
-  const sig=active.map(m=>m+Math.round(k.load[m]*10)).join('|');
-  if(sig===ANIM.sig) return;               // only touch the DOM when it changes
-  ANIM.sig=sig;
+  if(!box || ANIM.sig===ANIM.id) return;   // drawn once per exercise
+  ANIM.sig=ANIM.id;
+  const cap = 3;   // one row
+  /* The zones used to follow the rep frame by frame, but photos and the drawn
+     rig run at different paces, so the chips flickered out of step with what
+     was on screen. Now: the muscles the whole rep works, each at its peak load,
+     fixed for as long as the exercise is shown. */
+  const peak={};
+  ((ANIM.move&&ANIM.move.keys)||[]).forEach(function(key){
+    const l=key.load||{};
+    Object.keys(l).forEach(function(m){ if(!(peak[m]>=l[m])) peak[m]=l[m]; });
+  });
+  const active=Object.keys(peak).filter(m=>peak[m]>0.3)
+                     .sort((a,b)=>peak[b]-peak[a]).slice(0,cap);
+  k={load:peak};
   // No progress bars here. A row of part-filled bars beside a figure reads as
   // something loading, which is exactly the wrong signal during a set — the
   // chip itself carries the level, in its colour and its weight.
@@ -5616,11 +5622,6 @@ function renderExerciseDetail(id){
   +figureMarkup()
   +'<div class="fig-caption" id="animCue"></div>'
   +'<div class="mus-row" id="animMuscles"></div>'
-  +'<div class="anim-controls">'
-  +'<button class="btn-icon" id="animPlayBtn" onclick="toggleAnimPlay()">'+ICON.pause+'</button>'
-  +'<div class="phase-chip-row">'+animPhaseChips(e.id)+'</div>'
-  +'</div>'
-  +'<div style="font-size:11.5px;color:var(--text-3);margin-top:10px;font-weight:600;">MOVEMENT PHASES \u2014 TAP ONE TO JUMP</div>'
   +'</div>'
   +'<p style="color:var(--text-2);margin:16px 0;font-size:14.5px;">'+esc(e.desc)+'</p>'
   +exerciseProgressLink(id)
