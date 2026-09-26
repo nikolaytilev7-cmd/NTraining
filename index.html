@@ -895,6 +895,8 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .short-pick{margin:18px 0 6px;padding:14px;border:1px solid var(--border);border-radius:var(--radius-s,12px);background:var(--bg-2);}
 .short-pick .wr-title{margin-bottom:8px;}
 .reco-mini{margin-bottom:10px;}
+.reco-more-btn{border-color:var(--blue);color:var(--text-1);}
+.reco-more-btn svg{transform:rotate(90deg);width:16px;height:16px;}
 .save-alert{margin-bottom:10px;border-color:var(--red);
   background:color-mix(in srgb, var(--red) 14%, transparent);color:var(--text-1);
   font-size:13px;line-height:1.5;font-weight:600;}
@@ -1823,7 +1825,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26p';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-26q';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -2842,6 +2844,7 @@ let REST_TIMER = null;
    app altogether. */
 let NAV_STACK = [];
 function navigate(name, params){
+  if(arguments[0]==='recommend' && ROUTE.name!=='recommend') RECO_MORE = false;
   const next = {name, params: params||{}};
   if(ROUTE && (ROUTE.name!==next.name || JSON.stringify(ROUTE.params)!==JSON.stringify(next.params))){
     NAV_STACK.push(ROUTE);
@@ -3263,21 +3266,29 @@ function missingGearFor(prog){
 }
 let RECO_MORE = false;
 /* Order of the recommendation screen, all by fit (goal, time, level, days,
-   gear \u2014 scorePrograms):
+   gear \u2014 scorePrograms), six cards before anything is expanded:
    1. Best for you: the two that fit best;
-   2. the next three;
-   3. last, the one Dad Strong for your level \u2014 there for whoever needs it,
-      never pushed ahead of a better fit;
+   2. three more good fits \u2014 at most two of our own Strength & Size among
+      all five, so the list shows the range of the library, not one family;
+   3. last, the one Dad Strong for your level;
    4. everything else behind "Show more", still in order of fit. */
 function recommendPlan(){
   const ranked = scorePrograms();
   const isDad = r => /^nt_dad_/.test(r.prog.id);
+  const isSS  = r => r.prog.brand==='NT' && !isDad(r);
   const pool = ranked.filter(r=>!isDad(r) && r.prog.weeks > 1);   // a one-week test or reset is not a plan to start on
-  const best = pool.filter(r=>!r.gate).slice(0,2);
-  const others = pool.filter(r=>best.indexOf(r)<0).slice(0,3);
+  const picked = [];
+  let ss = 0;
+  for(const r of pool){
+    if(picked.length >= 5) break;
+    if(r.gate && picked.length < 2) continue;                        // never lead with gear you do not have
+    if(isSS(r)){ if(ss >= 2) continue; ss++; }
+    picked.push(r);
+  }
+  const best = picked.slice(0,2), others = picked.slice(2);
   const lv = (STATE.profile && STATE.profile.experience)==='advanced' ? 'nt_dad_2' : 'nt_dad_1';
   const dad = ranked.find(r=>r.prog.id===lv);
-  const shown = best.concat(others, dad?[dad]:[]);
+  const shown = picked.concat(dad?[dad]:[]);
   const more = ranked.filter(r=>shown.indexOf(r)<0);
   return {best, others, dad, more};
 }
@@ -3291,7 +3302,7 @@ function renderRecommend(){
   /* None of these feel right? Everything else, still in order of fit, one tap away. */
   +(more.length ? (RECO_MORE
       ? '<div class="section-title" style="margin:22px 0 10px;">More programs</div>'+more.map(r=>programMiniCard(r.prog, r.gate)).join('')
-      : '<button class="btn btn-secondary btn-block" style="margin-top:4px;" onclick="RECO_MORE=true;render()">Show '+more.length+' more programs</button>')
+      : '<button class="btn btn-secondary btn-block reco-more-btn" style="margin-top:4px;" onclick="RECO_MORE=true;render()">'+ICON.chevron+' Show '+more.length+' more programs</button>')
     : '');
 }
 function programMiniCard(prog, gate){
@@ -3301,7 +3312,7 @@ function programMiniCard(prog, gate){
     + '<p style="color:var(--text-3);font-size:13px;line-height:1.5;margin:8px 0 0;">'+esc(prog.desc)+'</p>'
     + '<div class="wr-meta" style="margin-top:8px;">'+prog.weeks+' weeks \u00b7 '+prog.daysPerWeek+' days/wk \u00b7 '+prog.sessionMin[0]+(prog.sessionMin[1]!==prog.sessionMin[0]?'\u2013'+prog.sessionMin[1]:'')+' min</div>'
     + (gate?'<p style="margin-top:8px;font-size:12.5px;color:var(--amber);font-weight:600;">'+esc(gate)+'</p>':'')
-    + '<button class="btn btn-secondary btn-block" style="margin-top:12px;" onclick="selectProgram(\''+prog.id+'\')">Choose '+esc(prog.name)+'</button>'
+    + '<button class="btn btn-primary btn-block" style="margin-top:12px;" onclick="selectProgram(\''+prog.id+'\')">Choose '+esc(prog.name)+'</button>'
     + '</div>';
 }
 function programCard(prog, isBest, gate, alsoBest){
@@ -3314,7 +3325,7 @@ function programCard(prog, isBest, gate, alsoBest){
   +'<p style="color:var(--text-2);font-weight:600;margin-top:2px;position:relative;">'+esc(prog.tagline)+'</p>'
   +'<p style="color:var(--text-3);font-size:13.5px;margin-top:10px;position:relative;">'+esc(prog.desc)+'</p>'
   +'<div style="display:flex;gap:16px;margin-top:14px;position:relative;font-size:13px;color:var(--text-2);font-weight:600;">'
-  +'<span>'+prog.daysPerWeek+' days/wk</span><span>\u00b7</span><span>'+prog.sessionMin[0]+'\u2013'+prog.sessionMin[1]+' min</span>'
+  +'<span>'+prog.daysPerWeek+' days/wk</span><span>\u00b7</span><span>'+prog.sessionMin[0]+(prog.sessionMin[1]!==prog.sessionMin[0]?'\u2013'+prog.sessionMin[1]:'')+' min</span>'
   +'</div>'
   +(gate?'<p style="position:relative;margin-top:12px;font-size:12.5px;color:var(--amber);font-weight:600;">'+esc(gate)+'</p>':'')
   +'<button class="btn btn-primary btn-block" style="margin-top:16px;position:relative;" onclick="selectProgram(\''+prog.id+'\')">Choose '+esc(prog.name)+'</button>'
