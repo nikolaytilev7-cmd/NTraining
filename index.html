@@ -1825,7 +1825,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-26q';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-27a';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -6417,12 +6417,18 @@ let VOICE_CACHE = null;
    not sound like a robot. */
 const VOICE_MALE = /\b(male|aaron|alex|arthur|daniel|evan|gordon|lee|nathan|oliver|reed|rishi|rocko|eddy|tom|guy|davis|christopher|eric|roger|steffan|andrew|brian|ryan|thomas|george|james|william|liam|noah|jason|tony|mark|david|richard|ralph|grandpa)\b/i;
 const VOICE_FEMALE = /\b(female|samantha|karen|moira|tessa|fiona|victoria|allison|ava|susan|zoe|nicky|serena|kate|joelle|noelle|aria|jenny|michelle|ana|emma|libby|sonia|natasha|flo|sandy|shelley|martha|catherine|sara|jane|amy|joanna|salli|kimberly|ivy|grandma|google us english)\b/i;
-const VOICE_JUNK = /(zarvox|trinoids|whisper|wobble|bells|boing|bubbles|cellos|bad news|good news|jester|organ|superstar|bahh|albert|fred|junior|princess|hysterical|deranged|pipe)/i;
+/* iOS also ships the Eloquence voices (Eddy, Flo, Reed, Rocko, Sandy,
+   Shelley, Grandma, Grandpa) \u2014 1990s synthesis, the robotic sound people
+   complain about. They are never picked on their own. */
+const VOICE_JUNK = /(zarvox|trinoids|whisper|wobble|bells|boing|bubbles|cellos|bad news|good news|jester|organ|superstar|bahh|albert|fred|junior|princess|hysterical|deranged|pipe|\beddy\b|\bflo\b|\breed\b|\brocko\b|\bsandy\b|\bshelley\b|grandma|grandpa|\bkathy\b|\bralph\b)/i;
+/* The better built-in voices, best first, for when nothing enhanced is installed. */
+const VOICE_GOOD = /\b(evan|nathan|tom|ava|zoe|allison|susan|samantha|daniel|serena|kate|karen|moira|aaron|arthur|oliver|martha|nicky|tessa|fiona|gordon|catherine|google|microsoft)\b/i;
 function voiceGender(v){ const n = v.name||''; return VOICE_MALE.test(n) && !/female/i.test(n) ? 'male' : VOICE_FEMALE.test(n) ? 'female' : ''; }
 function voiceScore(v){
   const n = v.name||'';
   let sc = 0;
   if(/premium|enhanced|neural|natural|online/i.test(n)) sc += 6;
+  if(VOICE_GOOD.test(n)) sc += 2;
   if(/google/i.test(n)) sc += 3;
   if(/^en[-_]US/i.test(v.lang)) sc += 2; else if(/^en[-_](GB|AU|IE|CA)/i.test(v.lang)) sc += 1;
   if(v.localService) sc += 1;                      // works offline, in the gym basement
@@ -6437,6 +6443,8 @@ function pickVoice(){
   try{
     if(VOICE_CACHE) return VOICE_CACHE;
     const vs = englishVoices(); if(!vs.length) return null;
+    const own = STATE.profile && STATE.profile.voiceName;
+    if(own){ const v = vs.filter(function(x){ return x.name===own; })[0]; if(v){ VOICE_CACHE = v; return v; } }
     const g = wantedGender();
     const rank = function(list){ return list.slice().sort(function(a,b){ return voiceScore(b)-voiceScore(a); })[0] || null; };
     VOICE_CACHE = rank(vs.filter(function(v){ return voiceGender(v)===g; }))
@@ -6446,8 +6454,13 @@ function pickVoice(){
   }catch(e){ return null; }
 }
 function hasVoiceOf(g){ return englishVoices().some(function(v){ return voiceGender(v)===g; }); }
+function setVoiceName(n){
+  STATE.profile.voiceName = n || null; saveState(); VOICE_CACHE = null;
+  const was = VOICE.on; VOICE.on = true; say('Next up, goblet squat. Ten reps, with sixteen kilos.', true); VOICE.on = was;
+  render();
+}
 function setVoiceGender(g){
-  STATE.profile.voiceGender = g; saveState(); VOICE_CACHE = null;
+  STATE.profile.voiceGender = g; STATE.profile.voiceName = null; saveState(); VOICE_CACHE = null;
   if(!hasVoiceOf(g)) toast(g==='male' ? 'No male English voice on this phone \u2014 see the tip below' : 'No female English voice found');
   const was = VOICE.on; VOICE.on = true; say(g==='male' ? 'This is the male coach voice.' : 'This is the female coach voice.', true); VOICE.on = was;
   render();
@@ -7123,6 +7136,17 @@ function voicePickerMarkup(){
     + '<div class="frame-seg" style="grid-template-columns:repeat(2,1fr);">'
     + [['female','Female'],['male','Male']].map(function(o){ return '<button class="'+(g===o[0]?'on':'')+'" onclick="setVoiceGender(\''+o[0]+'\')">'+o[1]+'</button>'; }).join('')
     + '</div>'
+    /* or pick the exact voice: the ones on this phone, best first */
+    + (function(){
+        const list = englishVoices().slice().sort(function(a,b){ return voiceScore(b)-voiceScore(a); });
+        if(list.length < 2) return '';
+        const cur = v ? v.name : '';
+        return '<div class="field" style="margin:0 0 10px;"><label for="voicePick" style="font-size:12px;">Or choose a voice</label>'
+          + '<select id="voicePick" onchange="setVoiceName(this.value)">'
+          + '<option value="">Automatic ('+(g==='male'?'male':'female')+')</option>'
+          + list.map(function(x){ return '<option value="'+esc(x.name)+'"'+((STATE.profile.voiceName===x.name)?' selected':'')+'>'+esc(x.name)+(voiceGender(x)?' \u00b7 '+voiceGender(x):'')+'</option>'; }).join('')
+          + '</select></div>';
+      })()
     + ((robotic || (g==='male' && !hasVoiceOf('male'))) ? '<p class="wr-meta" style="margin:0 0 10px;line-height:1.5;">'
         + (isIOS() ? 'Sounds robotic? On iPhone: Settings \u203a Accessibility \u203a Spoken Content \u203a Voices \u203a English, and download an <b>Enhanced</b> or <b>Premium</b> voice (for example Evan or Nathan for male, Ava or Zoe for female). NT Training picks it up on its own.'
                    : 'Sounds robotic? Install a better English voice in your phone\u2019s text-to-speech settings \u2014 NT Training uses the best one it finds.')
