@@ -690,23 +690,29 @@ a{color:inherit;text-decoration:none;}
 .frame-seg button.on{background:var(--blue);border-color:var(--blue);color:var(--on-accent);}
 .focus-hero{position:relative;margin:0 -18px;}
 @media (min-width:900px){.focus-hero{margin:0;}}
-.focus-hero .fig-wrap{max-width:none;width:100%;height:min(50vh,520px);min-height:280px;margin:0;padding:0;border-radius:0 0 22px 22px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.focus-hero .fig-wrap{max-width:none;width:100%;height:min(46vh,500px);min-height:260px;margin:0;padding:0;border-radius:22px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center;}
 @media (min-width:900px){.focus-hero .fig-wrap{border-radius:22px;}}
 /* short phones (SE): a smaller photo so the numbers, the bell and the links sit above the dock */
-@media (max-height:700px){.focus-hero .fig-wrap{height:40vh;min-height:220px;}}
+@media (max-height:700px){.focus-hero .fig-wrap{height:30vh;min-height:180px;}.fh-title{font-size:23px;}.fh-txt{padding-bottom:8px;}}
 .focus-hero .fig-wrap canvas{height:100%;width:auto;}
 .focus-hero .photo-stack{aspect-ratio:auto !important;height:100%;max-width:none;border-radius:0;}
-.focus-hero::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(to bottom,rgba(var(--bg-rgb),0) 48%,rgba(var(--bg-rgb),.55) 72%,var(--bg) 100%);}
-.fh-txt{position:absolute;left:18px;right:18px;bottom:12px;z-index:2;pointer-events:none;}
-.fh-eb{font-size:12px;font-weight:800;letter-spacing:1.2px;color:#C3CDDB;text-transform:uppercase;}
+/* the whole frame, never cropped: a short, wide box used to cut off heads and
+   overhead bells. The sides are filled with the same studio grey as the photos. */
+.focus-hero .photo-stack img{object-fit:contain;object-position:center bottom;}
+.focus-hero .fig-wrap.has-photo{background:linear-gradient(to bottom,#323539 0%,#2D3034 45%,#222327 80%,#15161A 100%);}
+.focus-hero::after{content:none;}
+.fh-txt{padding:2px 18px 10px;}
+@media (min-width:900px){.fh-txt{padding:2px 0 10px;}}
+.fh-eb{font-size:12px;font-weight:800;letter-spacing:1.2px;color:var(--text-2);text-transform:uppercase;}
 .fh-eb .fh-side{color:#8FB0FF;}
-.fh-title{font-size:30px;font-weight:800;line-height:1.1;margin:3px 0 8px;letter-spacing:-.01em;color:#fff;}
-.fh-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.fh-cap{background:rgba(8,10,14,.72);backdrop-filter:blur(6px);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;max-width:72%;}
+.fh-title{font-size:27px;font-weight:800;line-height:1.1;margin:3px 0 0;letter-spacing:-.01em;color:var(--text-1);}
+.fh-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px 0;min-height:30px;}
+@media (min-width:900px){.fh-row{padding:10px 0 0;}}
+.fh-cap{background:var(--bg-3);color:var(--text-1);font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;max-width:72%;}
 .fh-cap:empty{display:none;}
 .fh-dots{display:flex;gap:5px;}
-.fh-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);}
-.fh-dots i.on{background:#fff;}
+.fh-dots i{width:7px;height:7px;border-radius:50%;background:var(--border);}
+.fh-dots i.on{background:var(--blue);}
 .focus-big{display:flex;align-items:flex-end;justify-content:center;gap:20px;margin:14px 0 6px;}
 .focus-big > div{text-align:center;}
 .focus-big .n{font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:var(--text-1);}
@@ -1825,7 +1831,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-27b';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-09-27c';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -6815,11 +6821,14 @@ function targetDisplay(rec, ex){
 function focusHero(exId, eyebrow, title){
   const set = PHOTO_SETS[exId];
   const n = set ? set.src.length : 0;
-  return '<div class="focus-hero">'+figureMarkup('fig-hero')
-    + '<div class="fh-txt"><div class="fh-eb">'+eyebrow+'</div><div class="fh-title">'+esc(title)+'</div>'
+  /* The name sits above the photo, not on it: laid over the bottom it hid the
+     feet and every floor exercise, and at the top it would hide an overhead bell. */
+  return '<div class="focus-hero">'
+    + '<div class="fh-txt"><div class="fh-eb">'+eyebrow+'</div><div class="fh-title">'+esc(title)+'</div></div>'
+    + figureMarkup('fig-hero')
     + '<div class="fh-row"><span class="fh-cap" id="animCue"></span>'
     + (n>1 ? '<span class="fh-dots" id="fhDots">'+Array.from({length:n}).map(function(_,i){ return '<i'+(i===0?' class="on"':'')+'></i>'; }).join('')+'</span>' : '')
-    + '</div></div></div>';
+    + '</div></div>';
 }
 function focusSideTag(ex){
   if(isPerSide(ex)) return ' · <span class="fh-side">'+sideLabel(currentSide())+' side</span>';
