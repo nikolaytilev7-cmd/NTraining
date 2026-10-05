@@ -1067,6 +1067,25 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .nu-tags i{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.4px;padding:2px 7px;border-radius:6px;background:var(--bg-3);color:var(--text-2);}
 .nu-hico{width:42px;height:42px;border-radius:13px;background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;margin-right:12px;}
 .nu-disc{font-size:11.5px;color:var(--text-3);line-height:1.5;margin:22px 2px 6px;}
+.nu-daytype button{padding:8px 4px;font-size:12.5px;}
+.nu-train .nu-ic{background:var(--blue-dim);color:var(--blue);cursor:default;}
+.nu-train .nu-ic svg{width:20px;height:20px;}
+.nu-train .nu-mb{cursor:default;}
+.nu-train .nu-mk{color:var(--blue);}
+.nu-train.done .nu-ic{background:rgba(51,196,141,.14);color:var(--green);}
+.nu-train.done .nu-mk{color:var(--green);}
+.nu-ppl{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:14px;color:var(--text-2);font-weight:600;}
+.nu-ppl b{color:var(--text-1);min-width:74px;text-align:center;}
+.nu-ppl button{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg-2);color:var(--text-1);font-size:18px;font-weight:700;font-family:inherit;}
+.nu-heart{color:#E6555A;}
+.tab,.side-link{position:relative;}
+.tab-beta{position:absolute;top:-3px;left:50%;margin-left:6px;font-style:normal;font-size:7.5px;font-weight:800;letter-spacing:.5px;line-height:1;padding:2px 4px;border-radius:5px;background:var(--amber);color:#1a1300;pointer-events:none;}
+.side-link .tab-beta{position:static;margin-left:6px;font-size:9px;padding:2px 5px;}
+.nu-intro{display:flex;flex-direction:column;gap:14px;}
+.nu-intro-row{display:flex;gap:12px;align-items:flex-start;}
+.nu-intro-row>span{font-size:22px;width:40px;height:40px;border-radius:12px;background:var(--bg-2);display:flex;align-items:center;justify-content:center;flex:none;}
+.nu-intro-row b{font-size:15px;}
+.nu-intro-row p{margin:2px 0 0;font-size:13px;color:var(--text-2);line-height:1.45;}
 </style>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
@@ -1990,7 +2009,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-05d';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-05g';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -3084,7 +3103,7 @@ function render(){
     default: body = renderHome();
   }
   if(ROUTE.name!=='home') THEME_SHEET = false;
-  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name==='terms' ? 'exercises' : ROUTE.name==='fuel_setup' ? (nutriOn() ? 'fuel' : 'profile') : ROUTE.name) + themeSheetMarkup() + importSheetMarkup() + bodySheetMarkup() + (ROUTE.name==='fuel' ? nutriSheetMarkup() : '');
+  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name==='terms' ? 'exercises' : ROUTE.name==='fuel_setup' ? 'fuel' : ROUTE.name) + themeSheetMarkup() + importSheetMarkup() + bodySheetMarkup() + (ROUTE.name==='fuel' ? nutriSheetMarkup() : '');
   if(ROUTE.name==='terms' && ROUTE.params.k){ const el = document.getElementById('term-'+ROUTE.params.k); if(el) setTimeout(function(){ el.scrollIntoView({block:'center'}); }, 30); }
   if(ROUTE.name==='exercise_detail'){ initExerciseAnimation(ROUTE.params.id); }
   /* an exercise opened over the workout preview has its own figure to start */
@@ -3096,12 +3115,13 @@ function shell(inner, active){
     ['home','Home',ICON.home],['programs','Programs',ICON.programs],['exercises','Exercises',ICON.exercises],
     ['progress','Progress',ICON.progress],['profile','Profile',ICON.profile]
   ];
-  if(nutriOn()) navItems.splice(3, 0, ['fuel','Fuel',ICON.fuel]);   // beta: the tab exists only while Fuel is on
+  navItems.splice(3, 0, ['fuel','Fuel',ICON.fuel]);   // always there, marked beta; opens the setup until Fuel is on
+  const beta = function(r){ return r==='fuel' ? '<i class="tab-beta">BETA</i>' : ''; };
   const sideLinks = navItems.map(([r,label,icon])=>
-    '<a class="side-link '+(active===r||( (active==='program_detail')&&r==='programs')||((active==='exercise_detail')&&r==='exercises')?'active':'')+'" onclick="navigate(\''+r+'\')">'+icon+'<span>'+label+'</span></a>'
+    '<a class="side-link '+(active===r||( (active==='program_detail')&&r==='programs')||((active==='exercise_detail')&&r==='exercises')?'active':'')+'" onclick="navigate(\''+r+'\')">'+icon+'<span>'+label+'</span>'+beta(r)+'</a>'
   ).join('');
   const bottomItems = navItems.map(([r,label,icon])=>
-    '<div class="tab '+(active===r||( (active==='program_detail')&&r==='programs')||((active==='exercise_detail')&&r==='exercises')?'active':'')+'" onclick="navigate(\''+r+'\')">'+icon+'<span>'+label+'</span></div>'
+    '<div class="tab '+(active===r||( (active==='program_detail')&&r==='programs')||((active==='exercise_detail')&&r==='exercises')?'active':'')+'" onclick="navigate(\''+r+'\')">'+icon+'<span>'+label+'</span>'+beta(r)+'</div>'
   ).join('');
   return '<div class="app-shell">'
     + '<div class="sidebar"><div class="sidebar-brand">NT<span> TRAINING</span><div class="brand-cat">'+esc(BRAND.category)+'</div></div>'+sideLinks+'</div>'
@@ -9729,6 +9749,39 @@ const FOODS = {
   greens:      {n:'Salad leaves',            k:20,  p:2,    c:3,    f:0.3, a:'produce', veg:true},
   broccoli:    {n:'Broccoli (frozen is fine)',k:34, p:2.8,  c:7,    f:0.4, a:'produce', veg:true},
   mixed_veg:   {n:'Mixed vegetables, frozen',k:65,  p:3,    c:13,   f:0.5, a:'produce', veg:true},
+  carrot:      {n:'Carrots',                 k:41,  p:0.9,  c:10,   f:0.2, a:'produce', veg:true},
+  cabbage:     {n:'Cabbage',                 k:25,  p:1.3,  c:6,    f:0.1, a:'produce', veg:true},
+  zucchini:    {n:'Courgettes',              k:17,  p:1.2,  c:3.1,  f:0.3, a:'produce', veg:true},
+  eggplant:    {n:'Aubergine',               k:25,  p:1,    c:6,    f:0.2, a:'produce', veg:true},
+  mushrooms:   {n:'Mushrooms',               k:22,  p:3.1,  c:3.3,  f:0.3, a:'produce', veg:true},
+  spinach:     {n:'Spinach',                 k:23,  p:2.9,  c:3.6,  f:0.4, a:'produce', veg:true},
+  sweet_potato:{n:'Sweet potatoes',          k:86,  p:1.6,  c:20,   f:0.1, a:'produce'},
+  sweetcorn:   {n:'Sweetcorn, frozen or canned', k:86, p:3.3, c:19, f:1.4, a:'produce'},
+  avocado:     {n:'Avocados',                k:160, p:2,    c:8.5,  f:14.7,a:'produce'},
+  orange:      {n:'Oranges',                 k:47,  p:0.9,  c:12,   f:0.1, a:'produce', unit:150, uname:['orange','oranges']},
+  edamame:     {n:'Edamame, frozen',         k:121, p:11.9, c:8.9,  f:5.2, a:'produce'},
+  chicken_thigh:{n:'Chicken thighs, skinless',k:135, p:19,  c:0,    f:6.5, a:'meat', fl:'m'},
+  mince_mix:   {n:'Pork & beef mince',       k:250, p:17,   c:0,    f:20,  a:'meat', fl:'m'},
+  trout:       {n:'Trout',                   k:141, p:20,   c:0,    f:6.6, a:'meat', fl:'f'},
+  mackerel:    {n:'Mackerel',                k:205, p:19,   c:0,    f:14,  a:'meat', fl:'f'},
+  shrimp:      {n:'Prawns, raw',             k:85,  p:20,   c:0,    f:0.5, a:'meat', fl:'f'},
+  smoked_salmon:{n:'Smoked salmon',          k:117, p:18,   c:0,    f:4.3, a:'meat', fl:'f'},
+  izvara:      {n:'Curd cheese (izvara)',    k:72,  p:12.4, c:3.4,  f:0.6, a:'dairy', fl:'d'},
+  ayran:       {n:'Ayran (yogurt drink)',    k:37,  p:1.8,  c:2.7,  f:2,   a:'dairy', fl:'d', ml:true},
+  mozzarella:  {n:'Mozzarella, light',       k:160, p:19,   c:1,    f:9,   a:'dairy', fl:'d'},
+  parmesan:    {n:'Parmesan',                k:431, p:38,   c:4,    f:29,  a:'dairy', fl:'d'},
+  tempeh:      {n:'Tempeh',                  k:192, p:20,   c:7.6,  f:10.8,a:'dairy'},
+  quinoa:      {n:'Quinoa (dry)',            k:368, p:14,   c:64,   f:6,   a:'pantry'},
+  couscous:    {n:'Couscous (dry)',          k:376, p:12.8, c:77,   f:0.6, a:'pantry'},
+  noodles:     {n:'Rice noodles (dry)',      k:364, p:6,    c:80,   f:0.6, a:'pantry'},
+  pita:        {n:'Wholegrain pitta',        k:275, p:9,    c:55,   f:1.2, a:'pantry', unit:60, uname:['pitta','pittas']},
+  granola:     {n:'Granola',                 k:450, p:10,   c:64,   f:17,  a:'pantry'},
+  lyutenitsa:  {n:'Lyutenitsa (pepper relish)', k:90, p:1.5, c:12,  f:4,   a:'pantry'},
+  soy_sauce:   {n:'Soy sauce',               k:53,  p:8,    c:5,    f:0.6, a:'pantry', ml:true},
+  soy_yogurt:  {n:'Soy yogurt, plain',       k:54,  p:4,    c:3,    f:2.5, a:'dairy'},
+  soy_milk:    {n:'Soy milk',                k:40,  p:3.3,  c:1.5,  f:1.8, a:'dairy', ml:true},
+  chickpea_flour:{n:'Chickpea flour',        k:387, p:22,   c:58,   f:6.7, a:'pantry'},
+  coconut_milk:{n:'Coconut milk, light',     k:73,  p:0.7,  c:2.7,  f:7,   a:'pantry', ml:true},
 };
 const AISLES = [['meat','Meat & fish'],['dairy','Dairy, eggs & tofu'],['pantry','Pantry & bread'],['produce','Fruit & veg']];
 
@@ -9755,13 +9808,13 @@ const MEALS = [
   {id:'pb_banana_oats', s:'b', e:'\ud83c\udf4c', n:'Oats with peanut butter & banana', min:5, t:['budget'],
    it:[['oats',70],['peanut_butter',20],['banana',120]], how:'Oats cooked in water or a plant milk, sliced banana and peanut butter on top.'},
   // lunch
-  {id:'chicken_rice', s:'l', e:'\ud83c\udf57', n:'Chicken, rice & shopska salad', min:25, t:['prep'],
+  {id:'chicken_rice', s:'l', e:'\ud83c\udf57', n:'Chicken, rice & shopska salad', min:25, t:['bg'],
    it:[['chicken',170],['rice',80],['tomato',120],['cucumber',100],['pepper',50],['sirene',25],['olive_oil',7]], how:'Chicken grilled or pan-fried, rice boiled. Salad: tomato, cucumber, pepper, grated feta, a little oil. Cook 2\u20133 days at once.'},
   {id:'turkey_bulgur', s:'l', e:'\ud83e\udd57', n:'Turkey & bulgur bowl', min:20, t:['prep'],
    it:[['turkey',160],['bulgur',70],['pepper',100],['cucumber',80],['greens',30],['olive_oil',7]], how:'Bulgur covered with boiling water for 15 minutes. Turkey sliced and pan-fried. Chopped veg and oil on top.'},
   {id:'tuna_wrap', s:'l', e:'\ud83c\udf2f', n:'Tuna wraps with salad', min:5, t:['budget'],
    it:[['tortilla',120],['tuna',110],['greek_yog',50],['greens',40],['tomato',80]], how:'Tuna mixed with the yogurt, salt and pepper. Into two wraps with leaves and tomato.'},
-  {id:'lentil_stew', s:'l', e:'\ud83c\udf72', n:'Red lentil stew with bread', min:30, t:['budget','prep'],
+  {id:'lentil_stew', s:'ld', e:'\ud83c\udf72', n:'Red lentil stew with bread', min:30, t:['budget','prep'],
    it:[['lentils',90],['onion',60],['passata',100],['mixed_veg',100],['olive_oil',7],['bread',40]], how:'Onion softened in oil, lentils, passata and veg in, water to cover, 20 minutes. Paprika and cumin. Keeps 3 days.'},
   {id:'beef_potatoes', s:'l', e:'\ud83e\udd54', n:'Beef mince & potatoes with salad', min:30, t:[],
    it:[['beef',150],['potatoes',300],['tomato',100],['cucumber',100],['olive_oil',5]], how:'Potatoes boiled or baked. Mince browned with salt, pepper and paprika. Salad with a little oil.'},
@@ -9776,7 +9829,7 @@ const MEALS = [
    it:[['egg',165],['sirene',40],['bread',80],['tomato',100],['olive_oil',5]], how:'Eggs whisked, feta crumbled in, cooked in the oil. Bread and tomato on the side.'},
   {id:'salmon_potatoes', s:'d', e:'\ud83d\udc1f', n:'Salmon, potatoes & salad', min:25, t:[],
    it:[['salmon',150],['potatoes',250],['greens',60],['olive_oil',5]], how:'Potatoes boiled or roasted. Salmon in the oven at 200\u00b0C for 12\u201315 minutes. Leaves with a little oil.'},
-  {id:'bean_stew', s:'d', e:'\ud83e\uded8', n:'Bean stew with feta', min:15, t:['budget'],
+  {id:'bean_stew', s:'d', e:'\ud83e\uded8', n:'Bean stew with feta', min:15, t:['budget','bg'],
    it:[['beans',300],['onion',50],['passata',80],['sirene',40],['bread',40],['olive_oil',5]], how:'Onion softened, beans and passata in, 10 minutes with paprika and savory (chubritsa). Feta on top.'},
   {id:'tuna_pasta', s:'d', e:'\ud83c\udf5d', n:'Tuna pasta with tomato', min:15, t:['budget'],
    it:[['pasta',80],['tuna',110],['passata',150],['olives',20]], how:'Pasta boiled. Passata warmed with the tuna and olives, mixed through.'},
@@ -9788,7 +9841,7 @@ const MEALS = [
    it:[['hake',200],['rice',70],['broccoli',200],['olive_oil',7]], how:'Rice boiled. Fish in the oven 12 minutes or pan-fried. Broccoli steamed, oil and lemon over everything.'},
   {id:'tofu_stirfry', s:'d', e:'\ud83e\udd62', n:'Tofu stir-fry with rice', min:20, t:[],
    it:[['tofu',200],['mixed_veg',200],['rice',70],['olive_oil',7]], how:'Rice boiled. Tofu cubes browned in the oil, veg in, a splash of soy sauce.'},
-  {id:'bean_chili', s:'d', e:'\ud83c\udf36\ufe0f', n:'Bean & pepper chili with rice', min:25, t:['budget','prep'],
+  {id:'bean_chili', s:'ld', e:'\ud83c\udf36\ufe0f', n:'Bean & pepper chili with rice', min:25, t:['budget','prep'],
    it:[['beans',250],['passata',150],['pepper',100],['onion',50],['rice',50],['olive_oil',5]], how:'Onion and pepper softened, beans and passata in with chili and cumin, 15 minutes. Over rice.'},
   // eating out (lunch or dinner)
   {id:'out_grill', s:'ld', e:'\ud83e\udd59', n:'Eating out: grill + salad', min:0, t:['out'], out:{k:700,p:45,c:45,f:35},
@@ -9797,6 +9850,114 @@ const MEALS = [
    how:'Two or three slices, a side salad first, no extra cheese. Enjoy it and get back to the plan tomorrow.'},
   {id:'out_doner', s:'ld', e:'\ud83c\udf2f', n:'Eating out: d\u00f6ner or wrap', min:0, t:['out'], out:{k:650,p:35,c:60,f:28},
    how:'Chicken over beef, extra salad, one sauce. A portion, not a large one.'},
+
+  // ---- more breakfasts ----
+  {id:'eggs_panagyurski', s:'b', e:'🍳', n:'Panagyurishte eggs (poached on yogurt)', min:12, t:['bg'],
+   it:[['egg',165],['yogurt',200],['sirene',25],['bread',40]], how:'Yogurt with a little crushed garlic in a bowl, three poached eggs on top, feta crumbled over, a pinch of paprika. Bread to mop it up.'},
+  {id:'popara', s:'b', e:'🥣', n:'Popara with curd cheese', min:5, t:['bg','budget'],
+   it:[['bread',80],['milk',250],['izvara',150],['sirene',20]], how:'Bread torn into a bowl, hot milk over it, curd cheese and a little feta stirred through.'},
+  {id:'lyutenitsa_toast', s:'b', e:'🍅', n:'Toast with lyutenitsa, eggs & feta', min:8, t:['bg','budget'],
+   it:[['bread',80],['lyutenitsa',40],['egg',110],['sirene',30]], how:'Toast spread with lyutenitsa, two boiled or fried eggs, feta crumbled on top.'},
+  {id:'salmon_toast', s:'b', e:'🐟', n:'Smoked salmon & eggs on toast', min:8, t:[],
+   it:[['bread',80],['smoked_salmon',60],['egg',110],['greens',30]], how:'Eggs scrambled soft, onto toast with the salmon and a few leaves.'},
+  {id:'yog_granola', s:'b', e:'🥣', n:'Greek yogurt, granola & fruit', min:2, t:[],
+   it:[['greek_yog',250],['granola',40],['berries',100]], how:'Yogurt in a bowl, granola and fruit on top.'},
+  {id:'overnight_skyr', s:'b', e:'🍎', n:'Overnight oats with skyr & apple', min:3, t:['budget','prep'],
+   it:[['oats',60],['skyr',200],['apple',180],['milk',100]], how:'Oats, skyr, milk and grated apple in a jar the night before. Cinnamon if you like.'},
+  {id:'breakfast_burrito', s:'b', e:'🌯', n:'Breakfast burrito', min:10, t:[],
+   it:[['tortilla',60],['egg',165],['beans',80],['kashkaval',20],['passata',50]], how:'Eggs scrambled with the beans, into a warm wrap with grated cheese and a spoon of passata or salsa.'},
+  {id:'shakshuka', s:'bd', e:'🍳', n:'Shakshuka with bread', min:20, t:['budget'],
+   it:[['egg',165],['passata',200],['pepper',100],['onion',50],['olive_oil',5],['bread',60]], how:'Onion and pepper softened in the oil, passata in with cumin and paprika, eggs cracked into hollows, lid on for 6–8 minutes.'},
+  {id:'tofu_avocado_toast', s:'b', e:'🥑', n:'Avocado toast with smoky tofu', min:8, t:[],
+   it:[['bread',80],['tofu',150],['avocado',50],['tomato',80]], how:'Tofu sliced and fried with paprika and salt. Avocado mashed on toast, tofu and tomato on top.'},
+  {id:'socca_omelette', s:'b', e:'\ud83e\udd5e', n:'Chickpea-flour omelette with veg', min:12, t:[],
+   it:[['chickpea_flour',70],['spinach',60],['mushrooms',80],['olive_oil',5],['bread',40]], how:'Chickpea flour whisked with water, salt and turmeric to a batter, poured over saut\u00e9ed spinach and mushrooms, cooked like an omelette.'},
+  {id:'soy_yog_bowl', s:'b', e:'\ud83e\udd63', n:'Soy yogurt, granola & berries', min:2, t:[],
+   it:[['soy_yogurt',250],['granola',40],['berries',100],['peanut_butter',10]], how:'Soy yogurt in a bowl, granola, berries and a drizzle of peanut butter.'},
+  {id:'pb_smoothie', s:'b', e:'\ud83e\udd64', n:'Peanut butter & banana smoothie', min:3, t:[],
+   it:[['soy_milk',300],['banana',120],['oats',40],['peanut_butter',20]], how:'Everything blended with a few ice cubes.'},
+  // ---- more lunches ----
+  {id:'bob_chorba', s:'ld', e:'🍲', n:'Bean soup (bob chorba) with bread', min:30, t:['bg','budget','prep'],
+   it:[['beans',300],['onion',50],['carrot',60],['pepper',50],['passata',50],['olive_oil',5],['bread',60]], how:'Onion, carrot and pepper softened, beans and passata in, water to cover, 20 minutes with savory (chubritsa) and mint.'},
+  {id:'leshta_chorba', s:'ld', e:'🥣', n:'Lentil soup with yogurt', min:30, t:['bg','budget','prep'],
+   it:[['lentils',80],['carrot',60],['onion',50],['olive_oil',5],['yogurt',150],['bread',40]], how:'Lentils with onion, carrot and a bay leaf, 25 minutes. A spoon of yogurt on top, bread on the side.'},
+  {id:'chicken_soup', s:'ld', e:'🍜', n:'Chicken soup with rice (pileshka supa)', min:35, t:['bg','prep'],
+   it:[['chicken',150],['rice',40],['carrot',80],['onion',50],['potatoes',100]], how:'Chicken simmered 20 minutes, shredded back in with the veg and rice for 15 more. Lemon and parsley.'},
+  {id:'tarator_chicken', s:'l', e:'🥒', n:'Tarator with chicken & bread', min:15, t:['bg'],
+   it:[['yogurt',300],['cucumber',150],['walnuts',15],['olive_oil',5],['chicken',120],['bread',40]], how:'Cold soup: yogurt thinned with water, grated cucumber, garlic, dill, walnuts. Grilled chicken and bread on the side. A summer lunch.'},
+  {id:'caesar_light', s:'l', e:'🥗', n:'Chicken Caesar salad, lighter', min:15, t:[],
+   it:[['chicken',150],['greens',100],['parmesan',15],['bread',40],['greek_yog',40],['olive_oil',5]], how:'Chicken grilled and sliced, bread toasted into croutons. Dressing: yogurt, a little oil, lemon, garlic and grated parmesan.'},
+  {id:'burrito_bowl', s:'ld', e:'🌮', n:'Chicken burrito bowl', min:20, t:[],
+   it:[['chicken',140],['rice',70],['beans',100],['sweetcorn',60],['tomato',80],['avocado',40]], how:'Rice, beans and corn in a bowl, spiced chicken on top, chopped tomato and avocado, lime.'},
+  {id:'poke_bowl', s:'l', e:'🍣', n:'Salmon poke bowl', min:15, t:[],
+   it:[['salmon',120],['rice',80],['edamame',60],['cucumber',80],['soy_sauce',10]], how:'Rice cooked and cooled a little. Raw sushi-grade or quickly seared salmon in cubes, edamame, cucumber, soy and sesame.'},
+  {id:'gyros_pita', s:'ld', e:'🥙', n:'Chicken gyros pitta with tzatziki', min:20, t:[],
+   it:[['pita',120],['chicken',150],['greek_yog',80],['cucumber',60],['tomato',60],['onion',20]], how:'Chicken strips with oregano, paprika and lemon, pan-fried. Tzatziki: yogurt, grated cucumber, garlic. Into warm pittas.'},
+  {id:'quinoa_feta', s:'l', e:'🥗', n:'Mediterranean quinoa salad with feta', min:20, t:[],
+   it:[['quinoa',70],['chickpeas',100],['sirene',40],['tomato',100],['cucumber',100],['olives',20],['olive_oil',7]], how:'Quinoa boiled 12 minutes and cooled. Everything else chopped in, oil and lemon.'},
+  {id:'tempeh_bowl', s:'ld', e:'🥦', n:'Tempeh, quinoa & broccoli bowl', min:20, t:[],
+   it:[['tempeh',120],['quinoa',60],['broccoli',150],['soy_sauce',10],['olive_oil',5]], how:'Quinoa boiled. Tempeh sliced and browned in the oil, soy in at the end. Broccoli steamed.'},
+  {id:'ham_avocado_wrap', s:'l', e:'🌯', n:'Ham, avocado & salad wraps', min:5, t:[],
+   it:[['tortilla',120],['ham',80],['avocado',40],['greens',30],['tomato',60]], how:'Two wraps: mashed avocado, ham, leaves and tomato. Rolled tight.'},
+  // ---- more dinners ----
+  {id:'stuffed_peppers', s:'ld', e:'🫑', n:'Stuffed peppers (pulneni chushki)', min:60, t:['bg','prep'],
+   it:[['pepper',250],['mince_mix',150],['rice',40],['onion',40],['passata',80],['yogurt',100]], how:'Mince browned with onion, rice and paprika, into hollowed peppers. Passata and water around them, 45 minutes at 190°C. Yogurt on top.'},
+  {id:'moussaka_light', s:'ld', e:'🥔', n:'Moussaka, lighter version', min:60, t:['bg','prep'],
+   it:[['potatoes',300],['beef',150],['onion',50],['egg',55],['yogurt',100],['olive_oil',5]], how:'Lean mince and onion browned, mixed with diced potatoes, 35 minutes in the oven. Egg whisked with yogurt poured over, 10 more minutes.'},
+  {id:'chicken_gyuvech', s:'ld', e:'🫕', n:'Chicken gyuvech with vegetables', min:60, t:['bg','prep'],
+   it:[['chicken_thigh',180],['potatoes',150],['zucchini',100],['pepper',80],['onion',50],['passata',80],['olive_oil',7]], how:'Everything in a clay pot or deep tray with paprika, savory and a splash of water. Covered, 50 minutes at 190°C.'},
+  {id:'sarmi', s:'ld', e:'🥬', n:'Cabbage sarmi with yogurt', min:70, t:['bg','prep'],
+   it:[['cabbage',150],['mince_mix',130],['rice',40],['onion',30],['yogurt',150]], how:'Mince, rice, onion and paprika rolled in soured cabbage leaves, packed in a pot with water, 50 minutes on low. Yogurt on the side.'},
+  {id:'skara_shopska', s:'d', e:'🍖', n:'Kebapche, kyufte & shopska salad', min:20, t:['bg'],
+   it:[['mince_mix',180],['tomato',120],['cucumber',100],['pepper',50],['sirene',30],['bread',40]], how:'Mince seasoned with cumin, salt and pepper, shaped into kebapcheta and kyufteta, grilled or pan-fried. Shopska and one slice of bread.'},
+  {id:'trout_potatoes', s:'d', e:'🐟', n:'Oven-baked trout with potatoes', min:35, t:['bg'],
+   it:[['trout',250],['potatoes',250],['greens',60],['olive_oil',5]], how:'Potatoes in wedges, 20 minutes at 200°C. Trout with lemon and dill on the same tray, 15 more minutes.'},
+  {id:'mackerel_bulgur', s:'d', e:'🐟', n:'Baked mackerel, bulgur & salad', min:25, t:['budget'],
+   it:[['mackerel',150],['bulgur',50],['tomato',100],['cucumber',100]], how:'Mackerel with lemon and salt, 15 minutes at 200°C. Bulgur soaked in boiling water. Simple salad.'},
+  {id:'chicken_curry', s:'ld', e:'🍛', n:'Chicken curry with rice', min:30, t:['prep'],
+   it:[['chicken',160],['coconut_milk',100],['onion',50],['spinach',80],['passata',50],['rice',70]], how:'Onion softened with curry powder, chicken in, then passata and coconut milk for 15 minutes. Spinach stirred in at the end. Over rice.'},
+  {id:'shrimp_noodles', s:'d', e:'🍤', n:'Prawn & noodle stir-fry', min:15, t:[],
+   it:[['shrimp',180],['noodles',70],['mixed_veg',200],['soy_sauce',15],['olive_oil',7]], how:'Noodles soaked in hot water. Prawns and veg in a hot pan for 5 minutes, noodles and soy in, toss.'},
+  {id:'chili_con_carne', s:'ld', e:'🌶️', n:'Chili con carne with rice', min:35, t:['prep'],
+   it:[['beef',140],['beans',120],['passata',150],['onion',50],['pepper',80],['rice',60]], how:'Mince browned with onion and pepper, chili and cumin, passata and beans in, 20 minutes. Over rice.'},
+  {id:'turkey_bolognese', s:'ld', e:'🍝', n:'Turkey bolognese', min:30, t:['prep'],
+   it:[['turkey',150],['pasta',80],['passata',150],['onion',40],['carrot',40],['parmesan',10]], how:'Turkey mince browned with onion and grated carrot, passata in for 15 minutes. Over pasta, parmesan on top.'},
+  {id:'teriyaki_salmon', s:'d', e:'🍣', n:'Teriyaki salmon, rice & greens', min:25, t:[],
+   it:[['salmon',150],['rice',70],['broccoli',150],['soy_sauce',15],['honey',10]], how:'Soy and honey brushed over the salmon, 12 minutes at 200°C. Rice and steamed broccoli.'},
+  {id:'fajitas', s:'d', e:'🌮', n:'Sheet-pan chicken fajitas', min:25, t:[],
+   it:[['chicken',160],['pepper',150],['onion',60],['tortilla',120],['greek_yog',50],['olive_oil',5]], how:'Chicken, peppers and onion in strips with fajita spice and the oil, 20 minutes at 210°C. Into wraps with yogurt.'},
+  {id:'veg_gyuvech', s:'ld', e:'🫕', n:'Vegetable gyuvech with eggs & feta', min:50, t:['bg','prep'],
+   it:[['potatoes',200],['eggplant',150],['pepper',100],['tomato',100],['onion',50],['egg',110],['sirene',30],['olive_oil',7]], how:'Vegetables diced with paprika and savory, 40 minutes at 190°C. Eggs cracked on top and feta crumbled, 8 more minutes.'},
+  {id:'chickpea_curry', s:'ld', e:'🍛', n:'Chickpea & spinach curry', min:25, t:['budget','prep'],
+   it:[['chickpeas',250],['coconut_milk',80],['spinach',100],['passata',100],['rice',60]], how:'Curry powder fried briefly, passata, coconut milk and chickpeas in for 15 minutes, spinach at the end. Over rice.'},
+  {id:'lentil_bolognese', s:'ld', e:'🍝', n:'Lentil bolognese', min:30, t:['budget','prep'],
+   it:[['lentils',70],['pasta',70],['passata',150],['onion',40],['carrot',50],['olive_oil',5]], how:'Onion and carrot softened, lentils and passata in with water, 20 minutes. Over pasta.'},
+  {id:'sweet_potato_bowl', s:'d', e:'🍠', n:'Sweet potato & black bean bowl', min:30, t:[],
+   it:[['sweet_potato',300],['beans',150],['sweetcorn',60],['avocado',40],['greens',40]], how:'Sweet potato cubes roasted 25 minutes at 210°C. Warm beans and corn, avocado and leaves, lime.'},
+  // ---- more snacks ----
+  {id:'ayran_walnuts', s:'s', e:'🥛', n:'Ayran & walnuts', min:1, t:['bg'], it:[['ayran',300],['walnuts',20]], how:'A tall glass of ayran and a small handful of walnuts.'},
+  {id:'izvara_honey', s:'s', e:'🍯', n:'Curd cheese with honey & berries', min:2, t:['bg'], it:[['izvara',200],['honey',10],['berries',60]], how:'Izvara loosened with a spoon of water, honey and berries on top.'},
+  {id:'egg_lyutenitsa', s:'s', e:'🥚', n:'Boiled egg, lyutenitsa & bread', min:10, t:['bg','budget'], it:[['egg',110],['lyutenitsa',30],['bread',40]], how:'Two boiled eggs, a slice of bread spread with lyutenitsa.'},
+  {id:'edamame_snack', s:'s', e:'🫛', n:'Edamame with sea salt', min:5, t:[], it:[['edamame',150]], how:'Boiled 4 minutes from frozen, salted.'},
+  {id:'skyr_granola', s:'s', e:'🥣', n:'Skyr & granola cup', min:1, t:[], it:[['skyr',150],['granola',30]], how:'Skyr with granola on top.'},
+  {id:'roasted_chickpeas', s:'s', e:'🫘', n:'Crispy roasted chickpeas', min:30, t:['budget','prep'], it:[['chickpeas',120],['olive_oil',3]], how:'Dried well, oil and paprika, 25 minutes at 210°C. Keep a jar for the week.'},
+  {id:'salmon_ricecakes', s:'s', e:'🍘', n:'Rice cakes with smoked salmon', min:3, t:[], it:[['ricecake',27],['smoked_salmon',50],['cottage',60]], how:'Three rice cakes, cottage cheese and smoked salmon.'},
+  {id:'orange_almonds', s:'s', e:'🍊', n:'Orange & almonds', min:1, t:[], it:[['orange',150],['almonds',20]], how:'An orange and a small handful of almonds.'},
+  {id:'soy_yog_snack', s:'s', e:'\ud83e\udd63', n:'Soy yogurt & berries', min:1, t:[], it:[['soy_yogurt',200],['berries',80]], how:'With a few nuts if you are hungry.'},
+  {id:'pb_ricecakes', s:'s', e:'\ud83c\udf58', n:'Rice cakes with peanut butter', min:2, t:['budget'], it:[['ricecake',27],['peanut_butter',20],['banana',60]], how:'Three rice cakes, peanut butter, banana slices.'},
+  // ---- more eating out ----
+  {id:'out_mehana', s:'ld', e:'🍽️', n:'Eating out: mehana (Bulgarian tavern)', min:0, t:['out','bg'], out:{k:800,p:50,c:45,f:42},
+   how:'Shopska or snezhanka first, then grilled meat — kebapche, kyufte or pileshko shishche — with one bread. Skip the fries with sirene and the second rakia.'},
+  {id:'out_banitsa', s:'b', e:'🥧', n:'Bakery: banitsa & ayran', min:0, t:['out','bg'], out:{k:520,p:18,c:45,f:30},
+   how:'Half a piece of banitsa with a big ayran keeps it reasonable. A whole piece is fine too — just make lunch the lighter meal.'},
+  {id:'out_sushi', s:'ld', e:'🍣', n:'Eating out: sushi', min:0, t:['out'], out:{k:650,p:35,c:85,f:15},
+   how:'Eight to ten pieces, sashimi and nigiri over fried or mayo rolls, miso soup and edamame on the side.'},
+  {id:'out_burger', s:'ld', e:'🍔', n:'Eating out: burger', min:0, t:['out'], out:{k:850,p:40,c:70,f:42},
+   how:'A single patty, side salad instead of fries, water or a zero drink. Double protein beats double cheese.'},
+  {id:'out_asian', s:'ld', e:'🥡', n:'Eating out: Asian takeaway', min:0, t:['out'], out:{k:700,p:35,c:85,f:22},
+   how:'Steamed rice and a protein-heavy dish — chicken, tofu or prawns with vegetables. Skip anything breaded or sweet-and-sour.'},
+  {id:'out_breakfast', s:'b', e:'☕', n:'Café breakfast', min:0, t:['out'], out:{k:550,p:30,c:45,f:26},
+   how:'Eggs any way on toast, or yogurt with fruit. A latte counts as a small snack — go easy on the pastries.'},
   // snacks
   {id:'banana_skyr', s:'s', e:'\ud83c\udf4c', n:'Banana + skyr', min:1, t:[], it:[['banana',120],['skyr',150]], how:'Good 60\u201390 minutes before training.'},
   {id:'cottage_walnuts', s:'s', e:'\ud83e\udd5b', n:'Cottage cheese & walnuts', min:1, t:[], it:[['cottage',200],['walnuts',20]], how:'A slow protein for the evening.'},
@@ -9827,6 +9988,7 @@ function nutriWeight(){ const l = latestBody(); return l ? l.kg : null; }
 function mealFlags(m){ if(m.out) return ''; return m.it.map(function(x){ return FOODS[x[0]].fl||''; }).join(''); }
 function mealAllowed(m){
   const n = NS(), fl = mealFlags(m), diet = n.diet||'any';
+  if(n.hide && n.hide[m.id]) return false;
   if(m.out) return diet!=='vegan';
   if(diet==='vegan' && /[mfde]/.test(fl)) return false;
   if(diet==='vegetarian' && /[mf]/.test(fl)) return false;
@@ -9850,7 +10012,7 @@ function scaleMeal(m, kcal){
   if(m.out) return {m:m, items:[], mac:{k:m.out.k,p:m.out.p,c:m.out.c,f:m.out.f}, fixed:true};
   const fixed = m.it.filter(function(x){ return FOODS[x[0]].veg; }), sc = m.it.filter(function(x){ return !FOODS[x[0]].veg; });
   const fk = macrosOf(fixed).k, sk = macrosOf(sc).k || 1;
-  const fac = Math.max(0.6, Math.min(1.7, (kcal - fk)/sk));
+  const fac = Math.max(0.5, Math.min(2.2, (kcal - fk)/sk));   // a big eater gets a bigger plate, within reason
   const items = m.it.map(function(x){ return FOODS[x[0]].veg ? [x[0], x[1]] : [x[0], roundGrams(x[0], x[1]*fac)]; });
   const mac = macrosOf(items);
   return {m:m, items:items, mac:{k:Math.round(mac.k), p:Math.round(mac.p), c:Math.round(mac.c), f:Math.round(mac.f)}};
@@ -9897,34 +10059,83 @@ function nutriTrainGuess(date){
   const gap = Math.round((dateMs(date)-dateMs(last))/86400000);
   return gap >= Math.max(1, Math.round(7/(+STATE.profile.days||3)));
 }
-function nutriSlots(t){
+/* When you train decides the shape of the day: a small snack goes 1–2 hours
+   before the session and the meal straight after it becomes the biggest one,
+   so most of the day's carbs land around the work. [key, type, share, label, role]
+   role: 'pre' = the snack before training, 'post' = the recovery meal after. */
+const NUTRI_WHEN = [['am','Morning'],['mid','Midday'],['pm','Evening']];
+function nutriSlots(t, train, when){
   const five = t.kcal >= 2200;
+  if(train && when==='am') return five
+    ? [['snack','s',0.08,'Before training','pre'],['breakfast','b',0.30,'Breakfast','post'],['lunch','l',0.28,'Lunch'],['dinner','d',0.24,'Dinner'],['evening','s',0.10,'Evening']]
+    : [['snack','s',0.10,'Before training','pre'],['breakfast','b',0.32,'Breakfast','post'],['lunch','l',0.30,'Lunch'],['dinner','d',0.28,'Dinner']];
+  if(train && when==='mid') return five
+    ? [['breakfast','b',0.22,'Breakfast'],['snack','s',0.10,'Before training','pre'],['lunch','l',0.34,'Lunch','post'],['dinner','d',0.24,'Dinner'],['evening','s',0.10,'Evening']]
+    : [['breakfast','b',0.24,'Breakfast'],['snack','s',0.12,'Before training','pre'],['lunch','l',0.36,'Lunch','post'],['dinner','d',0.28,'Dinner']];
+  if(train) return five
+    ? [['breakfast','b',0.22,'Breakfast'],['lunch','l',0.26,'Lunch'],['snack','s',0.12,'Before training','pre'],['dinner','d',0.32,'Dinner','post'],['evening','s',0.08,'Evening']]
+    : [['breakfast','b',0.24,'Breakfast'],['lunch','l',0.28,'Lunch'],['snack','s',0.14,'Before training','pre'],['dinner','d',0.34,'Dinner','post']];
   return five
     ? [['breakfast','b',0.24,'Breakfast'],['lunch','l',0.30,'Lunch'],['snack','s',0.10,'Snack'],['dinner','d',0.26,'Dinner'],['evening','s',0.10,'Evening']]
     : [['breakfast','b',0.26,'Breakfast'],['lunch','l',0.32,'Lunch'],['snack','s',0.12,'Snack'],['dinner','d',0.30,'Dinner']];
 }
+function nutriWhen(date){ const d = (STATE.nutri.days[date]) || {}; return d.when || STATE.nutri.when || 'pm'; }
 function slotPool(type){ return MEALS.filter(function(m){ return m.s.indexOf(type)>=0 && mealAllowed(m) && !m.out; }); }
+/* Variety by rotation, not by dice: each week every slot gets its own shuffled
+   order of the meals that fit it, and day N of the week takes the Nth one, so
+   nothing repeats inside a week unless the list is short. Favourites go in
+   twice (they come round about twice a week); with "More Bulgarian dishes" on,
+   so do the Bulgarian ones. Meals that cannot be sized to the slot within 12%
+   only come in when too few others fit. */
+function weekStartISO(date){ const d = new Date(date+'T00:00:00'); const k = (d.getDay()+6)%7; return isoLocal(addDays(d, -k)); }
 function defaultMeal(date, key, type, kcal, avoid){
-  const pool = slotPool(type).filter(function(m){ return avoid.indexOf(m.id)<0; });
+  const n = NS(), fav = n.fav || {};
+  let pool = slotPool(type);
   if(!pool.length) return null;
-  const scored = pool.map(function(m){ const s = scaleMeal(m, kcal); return {m:m, k: warmHash(date+'|'+key+'|'+m.id)*0.7 + Math.min(1, s.mac.p*4/Math.max(1,s.mac.k)/0.4)*0.3}; });
-  scored.sort(function(a,b){ return b.k-a.k; });
-  return scored[0].m.id;
+  const fit = pool.filter(function(m){ const sc = scaleMeal(m, kcal); return Math.abs(sc.mac.k-kcal)/kcal <= 0.12; });
+  if(fit.length >= 4) pool = fit;
+  const wk = weekStartISO(date), list = [];
+  pool.forEach(function(m){
+    list.push({m:m, h:warmHash(wk+'|'+key+'|'+m.id)});
+    if(fav[m.id]) list.push({m:m, h:warmHash(wk+'|'+key+'|'+m.id+'|2')});
+    if(n.bg && m.t.indexOf('bg')>=0) list.push({m:m, h:warmHash(wk+'|'+key+'|'+m.id+'|bg')});
+  });
+  list.sort(function(x,y){ return x.h-y.h; });
+  const day = Math.round((dateMs(date)-dateMs(wk))/86400000);
+  for(let i=0;i<list.length;i++){
+    const c = list[(day + i) % list.length].m;
+    if(avoid.indexOf(c.id) < 0) return c.id;
+  }
+  return null;
 }
-function nutriPlan(date, trainOverride){
+/* Cook once, eat twice: a batch dish at dinner comes back as tomorrow's lunch. */
+function leftoverFor(date){
+  const n = NS(); if(n.leftovers === false) return null;
+  const prev = isoLocal(addDays(new Date(date+'T00:00:00'), -1));
+  if(n.since && prev < n.since) return null;          // nothing was cooked before Fuel was switched on
+  const yp = nutriPlan(prev, undefined, 1); if(!yp) return null;
+  const din = yp.slots.find(function(s){ return s.key==='dinner'; });
+  const m = din && din.meal && din.meal.m;
+  return m && m.t.indexOf('prep')>=0 && m.s.indexOf('l')>=0 && mealAllowed(m) ? m.id : null;
+}
+function nutriPlan(date, trainOverride, depth){
   const train = typeof trainOverride==='boolean' ? trainOverride : nutriTrainGuess(date);
   const t = nutriTargets(train); if(!t) return null;
   const d = (STATE.nutri.days[date]) || {}, pick = d.pick || {};
   const used = [];
-  const slots = nutriSlots(t).map(function(s){
+  const when = nutriWhen(date);
+  const left = depth ? null : leftoverFor(date);
+  const slots = nutriSlots(t, train, when).map(function(s){
     const kcal = t.kcal*s[2];
-    let id = pick[s[0]];
-    if(!id || !MEAL_BY_ID[id] || !mealAllowed(MEAL_BY_ID[id])) id = defaultMeal(date, s[0], s[1], kcal, used);
+    let id = pick[s[0]], lo = false;
+    if(id && (!MEAL_BY_ID[id] || !mealAllowed(MEAL_BY_ID[id]))) id = null;
+    if(!id && s[0]==='lunch' && left && used.indexOf(left)<0){ id = left; lo = true; }
+    if(!id) id = defaultMeal(date, s[0], s[1], kcal, used.concat(left && s[0]!=='lunch' ? [left] : []));
     if(id) used.push(id);
-    const label = s[0]==='snack' && train ? 'Pre-training snack' : s[3];
-    return {key:s[0], type:s[1], label:label, kcal:kcal, meal: id ? scaleMeal(MEAL_BY_ID[id], kcal) : null};
+    const label = (s[4]==='post' ? s[3]+' \u00b7 after training' : s[3]) + (lo ? ' \u00b7 leftovers' : '');
+    return {key:s[0], type:s[1], label:label, role:s[4]||'', leftover:lo, kcal:kcal, meal: id ? scaleMeal(MEAL_BY_ID[id], kcal) : null};
   });
-  return {date:date, train:train, t:t, slots:slots};
+  return {date:date, train:train, when:when, t:t, slots:slots};
 }
 function nutriEaten(date){
   const d = (STATE.nutri && STATE.nutri.days[date]) || {}, tot = {k:0,p:0,c:0,f:0};
@@ -9944,7 +10155,17 @@ function autoProteinHabit(date, plan){
   const d = nutriDay(date); d.h = d.h || {};
   if(nutriEaten(date).p >= plan.t.p*0.9) d.h.protein = true;
 }
-function nutriSetTrain(v){ const d = nutriDay(todayISO()); d.train = v; saveState(); render(); }
+function nutriFav(id){ const n = NS(); n.fav = n.fav || {}; if(n.fav[id]) delete n.fav[id]; else n.fav[id] = true; saveState(); render(); toast(n.fav[id] ? 'Favourite \u2014 comes round more often' : 'Removed from favourites'); }
+function nutriHide(id){
+  const n = NS(); n.hide = n.hide || {}; n.hide[id] = true;
+  Object.keys(n.days||{}).forEach(function(k){ const p = n.days[k].pick; if(p) Object.keys(p).forEach(function(sl){ if(p[sl]===id) delete p[sl]; }); });
+  NUTRI_SHEET = null; saveState(); render(); toast('Hidden. Settings \u203a Hidden meals brings it back.');
+}
+function nutriSetTrain(v, when){
+  const d = nutriDay(todayISO()); d.train = v;
+  if(v && when){ d.when = when; STATE.nutri.when = when; }       // the last choice becomes the default for the next days
+  saveState(); render();
+}
 function nutriPick(key, id){
   const d = nutriDay(todayISO()); d.pick = d.pick || {}; d.pick[key] = id;
   if(d.ate && d.ate[key]) delete d.ate[key];
@@ -10034,11 +10255,11 @@ function nutriAcceptCheck(change){
 
 /* ---------- shopping ---------- */
 function nutriShopping(){
-  const out = {}, start = new Date();
+  const out = {}, start = new Date(), ppl = Math.max(1, Math.min(6, NS().people||1));
   for(let i=0;i<7;i++){
     const iso = isoLocal(addDays(start, i)), plan = nutriPlan(iso);
     if(!plan) continue;
-    plan.slots.forEach(function(s){ if(s.meal) s.meal.items.forEach(function(x){ out[x[0]] = (out[x[0]]||0) + x[1]; }); });
+    plan.slots.forEach(function(s){ if(s.meal) s.meal.items.forEach(function(x){ out[x[0]] = (out[x[0]]||0) + x[1]*ppl; }); });
   }
   return out;
 }
@@ -10071,14 +10292,15 @@ function shopShare(){
 }
 
 /* ---------- setup ---------- */
-function nutriStartSetup(){
+function nutriStartSetup(){ nutriInitSetup(); navigate('fuel_setup'); }
+function nutriInitSetup(){
   const n = NS(), l = latestBody(), g = STATE.profile.goals||[];
   NUTRI_SETUP = {
     sex: n.sex||'', birthYear: n.birthYear||'', height: STATE.profile.heightCm||'', weight: l ? bwTxt(l.kg) : '',
     goal: n.goal || (g.indexOf('lose_fat')>=0 ? 'lose' : g.indexOf('build_muscle')>=0 ? 'gain' : 'maintain'),
-    activity: n.activity||'desk', diet: n.diet||'any', noDairy: !!n.noDairy
+    activity: n.activity||'desk', diet: n.diet||'any', noDairy: !!n.noDairy, bg: !!n.bg, leftovers: n.leftovers!==false
   };
-  navigate('fuel_setup');
+  return NUTRI_SETUP;
 }
 function nsSet(k, v){ NUTRI_SETUP[k] = v; render(); }
 function nsRead(){
@@ -10095,7 +10317,7 @@ function nutriSaveSetup(){
   const kg = isLb() ? w/2.20462 : w;
   if(!(kg > 35 && kg < 300)){ toast('Add your weight'); return; }
   const n = NS();
-  n.sex = s.sex; n.birthYear = yr; n.goal = s.goal; n.activity = s.activity; n.diet = s.diet; n.noDairy = !!s.noDairy;
+  n.sex = s.sex; n.birthYear = yr; n.goal = s.goal; n.activity = s.activity; n.diet = s.diet; n.noDairy = !!s.noDairy; n.bg = !!s.bg; n.leftovers = s.leftovers!==false;
   if(!n.on){ n.on = true; n.since = n.since || todayISO(); }
   STATE.profile.heightCm = Math.round(h);
   const l = latestBody();
@@ -10112,13 +10334,19 @@ function nutriTurnOff(){
 function nutriTurnOn(){ const n = NS(); if(n.sex){ n.on = true; saveState(); navigate('fuel'); } else nutriStartSetup(); }
 
 function renderFuelSetup(){
-  const s = NUTRI_SETUP || (nutriStartSetup(), NUTRI_SETUP);
+  const s = NUTRI_SETUP || nutriInitSetup();
   const chips = function(key, opts){ return '<div class="chip-row">'+opts.map(function(o){
     return '<div class="chip '+(s[key]===o[0]?'selected':'')+'" onclick="nsRead();nsSet(\''+key+'\',\''+o[0]+'\')">'+o[1]+'</div>'; }).join('')+'</div>'; };
-  return '<div class="top-row"><div class="back-btn" role="button" tabindex="0" aria-label="Back" onclick="goBack(\'profile\')">'+ICON.back+'</div>'
-    + '<div class="eyebrow">Nutrition \u00b7 beta</div></div>'
-    + '<h1 style="font-size:28px;margin:6px 0 6px;">Set up Fuel</h1>'
-    + '<p style="color:var(--text-2);font-size:14px;line-height:1.5;margin-bottom:16px;">Daily targets, a meal plan sized to them and a weekly check-in. It all stays on your phone.</p>'
+  const root = ROUTE.name==='fuel';
+  return (root ? '<div class="nu-head"><div><div class="eyebrow">Nutrition</div><h1>Fuel</h1></div><span class="nu-beta">BETA</span></div>'
+               : '<div class="top-row"><div class="back-btn" role="button" tabindex="0" aria-label="Back" onclick="goBack(\'fuel\')">'+ICON.back+'</div>'
+               + '<div class="eyebrow">Nutrition \u00b7 beta</div></div>')
+    + (root ? '<div class="card nu-intro"><div class="nu-intro-row"><span>\ud83c\udfaf</span><div><b>Your targets</b><p>Calories and protein from your weight, height, age and goal.</p></div></div>'
+        + '<div class="nu-intro-row"><span>\ud83c\udf7d\ufe0f</span><div><b>A meal plan sized to them</b><p>94 meals, swaps in one tap, built around when you train.</p></div></div>'
+        + '<div class="nu-intro-row"><span>\ud83d\udcc8</span><div><b>A weekly check-in</b><p>Your weigh-ins decide whether to eat a little more or less.</p></div></div>'
+        + '<div class="nu-intro-row"><span>\ud83d\uded2</span><div><b>A shopping list</b><p>The week\u2019s plan, sorted by aisle, ready to share.</p></div></div></div>' : '')
+    + '<h1 style="font-size:'+(root?'21px;margin:22px':'28px;margin:6px')+' 0 6px;">Set up Fuel</h1>'
+    + '<p style="color:var(--text-2);font-size:14px;line-height:1.5;margin-bottom:16px;">'+(root ? 'Takes a minute. It all stays on your phone.' : 'Daily targets, a meal plan sized to them and a weekly check-in. It all stays on your phone.')+'</p>'
     + '<div class="card nu-setup">'
     + '<div class="field"><label>Sex</label>'+chips('sex',[['m','Male'],['f','Female']])+'</div>'
     + '<div class="nu-2"><div class="field"><label for="ns_birthYear">Year of birth</label><input id="ns_birthYear" type="number" inputmode="numeric" placeholder="e.g. 1990" value="'+esc(s.birthYear)+'"></div>'
@@ -10128,6 +10356,11 @@ function renderFuelSetup(){
     + '<div class="field"><label>Outside training, your day is\u2026</label>'+chips('activity',[['desk','Mostly sitting'],['mixed','On my feet some'],['active','Physical job']])+'</div>'
     + '<div class="field"><label>Food</label>'+chips('diet',[['any','Everything'],['pescatarian','Pescatarian'],['vegetarian','Vegetarian'],['vegan','Vegan']])
     + '<div class="chip-row" style="margin-top:9px;"><div class="chip '+(s.noDairy?'selected':'')+'" onclick="nsRead();nsSet(\'noDairy\','+(!s.noDairy)+')">No dairy</div></div></div>'
+    + '<div class="field"><label>Meal plan</label><div class="chip-row">'
+    + '<div class="chip '+(s.leftovers!==false?'selected':'')+'" onclick="nsRead();nsSet(\'leftovers\','+(s.leftovers===false)+')">Dinner leftovers for lunch</div>'
+    + '<div class="chip '+(s.bg?'selected':'')+'" onclick="nsRead();nsSet(\'bg\','+(!s.bg)+')">More Bulgarian dishes</div></div></div>'
+    + (Object.keys(NS().hide||{}).length ? '<div class="field"><label>Hidden meals</label><div class="wr-meta" style="margin-bottom:8px;">'+Object.keys(NS().hide).map(function(id){ return MEAL_BY_ID[id] ? esc(MEAL_BY_ID[id].n) : ''; }).filter(Boolean).join(', ')+'</div>'
+        + '<button class="btn btn-ghost btn-sm" onclick="nsRead();NS().hide={};saveState();render();toast(\'All meals are back\')">Show them again</button></div>' : '')
     + '<button class="btn btn-primary btn-block" style="margin-top:6px;" onclick="nutriSaveSetup()">'+(nutriOn()?'Save':'Turn on Fuel')+'</button>'
     + '</div>'
     + nutriDisclaimer();
@@ -10146,7 +10379,7 @@ function nuRing(left, goal, eaten){
   const r = 50, C = 2*Math.PI*r, frac = Math.max(0, Math.min(1, eaten/goal));
   const over = left < 0;
   return '<div class="nu-ring"><svg width="118" height="118" viewBox="0 0 118 118" aria-hidden="true"><circle cx="59" cy="59" r="'+r+'" stroke="var(--bg-3)" stroke-width="11" fill="none"/>'
-    + '<circle cx="59" cy="59" r="'+r+'" stroke="'+(over?'var(--amber)':'var(--blue)')+'" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 59 59)"/></svg>'
+    + (frac > 0 ? '<circle cx="59" cy="59" r="'+r+'" stroke="'+(over?'var(--amber)':'var(--blue)')+'" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 59 59)"/>' : '')+'</svg>'
     + '<div class="nu-rc"><b>'+fmtK(Math.abs(left))+'</b><span>'+(over?'kcal over':'kcal left')+'</span></div></div>';
 }
 function renderFuel(){
@@ -10159,13 +10392,25 @@ function renderFuel(){
 }
 function fuelToday(){
   const date = todayISO(), plan = nutriPlan(date), t = plan.t, eat = nutriEaten(date), d = (STATE.nutri.days[date])||{}, ate = d.ate||{};
-  const dayChips = '<div class="nu-daytype"><button class="'+(plan.train?'on':'')+'" onclick="nutriSetTrain(true)">Training day</button><button class="'+(!plan.train?'on':'')+'" onclick="nutriSetTrain(false)">Rest day</button></div>';
+  const dayChips = '<div class="eyebrow" style="font-size:11px;margin-bottom:7px;">When do you train today?</div><div class="nu-daytype">'
+    + NUTRI_WHEN.map(function(w){ return '<button class="'+(plan.train && plan.when===w[0]?'on':'')+'" onclick="nutriSetTrain(true,\''+w[0]+'\')">'+w[1]+'</button>'; }).join('')
+    + '<button class="'+(!plan.train?'on':'')+'" onclick="nutriSetTrain(false)">Rest day</button></div>';
   let html = '<div class="card nu-top">'+dayChips
     + '<div class="nu-row">'+nuRing(t.kcal-eat.k, t.kcal, eat.k)
     + '<div style="flex:1;min-width:0;">'+nuBar('Protein', eat.p, t.p, 'var(--green)')+nuBar('Carbs', eat.c, t.c, 'var(--blue)')+nuBar('Fat', eat.f, t.f, 'var(--orange)')+'</div></div>'
     + '<div class="wr-meta" style="margin-top:12px;">Target '+fmtK(t.kcal)+' kcal \u00b7 '+({lose:'fat loss',gain:'lean gain',maintain:'maintain'}[STATE.nutri.goal||'maintain'])
     + (STATE.nutri.adj ? ' \u00b7 '+(STATE.nutri.adj>0?'+':'\u2212')+Math.abs(STATE.nutri.adj)+' from check-ins' : '')+'</div></div>';
+  const trainedToday = (STATE.history||[]).some(function(h){ return h.date===date; });
+  const prog = STATE.selectedProgramId && PROG_BY_ID[STATE.selectedProgramId];
+  let wName = '';
+  try{ const pos = prog && currentPosition(prog); if(pos && !trainedToday) wName = buildWorkoutInstance(prog, pos.week, pos.idx).name; }catch(e){}
+  const trainRow = '<div class="nu-meal nu-train'+(trainedToday?' done':'')+'"><div class="nu-ic">'+ICON.bolt+'</div><div class="nu-mb"><div class="nu-mk">Training \u00b7 '+esc(NUTRI_WHEN.find(function(w){ return w[0]===plan.when; })[1].toLowerCase())+'</div>'
+    + '<div class="nu-mt">'+(trainedToday ? 'Done today' : esc(wName || 'Your session'))+'</div></div></div>';
   html += '<div class="card nu-meals">' + plan.slots.map(function(s){
+    const after = plan.train && s.role==='pre' ? trainRow : '';
+    return nuMealRow(s, ate) + after;
+  }).join('') + '</div>';
+  function nuMealRow(s, ate){
     if(!s.meal) return '<div class="nu-meal"><div class="nu-ic">\u2014</div><div class="nu-mb"><div class="nu-mk">'+esc(s.label)+'</div><div class="wr-meta">No meal fits your food settings here.</div></div></div>';
     const m = s.meal, on = !!ate[s.key];
     return '<div class="nu-meal'+(on?' done':'')+'"><div class="nu-ic" onclick="NUTRI_SHEET={k:\'meal\',slot:\''+s.key+'\'};render()">'+m.m.e+'</div>'
@@ -10173,12 +10418,16 @@ function fuelToday(){
       + '<div class="wr-meta">'+fmtK(m.mac.k)+' kcal \u00b7 '+m.mac.p+' g protein</div></div>'
       + (on ? '' : '<button class="nu-swap" onclick="NUTRI_FILTER=\'all\';NUTRI_SHEET={k:\'swap\',slot:\''+s.key+'\'};render()">Swap</button>')
       + '<button class="nu-chk" aria-label="'+(on?'Untick':'Ate it')+'" onclick="nutriToggleAte(\''+s.key+'\')">'+(on?ICON.check:'')+'</button></div>';
-  }).join('') + '</div>';
+  }
   const x = d.x||[];
   html += (x.length ? '<div class="card nu-extras"><div class="eyebrow" style="margin-bottom:6px;">Also eaten</div>'+x.map(function(e,i){
       return '<div class="nu-x"><span>'+esc(e.l)+'</span><span class="wr-meta">'+e.k+' kcal \u00b7 '+e.p+' g</span><button aria-label="Remove" onclick="nutriDelExtra('+i+')">'+ICON.x+'</button></div>'; }).join('')+'</div>' : '')
     + '<div class="nu-quick"><button class="chip" onclick="nutriAddExtra(\'Protein snack\',110,20)">+20 g protein</button><button class="chip" onclick="NUTRI_SHEET={k:\'extra\'};render()">'+ICON.plus+' Ate something else</button></div>';
-  if(plan.train) html += '<div class="nu-tip"><b>Training today.</b> Have the snack 60\u201390 minutes before. Afterwards, your next meal covers recovery \u2014 nothing special needed.</div>';
+  if(plan.train) html += '<div class="nu-tip">'+({
+      am:'<b>Training in the morning.</b> The small snack 30\u201360 minutes before is enough \u2014 even just the banana. Breakfast after is your recovery meal, so it is the big one today.',
+      mid:'<b>Training at midday.</b> Snack mid-morning, 1\u20132 hours before. Lunch straight after is the recovery meal and the biggest of the day.',
+      pm:'<b>Training in the evening.</b> Snack mid-afternoon, 1\u20132 hours before. Dinner after training is the recovery meal \u2014 the biggest one today.'
+    }[plan.when])+'</div>';
   // habits
   const h = d.h||{};
   html += '<div class="section nu-sec"><div class="section-title">Today\u2019s habits</div><div class="card nu-habits">'+NUTRI_HABITS.map(function(x){
@@ -10222,7 +10471,10 @@ function nutriTrendCount(){ const cut = Date.now()-21*86400000; return bodyLogSo
 function fuelShopping(){
   const list = nutriShopping(), st = shopState(), got = st.got;
   const ids = Object.keys(list);
+  const ppl = NS().people||1;
   let html = '<div class="nu-shophead"><div class="wr-meta">Everything on your plan for the next 7 days. Swaps and settings update it.</div>'
+    + '<div class="nu-ppl"><span>Shopping for</span><button aria-label="Fewer people" onclick="NS().people=Math.max(1,(NS().people||1)-1);saveState();render()">\u2212</button><b>'+ppl+(ppl===1?' person':' people')+'</b><button aria-label="More people" onclick="NS().people=Math.min(6,(NS().people||1)+1);saveState();render()">+</button></div>'
+    + (ppl>1 ? '<p class="wr-meta" style="margin:6px 0 0;">Your portions \u00d7 '+ppl+'. Kids and lighter eaters need less, so trim to taste.</p>' : '')
     + '<div class="nu-btns" style="margin-top:10px;"><button class="btn btn-secondary btn-sm" onclick="shopShare()">'+ICON.share+' Share list</button>'
     + '<button class="btn btn-ghost btn-sm" onclick="shopReset()">Untick all</button></div></div>';
   html += AISLES.map(function(a){
@@ -10256,10 +10508,13 @@ function nutriSheetMarkup(){
     return wrap(m.m.n, '<div class="eyebrow">'+esc(slot.label)+'</div><h3 style="font-size:22px;">'+m.m.e+' '+esc(m.m.n)+'</h3>'
       + '<div class="nu-macs4">'+[['kcal',fmtK(m.mac.k)],['protein',m.mac.p+' g'],['carbs',m.mac.c+' g'],['fat',m.mac.f+' g']].map(function(x){ return '<div><b>'+x[1]+'</b><span>'+x[0]+'</span></div>'; }).join('')+'</div>'
       + (m.items.length ? '<div class="nu-ing">'+m.items.map(function(x){ return '<div><span>'+esc(FOODS[x[0]].n.replace(/ \(.*\)/,''))+'</span><b>'+esc(amountTxt(x[0], x[1]))+'</b></div>'; }).join('')+'</div>' : '')
+      + (slot.leftover ? '<div class="nu-tip" style="margin:0;"><b>Leftovers from last night.</b> Cook a double batch at dinner and lunch is ready. Swap it if you would rather have something else.</div>' : '')
       + '<p style="font-size:14px;line-height:1.55;color:var(--text-2);margin:0;">'+(m.m.min ? '<b style="color:var(--text-1);">'+m.m.min+' min.</b> ' : '')+esc(m.m.how)+'</p>'
       + (m.fixed ? '<p class="wr-meta" style="margin:0;">Numbers are a typical estimate.</p>' : '<p class="wr-meta" style="margin:0;">Amounts are sized to your '+esc(slot.label.toLowerCase().replace(/ \u00b7.*/,''))+' target. Raw or dry weights.</p>')
       + '<button class="btn btn-primary btn-block" onclick="NUTRI_SHEET=null;nutriToggleAte(\''+slot.key+'\')">'+(on?'Untick':ICON.check+' Ate it')+'</button>'
       + (on ? '' : '<button class="btn btn-secondary btn-block" onclick="NUTRI_FILTER=\'all\';NUTRI_SHEET={k:\'swap\',slot:\''+slot.key+'\'}">Swap it</button>')
+      + (m.fixed ? '' : '<div class="nu-btns" style="margin-top:0;"><button class="btn btn-ghost" onclick="nutriFav(\''+m.m.id+'\')">'+((NS().fav||{})[m.m.id] ? '\u2665 Favourite' : '\u2661 Favourite')+'</button>'
+        + '<button class="btn btn-ghost" onclick="nutriHide(\''+m.m.id+'\')">Don\u2019t show again</button></div>')
       + close);
   }
   if(NUTRI_SHEET.k==='swap'){
@@ -10270,7 +10525,8 @@ function nutriSheetMarkup(){
       const fl = mealFlags(m);
       return f==='all' ? !m.out : f==='quick' ? (!m.out && m.min<=10) : f==='nomeat' ? (!m.out && !/[mf]/.test(fl)) : f==='budget' ? m.t.indexOf('budget')>=0 : f==='out' ? !!m.out : true;
     });
-    const cur = slot.meal ? slot.meal.m.id : null;
+    const cur = slot.meal ? slot.meal.m.id : null, favs = NS().fav || {};
+    pool.sort(function(a,b){ return (favs[b.id]?1:0)-(favs[a.id]?1:0); });
     const filters = [['all','All'],['quick','Under 10 min'],['nomeat','No meat'],['budget','Budget']].concat(slot.type!=='s' && NS().diet!=='vegan' ? [['out','Eating out']] : []);
     return wrap('Swap '+slot.label, '<div class="eyebrow">'+esc(slot.label)+' \u00b7 about '+fmtK(slot.kcal)+' kcal</div><h3 style="font-size:22px;">Pick something else</h3>'
       + '<div class="chip-row">'+filters.map(function(x){ return '<div class="chip '+(f===x[0]?'selected':'')+'" onclick="NUTRI_FILTER=\''+x[0]+'\';render()">'+x[1]+'</div>'; }).join('')+'</div>'
@@ -10278,7 +10534,7 @@ function nutriSheetMarkup(){
           const s = scaleMeal(m, slot.kcal);
           const desc = s.items.length ? s.items.slice(0,4).map(function(x){ const fd = FOODS[x[0]], nm = fd.n.replace(/ \(.*\)/,'').replace(/, .*/,'').toLowerCase();
             return amountTxt(x[0],x[1])+(fd.uname && nm===fd.uname[1] ? '' : ' '+nm); }).join(' \u00b7 ') : m.how;
-          return '<button class="nu-opt'+(m.id===cur?' sel':'')+'" onclick="nutriPick(\''+slot.key+'\',\''+m.id+'\')"><span class="nu-ic">'+m.e+'</span><span class="nu-ob"><b>'+esc(m.n)+'</b>'
+          return '<button class="nu-opt'+(m.id===cur?' sel':'')+'" onclick="nutriPick(\''+slot.key+'\',\''+m.id+'\')"><span class="nu-ic">'+m.e+'</span><span class="nu-ob"><b>'+(favs[m.id]?'<span class="nu-heart">\u2665</span> ':'')+esc(m.n)+'</b>'
             + '<span class="wr-meta">'+esc(desc)+'</span><span class="nu-tags"><i>'+fmtK(s.mac.k)+' kcal \u00b7 '+s.mac.p+' g protein</i>'+(m.min?'<i>'+m.min+' min</i>':'')+(m.t.indexOf('budget')>=0?'<i>budget</i>':'')+'</span></span></button>';
         }).join('') : '<p class="wr-meta">Nothing here with your food settings.</p>')
       + close);
