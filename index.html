@@ -968,6 +968,105 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
   font-size:13px;line-height:1.5;font-weight:600;}
 .fit-note{margin-top:14px;padding:11px 13px;border-radius:var(--radius-s);background:var(--bg-2);
   border:1px solid var(--border-soft);font-size:12.5px;color:var(--text-2);line-height:1.45;}
+.nu-sec{margin-top:24px;}
+.nu-sec .section-title{margin-bottom:10px;}
+.nu-sheet>*{flex-shrink:0;}
+.nu-sheet .chip-row{flex-wrap:wrap;overflow:visible;}
+/* ---------- Nutrition (beta) ---------- */
+.nu-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;}
+.nu-head h1{font-size:30px;margin:2px 0 0;}
+.nu-beta{font-size:10.5px;font-weight:800;letter-spacing:1.2px;color:var(--amber);border:1.5px solid var(--amber);border-radius:99px;padding:3px 9px;margin-bottom:6px;}
+.nu-beta.sm{font-size:9.5px;padding:1px 7px;margin:0 0 0 6px;vertical-align:2px;letter-spacing:1px;}
+.nu-tabs{display:flex;gap:4px;background:var(--bg-1);border:1px solid var(--border-soft);border-radius:14px;padding:4px;margin-bottom:14px;}
+.nu-tabs button{flex:1;padding:10px 6px;border-radius:10px;background:none;border:0;color:var(--text-3);font-weight:700;font-size:14px;font-family:inherit;}
+.nu-tabs button.on{background:var(--bg-3);color:var(--text-1);}
+.nu-daytype{display:flex;gap:6px;margin-bottom:14px;}
+.nu-daytype button{flex:1;padding:8px;border-radius:99px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-3);font-weight:700;font-size:13px;font-family:inherit;}
+.nu-daytype button.on{background:var(--blue-dim);border-color:var(--blue);color:#fff;}
+.nu-row{display:flex;align-items:center;gap:16px;}
+.nu-ring{position:relative;width:118px;height:118px;flex:none;}
+.nu-rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.nu-rc b{font-family:var(--font-d);font-size:27px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;}
+.nu-rc span{font-size:11.5px;color:var(--text-3);font-weight:600;margin-top:3px;}
+.nu-mac+.nu-mac{margin-top:10px;}
+.nu-ml{display:flex;justify-content:space-between;font-size:13px;}
+.nu-ml span{color:var(--text-2);font-weight:600;font-variant-numeric:tabular-nums;}
+.nu-bar{height:8px;border-radius:8px;background:var(--bg-3);overflow:hidden;margin-top:5px;}
+.nu-bar i{display:block;height:100%;border-radius:8px;transition:width .3s;}
+.nu-meals{margin-top:12px;padding:4px 16px;}
+.nu-meal{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border-soft);}
+.nu-meal:first-child{border-top:0;}
+.nu-ic{width:46px;height:46px;border-radius:14px;background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;cursor:pointer;}
+.nu-mb{flex:1;min-width:0;cursor:pointer;}
+.nu-mk{font-size:11px;font-weight:800;letter-spacing:1.1px;color:var(--text-3);text-transform:uppercase;}
+.nu-mt{font-size:15px;font-weight:700;margin:1px 0 2px;line-height:1.25;}
+.nu-meal.done .nu-mt{color:var(--text-3);}
+.nu-meal.done .nu-ic{background:rgba(51,196,141,.13);}
+.nu-swap{flex:none;font-size:12px;font-weight:800;color:var(--blue);background:var(--blue-dim);border:0;border-radius:99px;padding:7px 11px;font-family:inherit;}
+.nu-chk{width:32px;height:32px;flex:none;border-radius:50%;border:2px solid var(--border);background:none;display:flex;align-items:center;justify-content:center;color:#06120d;padding:0;}
+.nu-chk svg{width:17px;height:17px;}
+.nu-meal.done .nu-chk,.nu-chk.on{background:var(--green);border-color:var(--green);}
+.nu-chk.sm{width:26px;height:26px;}
+.nu-chk.sm svg{width:14px;height:14px;}
+.nu-extras{margin-top:12px;padding:14px 16px;}
+.nu-x{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;font-weight:600;}
+.nu-x span:first-child{flex:1;min-width:0;}
+.nu-x button{background:none;border:0;color:var(--text-3);padding:4px;display:flex;}
+.nu-x button svg{width:16px;height:16px;}
+.nu-quick{display:flex;gap:8px;margin-top:12px;}
+.nu-quick .chip{flex:1;justify-content:center;font-size:13px;padding:10px 8px;font-family:inherit;cursor:pointer;}
+.nu-quick .chip svg{width:14px;height:14px;}
+.nu-tip{background:linear-gradient(135deg,rgba(var(--accent-rgb),.16),rgba(138,116,255,.10));border:1px solid rgba(var(--accent-rgb),.32);border-radius:15px;padding:12px 14px;font-size:13.5px;line-height:1.45;color:var(--text-2);margin-top:12px;}
+.nu-tip b{color:var(--text-1);}
+.nu-due{margin:0 0 12px;cursor:pointer;display:block;}
+.nu-due svg{width:15px;height:15px;vertical-align:-3px;}
+.nu-habits{padding:4px 16px;}
+.nu-hab{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--border-soft);font-size:14.5px;font-weight:600;cursor:pointer;}
+.nu-hab:first-child{border-top:0;}
+.nu-streak{margin-left:auto;display:flex;align-items:center;gap:3px;color:var(--amber);font-size:12.5px;font-weight:800;}
+.nu-streak svg{width:14px;height:14px;}
+.nu-vs{display:flex;justify-content:space-between;margin-top:8px;}
+.nu-vs div{display:flex;flex-direction:column;}
+.nu-vs div:last-child{text-align:right;}
+.nu-vs b{font-family:var(--font-d);font-size:26px;font-weight:800;line-height:1.1;}
+.nu-vs b.dim{color:var(--text-3);}
+.nu-vs span{font-size:12px;color:var(--text-3);}
+.nu-btns{display:flex;gap:9px;margin-top:12px;}
+.nu-btns .btn{flex:1;}
+.nu-shophead{margin-bottom:4px;}
+.nu-shop{padding:4px 16px;}
+.nu-li{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--border-soft);font-size:14.5px;cursor:pointer;}
+.nu-li:first-child{border-top:0;}
+.nu-bx{width:22px;height:22px;border-radius:7px;border:2px solid var(--border);flex:none;display:flex;align-items:center;justify-content:center;color:#06120d;}
+.nu-bx svg{width:13px;height:13px;}
+.nu-ln{flex:1;min-width:0;}
+.nu-q{color:var(--text-2);font-size:13px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.nu-li.got{color:var(--text-3);}
+.nu-li.got .nu-ln{text-decoration:line-through;}
+.nu-li.got .nu-bx{background:var(--green);border-color:var(--green);}
+.nu-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.nu-setup .field{margin-bottom:16px;}
+.nu-presets{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.nu-presets button{text-align:left;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:10px 11px;color:var(--text-1);font-family:inherit;display:flex;flex-direction:column;gap:2px;}
+.nu-presets b{font-size:13.5px;}
+.nu-presets span{font-size:11.5px;color:var(--text-3);font-weight:600;}
+.nu-macs4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.nu-macs4 div{background:var(--bg-2);border-radius:12px;padding:9px 4px;text-align:center;display:flex;flex-direction:column;}
+.nu-macs4 b{font-size:16px;font-variant-numeric:tabular-nums;}
+.nu-macs4 span{font-size:11px;color:var(--text-3);font-weight:600;}
+.nu-ing{background:var(--bg-2);border-radius:14px;padding:4px 14px;}
+.nu-ing div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--border-soft);font-size:14px;}
+.nu-ing div:first-child{border-top:0;}
+.nu-ing b{white-space:nowrap;}
+.nu-opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;padding:11px;color:var(--text-1);font-family:inherit;}
+.nu-opt.sel{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue);}
+.nu-opt .nu-ic{background:var(--bg-3);}
+.nu-ob{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;}
+.nu-ob b{font-size:14.5px;}
+.nu-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.nu-tags i{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.4px;padding:2px 7px;border-radius:6px;background:var(--bg-3);color:var(--text-2);}
+.nu-hico{width:42px;height:42px;border-radius:13px;background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;margin-right:12px;}
+.nu-disc{font-size:11.5px;color:var(--text-3);line-height:1.5;margin:22px 2px 6px;}
 </style>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
@@ -1891,7 +1990,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-05b';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-05d';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -2100,6 +2199,14 @@ function applyBackup(text){
     STATE.workoutFeedback = STATE.workoutFeedback || [];
     const seen = new Set(STATE.workoutFeedback.map(function(f){ return f && (f.date+'|'+f.workoutName); }));
     inc.workoutFeedback.forEach(function(f){ if(f && !seen.has(f.date+'|'+f.workoutName)){ STATE.workoutFeedback.push(f); seen.add(f.date+'|'+f.workoutName); } });
+  }
+  if(inc.nutri && typeof inc.nutri==='object'){
+    if(!STATE.nutri) STATE.nutri = inc.nutri;
+    else {
+      const nd = STATE.nutri.days = STATE.nutri.days || {};
+      Object.keys(inc.nutri.days||{}).forEach(function(k){ if(!nd[k]) nd[k] = inc.nutri.days[k]; });
+      ['sex','birthYear','goal','activity','diet'].forEach(function(k){ if(STATE.nutri[k]==null && inc.nutri[k]!=null) STATE.nutri[k] = inc.nutri[k]; });
+    }
   }
   if(inc.profile && (!STATE.profile || !STATE.profile.name)) STATE.profile = inc.profile;
   if(Array.isArray(inc.customPrograms)){
@@ -2683,37 +2790,45 @@ function sessionPatterns(w){
   });
   return s;
 }
-/* want:'*' = serves any session · prio orders drills that score the same */
+/* want:'*' = serves any session · prio orders drills that score the same.
+   The clock is the only instruction: sec is how long the drill runs and cue is
+   how to move, with "about N reps" as a pace guide, never a target to finish.
+   No "2 × 8" here: sets imply a rest the warm-up does not have. A drill with
+   split runs as two separate clocks, one per side (or direction), sec each. */
 const WARM_POOL = {
   pulse:[
-    {move:'march',            label:'March in place',           dose:'90 seconds — start at a walk, finish brisk', sec:90, want:'*', prio:1},
-    {move:'jumping_jacks',    label:'Jumping jacks',            dose:'3 × 20, springy and quiet',            sec:90, want:'*', prio:1},
+    {move:'march',            label:'March in place',  cue:'Start at a walk, finish brisk', sec:45, want:'*', prio:1},
+    {move:'jumping_jacks',    label:'Jumping jacks',   cue:'Springy and quiet · about 30 reps', sec:40, want:'*', prio:1},
   ],
   mobility:[
-    {move:'worlds_greatest', label:'World\u2019s greatest stretch', dose:'3 each side, slow: lunge, elbow down, reach up, straighten the front leg', sec:80, want:'*', prio:1},
-    {move:'cat_cow',       label:'Cat-cow',                    dose:'8 rounds, one breath each way',                sec:50, want:'*',                                     prio:1},
-    {move:'arm_circles',   label:'Arm circles',                dose:'10 forward, 10 back, full circle',             sec:45, want:['press','pull','power'], prio:2},
-    {move:'shoulder_pass', label:'Shoulder pass-throughs',     dose:'2 × 8 with a stick, band or towel — widen the grip if it pinches', sec:50, want:['press','pull'],               prio:1},
-    {move:'bw_hinge',      label:'Hip hinges',                 dose:'2 × 8, hands on the hip crease',          sec:55, want:['hinge','swing','power'],        prio:1},
-    {move:'bw_squat',      label:'Bodyweight squats',          dose:'2 × 8, three seconds down',               sec:60, want:['squat','lunge'],                prio:1},
-    {move:'split_squat',   label:'Split squat — bodyweight', dose:'6 each side, slow and tall',                sec:60, want:['lunge'],                        prio:2},
-    {move:'kb_good_morning',     label:'Good mornings — light or no bell', dose:'2 × 8, hips back, soft knees, flat back', sec:55, want:['hinge','swing'],          prio:2},
-    {move:'single_leg_deadlift', label:'Single-leg deadlift — light or no bell', dose:'5 each side, reach long, hips square',       sec:60, want:['hinge','lunge','swing'],  prio:2},
-    {move:'reverse_lunge',       label:'Reverse lunge — light or no bell',    dose:'6 each side, tall torso, soft knee touch',   sec:60, want:['lunge','squat'],          prio:2},
-    {move:'goblet_squat',        label:'Goblet squat hold — light bell',dose:'3 × 10 seconds at the bottom, elbows pry the knees', sec:50, want:['squat','lunge'], prio:2},
+    {move:'worlds_greatest', label:'World’s greatest stretch', cue:'Lunge, elbow down, reach up · about 3 slow reps', sec:40, split:'side', want:'*', prio:1},
+    {move:'cat_cow',       label:'Cat-cow',                cue:'One slow breath each way · about 8 rounds', sec:40, want:'*', prio:1},
+    {move:'arm_circles',   label:'Arm circles',            cue:'Big, full circles · about 10', sec:20, split:'way', want:['press','pull','power'], prio:2},
+    {move:'shoulder_pass', label:'Shoulder pass-throughs', cue:'Stick, band or towel · widen the grip if it pinches · about 10 reps', sec:35, want:['press','pull'], prio:1},
+    {move:'bw_hinge',      label:'Hip hinges',             cue:'Hands on the hip crease, hips back · about 10 reps', sec:35, want:['hinge','swing','power'], prio:1},
+    {move:'bw_squat',      label:'Bodyweight squats',      cue:'Three seconds down · about 8 reps', sec:40, want:['squat','lunge'], prio:1},
+    {move:'split_squat',   label:'Split squat',            cue:'Bodyweight, slow and tall · about 6 reps', sec:30, split:'side', want:['lunge'], prio:2},
+    {move:'kb_good_morning',     label:'Good mornings',    cue:'Light or no bell · hips back, soft knees, flat back · about 10 reps', sec:35, want:['hinge','swing'], prio:2},
+    {move:'single_leg_deadlift', label:'Single-leg deadlift', cue:'Light or no bell · reach long, hips square · about 5 reps', sec:30, split:'side', want:['hinge','lunge','swing'], prio:2},
+    {move:'reverse_lunge',       label:'Reverse lunge',    cue:'Light or no bell · tall torso, soft knee touch · about 6 reps', sec:30, split:'side', want:['lunge','squat'], prio:2},
+    {move:'goblet_squat',        label:'Goblet squat hold', cue:'Light bell · sit at the bottom, elbows pry the knees · stand for a breath when you need it', sec:40, want:['squat','lunge'], prio:2},
   ],
   activation:[
-    {move:'glute_bridge',  label:'Glute bridge',               dose:'2 × 10 with a two-second squeeze',        sec:60, want:['hinge','squat','swing','power','lunge'], prio:1},
-    {move:'kb_swing',      label:'Swings — light',  dose:'2 × 10, hips only',                      sec:60, want:['swing','power','hinge'],        prio:1},
-    {move:'push_up',       label:'Push-ups — slow',         dose:'2 × 5, three seconds down',              sec:55, want:['press'],                        prio:1},
-    {move:'kb_halo',       label:'Halo — light bell',       dose:'5 each way, ribs down',                       sec:50, want:['press','pull','carry'],         prio:2},
-    {move:'plank',            label:'Plank',                        dose:'2 × 20 seconds',        sec:55, want:['core','carry'],          prio:2},
-    {move:'mountain_climber', label:'Mountain climbers — slow', dose:'2 × 20, hips level',   sec:80, want:['core','power','carry'], prio:3},
-    {move:'hollow_hold',      label:'Hollow hold',              dose:'2 × 15 seconds, low back pressed down', sec:45, want:['core','power','press','pull'], prio:2},
-    {move:'kb_deadlift',      label:'Deadlift — light bell',    dose:'2 × 8, flat back, stand tall and squeeze', sec:55, want:['hinge','swing','power'], prio:2},
-    {move:'suitcase_carry',   label:'Suitcase carry — light',   dose:'2 lengths each hand, stand tall, no lean', sec:60, want:['carry','core','pull'], prio:3},
+    {move:'glute_bridge',  label:'Glute bridge',     cue:'Two-second squeeze at the top · about 10 reps', sec:40, want:['hinge','squat','swing','power','lunge'], prio:1},
+    {move:'kb_swing',      label:'Swings',           cue:'Light bell, hips only · about 15 reps', sec:35, want:['swing','power','hinge'], prio:1},
+    {move:'push_up',       label:'Push-ups',         cue:'Three seconds down · knees down is fine · about 6 reps', sec:35, want:['press'], prio:1},
+    {move:'kb_halo',       label:'Halo',             cue:'Light bell, ribs down · about 5 circles', sec:20, split:'way', want:['press','pull','carry'], prio:2},
+    {move:'plank',            label:'Plank',          cue:'Squeeze glutes, ribs down · drop the knees for a breath if the hips sag', sec:30, want:['core','carry'], prio:2},
+    {move:'mountain_climber', label:'Mountain climbers', cue:'Slow, hips level · about 20 steps', sec:35, want:['core','power','carry'], prio:3},
+    {move:'hollow_hold',      label:'Hollow hold',    cue:'Low back pressed down · tuck the knees if it lifts', sec:30, want:['core','power','press','pull'], prio:2},
+    {move:'kb_deadlift',      label:'Deadlift',       cue:'Light bell · flat back, stand tall and squeeze · about 10 reps', sec:35, want:['hinge','swing','power'], prio:2},
+    {move:'suitcase_carry',   label:'Suitcase carry', cue:'Light bell · walk tall, no lean', sec:30, split:'hand', want:['carry','core','pull'], prio:3},
   ]
 };
+const WARM_SPLIT = { side:['Right side','Left side'], hand:['Right hand','Left hand'], way:['Forward','Backward'] };
+const WARM_SPLIT_HALO = ['Clockwise','Counter-clockwise'];
+/* a drill's whole time, both halves included */
+function drillSec(d){ return d.split ? d.sec*2 : d.sec; }
 /* Every drill that serves today's patterns is a candidate; the better the fit,
    the better its odds, but a day-seeded shake decides between them. Sorting on
    fit alone put arm circles in 83% of all sessions and glute bridges in 77%.
@@ -2742,15 +2857,12 @@ function pickDrills(list, pats, n, seed, skip){
    bell — the cue is read off the exercise's own equipment, not assumed. */
 function rampDose(e, first){
   const bell = !!(e.equipment && e.equipment.indexOf('kettlebell') >= 0);
-  /* Half the working reps, floored at two — a get-up prescribed 2-5 must not
-     come back as a five-rep "rehearsal". */
+  /* Half the working reps, floored at two, as a pace guide for the clock. */
   const lo = Array.isArray(e.reps) && typeof e.reps[0]==='number'
     ? Math.max(2, Math.round(e.reps[0]*0.5)) : 0;
-  const count = lo ? lo+' reps'+(isPerSide(e) ? ' per side' : '') : 'one easy trip';
-  const load  = !bell ? '' : (e.pair ? ' with two light bells' : ' with a light bell');
-  return count + load + (first
-    ? ' — this is the rehearsal, not the set'
-    : ', same tempo as the working sets');
+  const load  = !bell ? '' : (e.pair ? 'Two light bells · ' : 'Light bell · ');
+  return load + (first ? 'the rehearsal, not the set' : 'same tempo as the working sets')
+    + (lo ? ' · about '+lo+' reps' : '');
 }
 function specificRamp(w, n){
   const out=[], seen=new Set();
@@ -2760,8 +2872,9 @@ function specificRamp(w, n){
     if(!e || seen.has(id) || e.type==='Core') continue;   // no point rehearsing a plank
     seen.add(id);
     const loaded = !!(e.equipment && e.equipment.indexOf('kettlebell') >= 0);
+    const side = isPerSide(e);
     out.push({move:id, label:e.name+(loaded ? ' — ramp set' : ' — practice set'),
-              dose:rampDose(e, out.length===0), sec:50});
+              cue:rampDose(e, out.length===0), sec: side ? 30 : 40, split: side ? 'side' : undefined});
   }
   return out;
 }
@@ -2779,24 +2892,28 @@ function buildWarmup(w){
 
   /* Five minutes is a floor, not a rounding: if the short selection lands under
      it, the warm-up grows by a real drill rather than by a rounded-up label. */
-  let total = [].concat(pulse,mob,act,ramp).reduce((s,d)=>s+d.sec,0);
+  let total = [].concat(pulse,mob,act,ramp).reduce((s,d)=>s+drillSec(d),0);
   if(total < WARM_FLOOR_SEC){
     const used  = new Set([].concat(pulse,mob,act,ramp).map(d=>d.move));
     const spare = [].concat(WARM_POOL.activation, WARM_POOL.mobility)
       .map(d=>({d, s: d.want==='*' ? 0.6 : d.want.filter(p=>pats.has(p)).length}))
       .filter(x=>!used.has(x.d.move))          // a poor fit still beats a short warm-up
-      .sort((a,b)=>b.s-a.s);
+      .map(x=>{ x.k = Math.min(x.s,2)*0.5 + warmHash(String(seed)+'|fill|'+x.d.move)*1.1; return x; })
+      .sort((a,b)=>b.k-a.k);                    // same day-seeded shake as the picks
     for(let i=0; i<spare.length && total<WARM_FLOOR_SEC; i++){
-      act.push(spare[i].d); total += spare[i].d.sec;
+      act.push(spare[i].d); total += drillSec(spare[i].d);
     }
   }
 
   const items=[];
   [['Raise the pulse',pulse],['Mobilise',mob],['Switch on',act],['Rehearse the day',ramp]]
-    .forEach(function(pair){ pair[1].forEach(function(d){ items.push({
-      label:d.label, note:d.dose, sec:d.sec, phase:pair[0],
-      move:(typeof MOVES!=='undefined' && MOVES[d.move]) ? d.move : null
-    }); }); });
+    .forEach(function(pair){ pair[1].forEach(function(d){
+      const mv = (typeof MOVES!=='undefined' && MOVES[d.move]) ? d.move : null;
+      if(!d.split){ items.push({ label:d.label, note:d.cue, sec:d.sec, phase:pair[0], move:mv }); return; }
+      const names = d.split==='way' && d.move==='kb_halo' ? WARM_SPLIT_HALO : WARM_SPLIT[d.split];
+      names.forEach(function(nm, k){ items.push({ label:d.label, side:nm, half:k, splitKind:d.split,
+        note:d.cue, sec:d.sec, phase:pair[0], move:mv }); });
+    }); });
   return items;
 }
 function attachWarmup(w){
@@ -2962,10 +3079,12 @@ function render(){
     case 'exercise_progress': body = renderExerciseProgress(ROUTE.params.id); break;
     case 'profile': body = renderProfile(); break;
     case 'terms': body = renderTerms(ROUTE.params.k); break;
+    case 'fuel': body = renderFuel(); break;
+    case 'fuel_setup': body = renderFuelSetup(); break;
     default: body = renderHome();
   }
   if(ROUTE.name!=='home') THEME_SHEET = false;
-  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name==='terms' ? 'exercises' : ROUTE.name) + themeSheetMarkup() + importSheetMarkup() + bodySheetMarkup();
+  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name==='terms' ? 'exercises' : ROUTE.name==='fuel_setup' ? (nutriOn() ? 'fuel' : 'profile') : ROUTE.name) + themeSheetMarkup() + importSheetMarkup() + bodySheetMarkup() + (ROUTE.name==='fuel' ? nutriSheetMarkup() : '');
   if(ROUTE.name==='terms' && ROUTE.params.k){ const el = document.getElementById('term-'+ROUTE.params.k); if(el) setTimeout(function(){ el.scrollIntoView({block:'center'}); }, 30); }
   if(ROUTE.name==='exercise_detail'){ initExerciseAnimation(ROUTE.params.id); }
   /* an exercise opened over the workout preview has its own figure to start */
@@ -2973,10 +3092,11 @@ function render(){
 }
 
 function shell(inner, active){
-  const navItems = [
+  let navItems = [
     ['home','Home',ICON.home],['programs','Programs',ICON.programs],['exercises','Exercises',ICON.exercises],
     ['progress','Progress',ICON.progress],['profile','Profile',ICON.profile]
   ];
+  if(nutriOn()) navItems.splice(3, 0, ['fuel','Fuel',ICON.fuel]);   // beta: the tab exists only while Fuel is on
   const sideLinks = navItems.map(([r,label,icon])=>
     '<a class="side-link '+(active===r||( (active==='program_detail')&&r==='programs')||((active==='exercise_detail')&&r==='exercises')?'active':'')+'" onclick="navigate(\''+r+'\')">'+icon+'<span>'+label+'</span></a>'
   ).join('');
@@ -3469,6 +3589,7 @@ function renderHome(){
   +'<div class="top-row" style="margin-bottom:6px;"><div><div class="eyebrow">'+greet.toUpperCase()+'</div><h1 style="font-size:30px;">'+esc(p.name||'Athlete')+'</h1></div></div>'
   +'<p style="color:var(--text-2);margin-bottom:20px;">Ready to train?</p>'
   +todayCard
+  +fuelHomeCard()
   +testBanner()
   +resumeCard()
   +(LOAD_DAMAGED ? '<div class="card card-tight save-alert" style="margin-bottom:14px;">Your saved training could not be read on this device. The original was kept untouched — restore a backup from Profile, or keep going and the app starts fresh.</div>' : '')
@@ -6247,6 +6368,7 @@ function renderWorkoutPreview(pr){
   let _wPhase = null;
   const warmList = (w.warmup||[]).map(x=>{
     const it = parseWarmItem(x);
+    if(it.half===1) return '';                     // shown once, as "30 sec each side"
     let head = '';
     if(it.phase && it.phase !== _wPhase){
       _wPhase = it.phase;
@@ -6257,7 +6379,7 @@ function renderWorkoutPreview(pr){
       + (it.note ? '<div class="ex-row-meta">'+esc(it.note)+'</div>' : '')
       + '</div>'
       + (it.sec ? '<div class="ex-row-meta" style="white-space:nowrap;margin-left:10px;">'
-                  + Math.round(it.sec/5)*5 + ' sec</div>' : '')
+                  + Math.round(it.sec/5)*5 + ' sec' + (it.splitKind ? (it.splitKind==='way' ? ' each way' : it.splitKind==='hand' ? ' each hand' : ' each side') : '') + '</div>' : '')
       + '</div>';
   }).join('');
 
@@ -6277,7 +6399,7 @@ function renderWorkoutPreview(pr){
   const hp = heroId && photosWanted() ? PHOTO_SETS[heroId] : null;
   const third = w.format==='traditional' ? [(w.blocks||[]).reduce((n,x)=>n+(+x.sets||0),0),'Sets']
               : (w.rounds ? [w.rounds,'Rounds'] : (w.capMin ? [w.capMin,'Min cap'] : null));
-  const warmN = (w.warmup||[]).length;
+  const warmN = (w.warmup||[]).filter(x=>!parseWarmItem(x).half).length;   // a split drill is one drill
   const segs = [[w.warmupMin,'Warm-up','w'],[w.mainMin,'Main','m']].concat(w.finisher?[[w.finisher.totalMinutes,'Finisher','f']]:[]).filter(x=>+x[0]>0);
   const warmPh = (w.warmup||[]).map(x=>parseWarmItem(x).phase).filter((v,i,a)=>v&&a.indexOf(v)===i).map(v=>String(v).toLowerCase());
   return '<div class="top-row pv-top"><div class="back-btn" role="button" tabindex="0" aria-label="Back" onclick="'+(custom ? 'navigate(\'generator\')' : 'navigate(\'program_detail\',{id:\''+pr.progId+'\'})')+'">'+ICON.back+'</div>'
@@ -6844,31 +6966,35 @@ function completeWarmItem(){
    up" lead into the next one. Nothing is logged — these are short movements
    done on the move, and stopping to tap after each one broke the flow. "Next"
    still moves on early, and pause holds the clock. */
-const WARM_GAP = 5;
+const WARM_GAP = 5, WARM_SWITCH_GAP = 3;
 function warmSecs(it){ return Math.max(15, Math.round(it.sec || 45)); }
+/* the second half of a split drill: same movement, other side, no "next up" */
+function warmIsSwitch(items, j){ const it = items[j]; return !!(it && it.half===1 && items[j-1] && items[j-1].label===it.label); }
+function warmGapBefore(items, j){ return warmIsSwitch(items, j) ? WARM_SWITCH_GAP : WARM_GAP; }
+function warmName(it){ return it.label.replace(/—.*/,'').trim(); }
 function warmTotalLeft(){
   const items = warmItems(), r = SESSION._warmRun; if(!r) return items.reduce(function(s,it){ return s+warmSecs(it); },0);
   let t = r.left + (r.gap ? 0 : 0);
-  for(let j=r.idx+1;j<items.length;j++) t += warmSecs(items[j]) + WARM_GAP;
+  for(let j=r.idx+1;j<items.length;j++) t += warmSecs(items[j]) + warmGapBefore(items, j);
   return t;
 }
-function warmSay(it, first){
-  const per = /each side|per side/i.test(it.note||''), way = /each way/i.test(it.note||'');
-  say((first ? 'Warm-up. ' : '')+it.label.replace(/—.*/,'').trim()+'. '+warmSecs(it)+' seconds.'+(per ? ' Switch sides halfway.' : way ? ' Change direction halfway.' : ''), true);
+function warmSay(it, first, items, i){
+  if(items && warmIsSwitch(items, i)){ say('Go.', true); return; }
+  say((first ? 'Warm-up. ' : '')+warmName(it)+'. '+(it.side ? it.side+'. ' : '')+warmSecs(it)+' seconds.', true);
 }
 function startWarmTimer(){
   const items = warmItems(); if(!items.length){ finishWarmup(); return; }
   const idx = Math.max(0, Math.min(items.length-1, SESSION._warmIdx||0));
   SESSION._warmRun = { idx:idx, left:warmSecs(items[idx]), gap:false };
   SESSION._warmT = Date.now();
-  countBeep(0); warmSay(items[idx], true);
+  countBeep(0); warmSay(items[idx], true, items, idx);
   render(); tickWarm();
 }
 function warmGoTo(i){
   const items = warmItems(); const r = SESSION._warmRun;
   if(i >= items.length){ endWarmTimer(true); return; }
   SESSION._warmIdx = i;
-  if(r){ r.idx = i; r.left = warmSecs(items[i]); r.gap = false; SESSION._warmT = Date.now(); countBeep(0); warmSay(items[i]); }
+  if(r){ r.idx = i; r.left = warmSecs(items[i]); r.gap = false; SESSION._warmT = Date.now(); countBeep(0); warmSay(items[i], false, items, i); }
   render();
 }
 function warmNextNow(){
@@ -6894,14 +7020,13 @@ function tickWarm(){
     r.left -= tickDelta('_warmT');
     const it = items[r.idx];
     if(!r.gap){
-      const half = Math.floor(warmSecs(it)/2);
-      if(/each side|per side/i.test(it.note||'') && before > half && r.left <= half && r.left > 3) say('Switch sides.', true);
       if(r.left > 0 && r.left <= 3) countBeep(r.left);
       if(r.left <= 0){
         SESSION._warmDone = SESSION._warmDone || {}; SESSION._warmDone[r.idx] = true;
         if(r.idx+1 >= items.length){ countBeep(0); endWarmTimer(true); return; }
-        r.gap = true; r.left = WARM_GAP;
-        say('Next up, '+items[r.idx+1].label.replace(/—.*/,'').trim()+'.', true);
+        const nx = items[r.idx+1];
+        r.gap = true; r.left = warmGapBefore(items, r.idx+1);
+        say(warmIsSwitch(items, r.idx+1) ? 'Switch. '+nx.side+'.' : 'Next up, '+warmName(nx)+(nx.side ? ', '+nx.side.toLowerCase() : '')+'.', true);
         render(); tickWarm(); return;
       }
     } else if(r.left <= 0){ warmGoTo(r.idx+1); tickWarm(); return; }
@@ -6925,19 +7050,26 @@ function renderWarmupPhase(){
   const done = SESSION._warmDone||{};
   const gap = r && r.gap;
   const cur = gap ? items[idx+1] : items[idx];
-  const eb = (gap ? 'Next up' : esc(cur.phase || 'Warm-up')) + ' · ' + ((gap?idx+1:idx)+1) + ' of ' + items.length;
+  const ci = gap ? idx+1 : idx;
+  const sw = gap && warmIsSwitch(items, ci);
+  /* counted in drills: the two halves of a split drill are one drill */
+  const dn = items.slice(0, ci+1).filter(function(it){ return !it.half; }).length || 1;
+  const dTot = items.filter(function(it){ return !it.half; }).length;
+  const eb = (sw ? 'Switch' : gap ? 'Next up' : esc(cur.phase || 'Warm-up')) + ' · ' + dn + ' of ' + dTot;
+  const title = cur.side ? warmName(cur)+' · '+cur.side : cur.label;
   let html = '<div class="warm-mode">';
-  window._figureMirror = false;
-  if(cur.move){ window._activeFigureExId = cur.move; html += focusHero(cur.move, eb, cur.label); }
+  /* left side of a split drill shows the photo mirrored, as the main sets do */
+  window._figureMirror = cur.half===1 && cur.splitKind!=='way';
+  if(cur.move){ window._activeFigureExId = cur.move; html += focusHero(cur.move, eb, title); }
   else {
     window._activeFigureExId = null;
-    html += '<div class="card" style="text-align:center;"><div class="eyebrow">'+eb+'</div><h2 style="font-size:24px;margin:8px 0 2px;">'+esc(cur.label)+'</h2></div>';
+    html += '<div class="card" style="text-align:center;"><div class="eyebrow">'+eb+'</div><h2 style="font-size:24px;margin:8px 0 2px;">'+esc(title)+'</h2></div>';
   }
   html += '<div class="focus-body">'
     + (cur.note ? '<p class="focus-why" style="font-size:15px;font-weight:700;color:var(--text-1);margin-top:12px;">'+esc(cur.note)+'</p>' : '');
   if(r){
     html += '<div class="warm-clock'+(gap?' gap':'')+'"><div class="wc-num" id="warmClock">'+fmtMMSS(Math.max(0,r.left))+'</div>'
-      + '<div class="wc-lbl">'+(gap ? 'get ready' : 'this drill')+' · <span id="warmLeft">'+Math.ceil(warmTotalLeft()/60)+' min left</span></div>'
+      + '<div class="wc-lbl">'+(sw ? 'switch sides' : gap ? 'get ready' : 'this drill')+' · <span id="warmLeft">'+Math.ceil(warmTotalLeft()/60)+' min left</span></div>'
       + (gap ? '' : '<div class="wc-track"><i id="warmBar" style="width:'+Math.max(0,Math.min(100,100*(1-r.left/warmSecs(cur))))+'%"></i></div>')
       + '</div>'
       + '<div class="focus-links">'
@@ -6946,7 +7078,7 @@ function renderWarmupPhase(){
       + (!gap ? '<button onclick="warmAdd(15)">+15 s</button>' : '')
       + '<button onclick="endWarmTimer(false)">Skip warm-up</button></div>';
   } else {
-    html += '<p class="wr-meta" style="text-align:center;margin-top:10px;">'+items.length+' drills · about '+Math.ceil(warmTotalLeft()/60)+' min · it moves on by itself</p>';
+    html += '<p class="wr-meta" style="text-align:center;margin-top:10px;">'+items.filter(function(it){ return !it.half; }).length+' drills · about '+Math.ceil(warmTotalLeft()/60)+' min · it moves on by itself</p>';
   }
   html += '</div></div>';
   html += r ? focusDock(gap ? 'Start it now' : (idx+1 >= items.length ? 'Done — start the main part' : 'Next drill'), gap ? 'warmGoTo('+(idx+1)+');tickWarm()' : 'warmNextNow()')
@@ -6956,8 +7088,8 @@ function renderWarmupPhase(){
     + items.map((it,i)=> (i===idx && !gap) || (gap && i===idx+1) ? '' :
         '<div class="workout-row" style="cursor:pointer;" onclick="'+(r?'warmGoTo('+i+')':'goWarmItem('+i+')')+'">'
         + '<div class="wr-status '+(done[i]?'done':'')+'">'+(done[i]?ICON.check:ICON.play)+'</div>'
-        + '<div class="wr-body"><div class="wr-title" style="font-size:14px;'+(done[i]?'color:var(--text-3);':'')+'">'+esc(it.label)+'</div>'
-        + '<div class="wr-meta">'+warmSecs(it)+' s'+(it.note?' · '+esc(it.note):'')+'</div></div></div>').join('')
+        + '<div class="wr-body"><div class="wr-title" style="font-size:14px;'+(done[i]?'color:var(--text-3);':'')+'">'+esc(it.side ? warmName(it)+' · '+it.side : it.label)+'</div>'
+        + '<div class="wr-meta">'+warmSecs(it)+' s'+(it.note && !it.half?' · '+esc(it.note):'')+'</div></div></div>').join('')
     + (r ? '' : '<button class="btn btn-ghost btn-sm btn-block" style="margin-top:10px;" onclick="finishWarmup()">Skip the warm-up</button>')
     + '</div>';
   return html;
@@ -9219,6 +9351,7 @@ function renderProfile(){
   +'<div class="section"><div class="section-title">Units</div><div class="card card-tight"><div class="chip-row">'
   +['kg','lb'].map(u=>'<div class="chip '+(p.units===u?'selected':'')+'" onclick="updateProfileField(\'units\',\''+u+'\')">'+u.toUpperCase()+'</div>').join('')
   +'</div></div></div>'
+  +fuelProfileSection()
   +coachPrefsSection()
   +'<div class="section"><div class="section-title">Help</div><div class="card card-tight lift-row" style="cursor:pointer;" onclick="openTerm()">'
   +'<div class="lift-body"><div class="wr-title">Terms explained</div><div class="wr-meta">EMOM, AMRAP, complex, per side, rack\u2026 in plain language</div></div>'+ico(ICON.chevron)+'</div></div>'
@@ -9537,6 +9670,646 @@ document.addEventListener('keydown', function(e){
   const t = e.target; if(!t || !t.getAttribute) return;
   if(t.getAttribute('role')==='button' && t.tagName!=='BUTTON'){ e.preventDefault(); t.click(); }
 });
+/* ============================ NUTRITION (BETA) ============================
+   Off by default; switched on in Profile. No food database and no counting:
+   a small table of everyday foods, a set of meals built from them, and a day
+   plan scaled to the person's own targets. "Swap" trades a meal for another
+   one of about the same size, "Ate it" ticks it off, and anything eaten off
+   the plan is added as a rough guess. Weight trend drives a weekly check-in
+   that suggests a small change; nothing changes until the person accepts it.
+   Estimates for healthy adults: targets never go under a safe floor, the
+   deficit is moderate, and nothing is ever framed as a failure. */
+
+/* per 100 g: kcal, protein, carbs, fat · aisle · flags m=meat f=fish d=dairy e=egg · unit = grams per piece */
+const FOODS = {
+  oats:        {n:'Oats',                    k:379, p:13.2, c:67.7, f:6.5, a:'pantry'},
+  greek_yog:   {n:'Greek yogurt 2%',         k:73,  p:9.9,  c:3.9,  f:2,   a:'dairy', fl:'d'},
+  skyr:        {n:'Skyr',                    k:63,  p:11,   c:4,    f:0.2, a:'dairy', fl:'d'},
+  yogurt:      {n:'Plain yogurt 3.6%',       k:63,  p:3.5,  c:4.7,  f:3.6, a:'dairy', fl:'d'},
+  cottage:     {n:'Cottage cheese',          k:84,  p:11,   c:4.3,  f:2.3, a:'dairy', fl:'d'},
+  sirene:      {n:'Feta / sirene',           k:264, p:14,   c:4,    f:21,  a:'dairy', fl:'d'},
+  kashkaval:   {n:'Yellow cheese',           k:350, p:25,   c:1.5,  f:27,  a:'dairy', fl:'d'},
+  milk:        {n:'Milk 1.5%',               k:46,  p:3.4,  c:4.8,  f:1.5, a:'dairy', fl:'d', ml:true},
+  egg:         {n:'Eggs',                    k:143, p:12.6, c:0.7,  f:9.5, a:'dairy', fl:'e', unit:55, uname:['egg','eggs']},
+  whey:        {n:'Protein powder',          k:380, p:78,   c:8,    f:5,   a:'pantry', fl:'d', unit:30, uname:['scoop','scoops']},
+  tofu:        {n:'Tofu, firm',              k:144, p:15.8, c:2.8,  f:8.7, a:'dairy'},
+  hummus:      {n:'Hummus',                  k:166, p:7.9,  c:14,   f:9.6, a:'dairy'},
+  chicken:     {n:'Chicken breast',          k:120, p:22.5, c:0,    f:2.6, a:'meat', fl:'m'},
+  turkey:      {n:'Turkey breast',           k:135, p:22,   c:0,    f:5,   a:'meat', fl:'m'},
+  beef:        {n:'Lean beef mince 5%',      k:137, p:21,   c:0,    f:5,   a:'meat', fl:'m'},
+  pork:        {n:'Pork loin',               k:143, p:21,   c:0,    f:6,   a:'meat', fl:'m'},
+  ham:         {n:'Lean ham',                k:110, p:18,   c:2,    f:3,   a:'meat', fl:'m'},
+  salmon:      {n:'Salmon fillet',           k:208, p:20,   c:0,    f:13,  a:'meat', fl:'f'},
+  hake:        {n:'White fish (hake)',       k:90,  p:18,   c:0,    f:1.5, a:'meat', fl:'f'},
+  tuna:        {n:'Tuna in water, drained',  k:116, p:26,   c:0,    f:1,   a:'meat', fl:'f', unit:110, uname:['can','cans']},
+  rice:        {n:'Rice (dry)',              k:360, p:7,    c:79,   f:0.6, a:'pantry'},
+  bulgur:      {n:'Bulgur (dry)',            k:342, p:12,   c:76,   f:1.3, a:'pantry'},
+  pasta:       {n:'Pasta (dry)',             k:357, p:12.5, c:72,   f:1.5, a:'pantry'},
+  lentils:     {n:'Red lentils (dry)',       k:352, p:25,   c:60,   f:1,   a:'pantry'},
+  beans:       {n:'Beans, canned, drained',  k:127, p:8.7,  c:22.8, f:0.5, a:'pantry'},
+  chickpeas:   {n:'Chickpeas, canned, drained', k:139, p:7, c:22.5, f:2.6, a:'pantry'},
+  bread:       {n:'Wholegrain bread',        k:247, p:13,   c:41,   f:3.4, a:'pantry', unit:40, uname:['slice','slices']},
+  tortilla:    {n:'Wholegrain tortillas',    k:310, p:8,    c:52,   f:7.5, a:'pantry', unit:60, uname:['wrap','wraps']},
+  ricecake:    {n:'Rice cakes',              k:387, p:8,    c:81,   f:3,   a:'pantry', unit:9, uname:['cake','cakes']},
+  passata:     {n:'Tomato passata',          k:30,  p:1.3,  c:5.5,  f:0.2, a:'pantry', veg:true},
+  olive_oil:   {n:'Olive oil',               k:884, p:0,    c:0,    f:100, a:'pantry', ml:true},
+  peanut_butter:{n:'Peanut butter',          k:588, p:25,   c:20,   f:50,  a:'pantry'},
+  walnuts:     {n:'Walnuts',                 k:654, p:15,   c:14,   f:65,  a:'pantry'},
+  almonds:     {n:'Almonds',                 k:579, p:21,   c:22,   f:50,  a:'pantry'},
+  honey:       {n:'Honey',                   k:304, p:0.3,  c:82,   f:0,   a:'pantry'},
+  olives:      {n:'Olives',                  k:115, p:0.8,  c:6,    f:11,  a:'pantry'},
+  banana:      {n:'Bananas',                 k:89,  p:1.1,  c:23,   f:0.3, a:'produce', unit:120, uname:['banana','bananas']},
+  apple:       {n:'Apples',                  k:52,  p:0.3,  c:14,   f:0.2, a:'produce', unit:180, uname:['apple','apples']},
+  berries:     {n:'Berries (frozen is fine)',k:50,  p:0.8,  c:12,   f:0.3, a:'produce'},
+  potatoes:    {n:'Potatoes',                k:77,  p:2,    c:17,   f:0.1, a:'produce'},
+  tomato:      {n:'Tomatoes',                k:18,  p:0.9,  c:3.9,  f:0.2, a:'produce', veg:true},
+  cucumber:    {n:'Cucumbers',               k:15,  p:0.7,  c:3.6,  f:0.1, a:'produce', veg:true},
+  pepper:      {n:'Peppers',                 k:26,  p:1,    c:6,    f:0.3, a:'produce', veg:true},
+  onion:       {n:'Onions',                  k:40,  p:1.1,  c:9,    f:0.1, a:'produce', veg:true},
+  greens:      {n:'Salad leaves',            k:20,  p:2,    c:3,    f:0.3, a:'produce', veg:true},
+  broccoli:    {n:'Broccoli (frozen is fine)',k:34, p:2.8,  c:7,    f:0.4, a:'produce', veg:true},
+  mixed_veg:   {n:'Mixed vegetables, frozen',k:65,  p:3,    c:13,   f:0.5, a:'produce', veg:true},
+};
+const AISLES = [['meat','Meat & fish'],['dairy','Dairy, eggs & tofu'],['pantry','Pantry & bread'],['produce','Fruit & veg']];
+
+/* slot: b breakfast · l lunch · d dinner · s snack.  min = minutes to make.
+   out = eating-out guide: fixed estimate, no shopping. */
+const MEALS = [
+  // breakfast
+  {id:'oats_yog', s:'b', e:'\ud83e\udd63', n:'Oats, Greek yogurt & berries', min:5, t:['budget'],
+   it:[['oats',60],['greek_yog',250],['berries',100],['honey',10]], how:'Oats into a bowl, yogurt on top, berries and honey. Overnight in the fridge works too.'},
+  {id:'omelette_b', s:'b', e:'\ud83c\udf73', n:'Omelette with feta & tomato', min:10, t:['budget'],
+   it:[['egg',165],['sirene',30],['bread',40],['tomato',150],['olive_oil',5]], how:'Whisk the eggs, crumble the feta in, cook in the oil on medium. Tomato and toast on the side.'},
+  {id:'skyr_bowl', s:'b', e:'\ud83e\udd5b', n:'Skyr bowl with banana & walnuts', min:3, t:[],
+   it:[['skyr',250],['banana',120],['oats',30],['walnuts',15]], how:'Skyr in a bowl, sliced banana, oats and chopped walnuts on top.'},
+  {id:'eggs_toast', s:'b', e:'\ud83c\udf5e', n:'Scrambled eggs on toast', min:8, t:['budget'],
+   it:[['egg',165],['milk',30],['bread',80],['cucumber',120]], how:'Eggs and milk whisked, stirred slowly over low heat. On toast, cucumber on the side.'},
+  {id:'pb_oats', s:'b', e:'\ud83e\udd5c', n:'Peanut butter protein oats', min:5, t:[],
+   it:[['oats',60],['milk',250],['whey',30],['peanut_butter',15],['banana',60]], how:'Cook the oats in the milk, take off the heat, stir in the protein, top with peanut butter and banana.'},
+  {id:'cottage_toast', s:'b', e:'\ud83e\udd6a', n:'Cottage cheese toast with tomato', min:3, t:['budget'],
+   it:[['bread',80],['cottage',200],['tomato',120]], how:'Toast, cottage cheese spread thick, sliced tomato, salt and pepper.'},
+  {id:'ham_sandwich', s:'b', e:'\ud83e\udd6a', n:'Ham & cheese sandwich', min:5, t:[],
+   it:[['bread',80],['ham',80],['kashkaval',20],['cucumber',80],['pepper',60]], how:'Two slices of bread, ham and a thin slice of cheese. Veg on the side.'},
+  {id:'tofu_scramble', s:'b', e:'\ud83e\uded1', n:'Tofu scramble with peppers', min:10, t:[],
+   it:[['tofu',200],['pepper',100],['onion',50],['olive_oil',5],['bread',40]], how:'Onion and pepper softened in the oil, tofu crumbled in, a pinch of turmeric and salt. Toast on the side.'},
+  {id:'pb_banana_oats', s:'b', e:'\ud83c\udf4c', n:'Oats with peanut butter & banana', min:5, t:['budget'],
+   it:[['oats',70],['peanut_butter',20],['banana',120]], how:'Oats cooked in water or a plant milk, sliced banana and peanut butter on top.'},
+  // lunch
+  {id:'chicken_rice', s:'l', e:'\ud83c\udf57', n:'Chicken, rice & shopska salad', min:25, t:['prep'],
+   it:[['chicken',170],['rice',80],['tomato',120],['cucumber',100],['pepper',50],['sirene',25],['olive_oil',7]], how:'Chicken grilled or pan-fried, rice boiled. Salad: tomato, cucumber, pepper, grated feta, a little oil. Cook 2\u20133 days at once.'},
+  {id:'turkey_bulgur', s:'l', e:'\ud83e\udd57', n:'Turkey & bulgur bowl', min:20, t:['prep'],
+   it:[['turkey',160],['bulgur',70],['pepper',100],['cucumber',80],['greens',30],['olive_oil',7]], how:'Bulgur covered with boiling water for 15 minutes. Turkey sliced and pan-fried. Chopped veg and oil on top.'},
+  {id:'tuna_wrap', s:'l', e:'\ud83c\udf2f', n:'Tuna wraps with salad', min:5, t:['budget'],
+   it:[['tortilla',120],['tuna',110],['greek_yog',50],['greens',40],['tomato',80]], how:'Tuna mixed with the yogurt, salt and pepper. Into two wraps with leaves and tomato.'},
+  {id:'lentil_stew', s:'l', e:'\ud83c\udf72', n:'Red lentil stew with bread', min:30, t:['budget','prep'],
+   it:[['lentils',90],['onion',60],['passata',100],['mixed_veg',100],['olive_oil',7],['bread',40]], how:'Onion softened in oil, lentils, passata and veg in, water to cover, 20 minutes. Paprika and cumin. Keeps 3 days.'},
+  {id:'beef_potatoes', s:'l', e:'\ud83e\udd54', n:'Beef mince & potatoes with salad', min:30, t:[],
+   it:[['beef',150],['potatoes',300],['tomato',100],['cucumber',100],['olive_oil',5]], how:'Potatoes boiled or baked. Mince browned with salt, pepper and paprika. Salad with a little oil.'},
+  {id:'chicken_pasta', s:'l', e:'\ud83c\udf5d', n:'Chicken pasta with tomato', min:20, t:[],
+   it:[['chicken',140],['pasta',80],['passata',120],['kashkaval',15],['olive_oil',5]], how:'Pasta boiled. Chicken pieces fried in the oil, passata in for 5 minutes, pasta mixed through, cheese grated on top.'},
+  {id:'chickpea_feta', s:'l', e:'\ud83e\udd59', n:'Chickpea salad with feta & egg', min:10, t:['budget'],
+   it:[['chickpeas',200],['sirene',40],['egg',110],['tomato',100],['cucumber',100],['olive_oil',7]], how:'Eggs boiled 9 minutes. Everything chopped into a bowl with the chickpeas, oil, salt and lemon.'},
+  {id:'chickpea_bulgur', s:'l', e:'\ud83e\udd57', n:'Chickpea & bulgur salad', min:15, t:['budget'],
+   it:[['chickpeas',200],['bulgur',50],['tomato',120],['cucumber',100],['olive_oil',7]], how:'Bulgur soaked in boiling water, chickpeas and chopped veg in, oil, lemon, parsley if you have it.'},
+  // dinner
+  {id:'omelette_d', s:'d', e:'\ud83c\udf73', n:'Omelette with feta & bread', min:10, t:['budget'],
+   it:[['egg',165],['sirene',40],['bread',80],['tomato',100],['olive_oil',5]], how:'Eggs whisked, feta crumbled in, cooked in the oil. Bread and tomato on the side.'},
+  {id:'salmon_potatoes', s:'d', e:'\ud83d\udc1f', n:'Salmon, potatoes & salad', min:25, t:[],
+   it:[['salmon',150],['potatoes',250],['greens',60],['olive_oil',5]], how:'Potatoes boiled or roasted. Salmon in the oven at 200\u00b0C for 12\u201315 minutes. Leaves with a little oil.'},
+  {id:'bean_stew', s:'d', e:'\ud83e\uded8', n:'Bean stew with feta', min:15, t:['budget'],
+   it:[['beans',300],['onion',50],['passata',80],['sirene',40],['bread',40],['olive_oil',5]], how:'Onion softened, beans and passata in, 10 minutes with paprika and savory (chubritsa). Feta on top.'},
+  {id:'tuna_pasta', s:'d', e:'\ud83c\udf5d', n:'Tuna pasta with tomato', min:15, t:['budget'],
+   it:[['pasta',80],['tuna',110],['passata',150],['olives',20]], how:'Pasta boiled. Passata warmed with the tuna and olives, mixed through.'},
+  {id:'pork_veg', s:'d', e:'\ud83e\udd69', n:'Pork, vegetables & bulgur', min:25, t:[],
+   it:[['pork',150],['mixed_veg',200],['bulgur',50],['olive_oil',7]], how:'Pork sliced and pan-fried, veg in for 8 minutes. Bulgur soaked in boiling water on the side.'},
+  {id:'chicken_wrap', s:'d', e:'\ud83c\udf2f', n:'Chicken & hummus wraps', min:15, t:[],
+   it:[['tortilla',120],['chicken',130],['hummus',40],['greens',40],['tomato',80]], how:'Chicken strips pan-fried. Wraps spread with hummus, chicken, leaves and tomato.'},
+  {id:'hake_rice', s:'d', e:'\ud83d\udc1f', n:'White fish, rice & broccoli', min:20, t:[],
+   it:[['hake',200],['rice',70],['broccoli',200],['olive_oil',7]], how:'Rice boiled. Fish in the oven 12 minutes or pan-fried. Broccoli steamed, oil and lemon over everything.'},
+  {id:'tofu_stirfry', s:'d', e:'\ud83e\udd62', n:'Tofu stir-fry with rice', min:20, t:[],
+   it:[['tofu',200],['mixed_veg',200],['rice',70],['olive_oil',7]], how:'Rice boiled. Tofu cubes browned in the oil, veg in, a splash of soy sauce.'},
+  {id:'bean_chili', s:'d', e:'\ud83c\udf36\ufe0f', n:'Bean & pepper chili with rice', min:25, t:['budget','prep'],
+   it:[['beans',250],['passata',150],['pepper',100],['onion',50],['rice',50],['olive_oil',5]], how:'Onion and pepper softened, beans and passata in with chili and cumin, 15 minutes. Over rice.'},
+  // eating out (lunch or dinner)
+  {id:'out_grill', s:'ld', e:'\ud83e\udd59', n:'Eating out: grill + salad', min:0, t:['out'], out:{k:700,p:45,c:45,f:35},
+   how:'A palm-sized portion of grilled meat or fish, a big salad, one piece of bread. Skip the fries, go easy on the sauce.'},
+  {id:'out_pizza', s:'ld', e:'\ud83c\udf55', n:'Eating out: pizza night', min:0, t:['out'], out:{k:800,p:32,c:95,f:30},
+   how:'Two or three slices, a side salad first, no extra cheese. Enjoy it and get back to the plan tomorrow.'},
+  {id:'out_doner', s:'ld', e:'\ud83c\udf2f', n:'Eating out: d\u00f6ner or wrap', min:0, t:['out'], out:{k:650,p:35,c:60,f:28},
+   how:'Chicken over beef, extra salad, one sauce. A portion, not a large one.'},
+  // snacks
+  {id:'banana_skyr', s:'s', e:'\ud83c\udf4c', n:'Banana + skyr', min:1, t:[], it:[['banana',120],['skyr',150]], how:'Good 60\u201390 minutes before training.'},
+  {id:'cottage_walnuts', s:'s', e:'\ud83e\udd5b', n:'Cottage cheese & walnuts', min:1, t:[], it:[['cottage',200],['walnuts',20]], how:'A slow protein for the evening.'},
+  {id:'apple_pb', s:'s', e:'\ud83c\udf4e', n:'Apple & peanut butter', min:1, t:['budget'], it:[['apple',180],['peanut_butter',20]], how:'Sliced apple, dipped.'},
+  {id:'shake_banana', s:'s', e:'\ud83e\udd64', n:'Protein shake + banana', min:1, t:[], it:[['whey',30],['milk',300],['banana',120]], how:'Shaken with milk. Easy right after training.'},
+  {id:'yog_oats', s:'s', e:'\ud83e\udd63', n:'Yogurt, oats & honey', min:2, t:['budget'], it:[['yogurt',300],['oats',30],['honey',10]], how:'Plain Bulgarian yogurt with a handful of oats and a little honey.'},
+  {id:'ricecakes_ham', s:'s', e:'\ud83c\udf58', n:'Rice cakes with ham', min:2, t:[], it:[['ricecake',36],['ham',60],['cucumber',80]], how:'Four rice cakes, ham and cucumber slices.'},
+  {id:'eggs_boiled', s:'s', e:'\ud83e\udd5a', n:'Two boiled eggs + tomato', min:10, t:['budget'], it:[['egg',110],['tomato',150]], how:'Boil a few at once; they keep 4 days in the fridge.'},
+  {id:'hummus_veg', s:'s', e:'\ud83e\udd55', n:'Hummus & veg sticks', min:3, t:[], it:[['hummus',80],['pepper',100],['cucumber',100]], how:'Pepper and cucumber cut into sticks.'},
+  {id:'almonds_fruit', s:'s', e:'\ud83c\udf4f', n:'Almonds + an apple', min:1, t:[], it:[['apple',180],['almonds',20]], how:'A small handful of almonds.'},
+];
+const MEAL_BY_ID = {}; MEALS.forEach(function(m){ MEAL_BY_ID[m.id] = m; });
+const NUTRI_EXTRAS = [
+  ['Protein snack', 110, 20], ['Coffee with milk', 50, 3], ['Piece of fruit', 80, 1], ['Handful of nuts', 180, 6],
+  ['Banitsa, one piece', 350, 10], ['Slice of pizza', 280, 12], ['Beer, 0.5 l', 210, 2], ['Glass of wine', 120, 0],
+  ['Chocolate bar', 240, 3], ['Sandwich', 350, 18],
+];
+const NUTRI_HABITS = [['protein','Protein target hit'],['veg','Veg at 2 meals'],['water','2\u20133 L water'],['sleep','7 h+ sleep']];
+
+let NUTRI_SHEET = null, NUTRI_TAB = 'today', NUTRI_FILTER = 'all', NUTRI_SETUP = null;
+
+function NS(){ if(!STATE.nutri) STATE.nutri = {on:false, days:{}, adj:0, checks:[]}; const n = STATE.nutri; n.days = n.days||{}; n.checks = n.checks||[]; n.adj = n.adj||0; return n; }
+function nutriOn(){ return !!(STATE.nutri && STATE.nutri.on && STATE.nutri.sex); }
+function nutriAge(){ const n = NS(); return n.birthYear ? new Date().getFullYear() - n.birthYear : null; }
+function nutriWeight(){ const l = latestBody(); return l ? l.kg : null; }
+
+/* what a meal is made of, with the diet rules applied */
+function mealFlags(m){ if(m.out) return ''; return m.it.map(function(x){ return FOODS[x[0]].fl||''; }).join(''); }
+function mealAllowed(m){
+  const n = NS(), fl = mealFlags(m), diet = n.diet||'any';
+  if(m.out) return diet!=='vegan';
+  if(diet==='vegan' && /[mfde]/.test(fl)) return false;
+  if(diet==='vegetarian' && /[mf]/.test(fl)) return false;
+  if(diet==='pescatarian' && /m/.test(fl)) return false;
+  if(n.noDairy && /d/.test(fl)) return false;
+  return true;
+}
+function macrosOf(items){
+  const t = {k:0,p:0,c:0,f:0};
+  items.forEach(function(x){ const fd = FOODS[x[0]], g = x[1]/100; t.k+=fd.k*g; t.p+=fd.p*g; t.c+=fd.c*g; t.f+=fd.f*g; });
+  return t;
+}
+function roundGrams(id, g){
+  const fd = FOODS[id];
+  if(fd.unit){ const step = fd.unit>=100 ? 0.5 : 1; let pcs = Math.max(step, Math.round(g/fd.unit/step)*step); if(id==='egg') pcs = Math.max(1, Math.round(g/fd.unit)); return pcs*fd.unit; }
+  const step = g < 30 ? 5 : g < 200 ? 10 : 25;
+  return Math.max(step, Math.round(g/step)*step);
+}
+/* the meal scaled to the slot: vegetables stay as written, the rest grows or shrinks */
+function scaleMeal(m, kcal){
+  if(m.out) return {m:m, items:[], mac:{k:m.out.k,p:m.out.p,c:m.out.c,f:m.out.f}, fixed:true};
+  const fixed = m.it.filter(function(x){ return FOODS[x[0]].veg; }), sc = m.it.filter(function(x){ return !FOODS[x[0]].veg; });
+  const fk = macrosOf(fixed).k, sk = macrosOf(sc).k || 1;
+  const fac = Math.max(0.6, Math.min(1.7, (kcal - fk)/sk));
+  const items = m.it.map(function(x){ return FOODS[x[0]].veg ? [x[0], x[1]] : [x[0], roundGrams(x[0], x[1]*fac)]; });
+  const mac = macrosOf(items);
+  return {m:m, items:items, mac:{k:Math.round(mac.k), p:Math.round(mac.p), c:Math.round(mac.c), f:Math.round(mac.f)}};
+}
+function amountTxt(id, g){
+  const fd = FOODS[id];
+  if(fd.unit){ const pcs = Math.round(g/fd.unit*2)/2; return (pcs%1 ? pcs.toFixed(1) : pcs)+' '+fd.uname[pcs===1?0:1]; }
+  return g+(fd.ml ? ' ml' : ' g');
+}
+
+/* ---------- targets ---------- */
+function nutriTargets(train){
+  const n = NS(), kg = nutriWeight(), h = STATE.profile.heightCm, age = nutriAge();
+  if(!kg || !h || !age || !n.sex) return null;
+  const bmr = 10*kg + 6.25*h - 5*age + (n.sex==='f' ? -161 : 5);
+  const act = {desk:1.3, mixed:1.45, active:1.6}[n.activity||'desk'];
+  const mins = +STATE.profile.duration || 45;
+  const rest = bmr*act, trainBurn = 0.09*kg*mins;
+  const base = rest + (train ? trainBurn : 0);
+  const goal = n.goal||'maintain';
+  const mult = goal==='lose' ? 0.82 : goal==='gain' ? 1.08 : 1;
+  const floor = Math.max(n.sex==='f' ? 1300 : 1600, Math.round(bmr));
+  let kcal = Math.max(floor, base*mult + (n.adj||0));
+  kcal = Math.round(kcal/10)*10;
+  const bmi = kg/Math.pow(h/100,2);
+  const refKg = bmi > 27 ? 25*Math.pow(h/100,2) : kg;          // protein from a healthy-weight reference above BMI 27
+  const ppk = goal==='lose' ? 2.0 : goal==='gain' ? 1.8 : 1.6;
+  const p = Math.round(refKg*ppk/5)*5;
+  const f = Math.max(Math.round(kg*0.6), Math.round(kcal*0.28/9));
+  const c = Math.max(50, Math.round((kcal - p*4 - f*9)/4));
+  return {kcal:kcal, p:p, c:c, f:f, floor:floor, bmr:Math.round(bmr), atFloor: kcal<=floor};
+}
+
+/* ---------- the day ---------- */
+function nutriDay(date){ const n = NS(); if(!n.days[date]) n.days[date] = {}; return n.days[date]; }
+function nutriTrainGuess(date){
+  const d = (STATE.nutri && STATE.nutri.days[date]) || {};
+  if(typeof d.train === 'boolean') return d.train;
+  const hist = STATE.history||[];
+  if(hist.some(function(h){ return h.date===date; })) return true;
+  if(date!==todayISO()) return false;
+  const last = hist.length ? hist[hist.length-1].date : null;
+  if(!last) return true;
+  const gap = Math.round((dateMs(date)-dateMs(last))/86400000);
+  return gap >= Math.max(1, Math.round(7/(+STATE.profile.days||3)));
+}
+function nutriSlots(t){
+  const five = t.kcal >= 2200;
+  return five
+    ? [['breakfast','b',0.24,'Breakfast'],['lunch','l',0.30,'Lunch'],['snack','s',0.10,'Snack'],['dinner','d',0.26,'Dinner'],['evening','s',0.10,'Evening']]
+    : [['breakfast','b',0.26,'Breakfast'],['lunch','l',0.32,'Lunch'],['snack','s',0.12,'Snack'],['dinner','d',0.30,'Dinner']];
+}
+function slotPool(type){ return MEALS.filter(function(m){ return m.s.indexOf(type)>=0 && mealAllowed(m) && !m.out; }); }
+function defaultMeal(date, key, type, kcal, avoid){
+  const pool = slotPool(type).filter(function(m){ return avoid.indexOf(m.id)<0; });
+  if(!pool.length) return null;
+  const scored = pool.map(function(m){ const s = scaleMeal(m, kcal); return {m:m, k: warmHash(date+'|'+key+'|'+m.id)*0.7 + Math.min(1, s.mac.p*4/Math.max(1,s.mac.k)/0.4)*0.3}; });
+  scored.sort(function(a,b){ return b.k-a.k; });
+  return scored[0].m.id;
+}
+function nutriPlan(date, trainOverride){
+  const train = typeof trainOverride==='boolean' ? trainOverride : nutriTrainGuess(date);
+  const t = nutriTargets(train); if(!t) return null;
+  const d = (STATE.nutri.days[date]) || {}, pick = d.pick || {};
+  const used = [];
+  const slots = nutriSlots(t).map(function(s){
+    const kcal = t.kcal*s[2];
+    let id = pick[s[0]];
+    if(!id || !MEAL_BY_ID[id] || !mealAllowed(MEAL_BY_ID[id])) id = defaultMeal(date, s[0], s[1], kcal, used);
+    if(id) used.push(id);
+    const label = s[0]==='snack' && train ? 'Pre-training snack' : s[3];
+    return {key:s[0], type:s[1], label:label, kcal:kcal, meal: id ? scaleMeal(MEAL_BY_ID[id], kcal) : null};
+  });
+  return {date:date, train:train, t:t, slots:slots};
+}
+function nutriEaten(date){
+  const d = (STATE.nutri && STATE.nutri.days[date]) || {}, tot = {k:0,p:0,c:0,f:0};
+  Object.keys(d.ate||{}).forEach(function(k){ const a = d.ate[k]; if(a){ tot.k+=a.k; tot.p+=a.p; tot.c+=a.c||0; tot.f+=a.f||0; } });
+  (d.x||[]).forEach(function(x){ tot.k+=x.k; tot.p+=x.p; });
+  return tot;
+}
+function nutriToggleAte(key){
+  const date = todayISO(), d = nutriDay(date), plan = nutriPlan(date);
+  d.ate = d.ate || {};
+  if(d.ate[key]) delete d.ate[key];
+  else { const s = plan.slots.find(function(x){ return x.key===key; }); if(s && s.meal) d.ate[key] = {id:s.meal.m.id, k:s.meal.mac.k, p:s.meal.mac.p, c:s.meal.mac.c, f:s.meal.mac.f}; }
+  autoProteinHabit(date, plan);
+  saveState(); render();
+}
+function autoProteinHabit(date, plan){
+  const d = nutriDay(date); d.h = d.h || {};
+  if(nutriEaten(date).p >= plan.t.p*0.9) d.h.protein = true;
+}
+function nutriSetTrain(v){ const d = nutriDay(todayISO()); d.train = v; saveState(); render(); }
+function nutriPick(key, id){
+  const d = nutriDay(todayISO()); d.pick = d.pick || {}; d.pick[key] = id;
+  if(d.ate && d.ate[key]) delete d.ate[key];
+  NUTRI_SHEET = null; saveState(); render(); toast('Swapped');
+}
+function nutriAddExtra(label, k, p){
+  const date = todayISO(), d = nutriDay(date); d.x = d.x || [];
+  d.x.push({l:label, k:Math.round(k), p:Math.round(p)});
+  const plan = nutriPlan(date); if(plan) autoProteinHabit(date, plan);
+  NUTRI_SHEET = null; saveState(); render(); toast('Added');
+}
+function nutriAddCustom(){
+  const k = parseFloat((document.getElementById('nxK')||{}).value), p = parseFloat((document.getElementById('nxP')||{}).value)||0;
+  const l = ((document.getElementById('nxL')||{}).value||'').trim() || 'Something else';
+  if(!(k>0 && k<5000)){ toast('Add a rough calorie number'); return; }
+  nutriAddExtra(l, k, p);
+}
+function nutriDelExtra(i){ const d = nutriDay(todayISO()); (d.x||[]).splice(i,1); saveState(); render(); }
+function nutriHabit(key){
+  const d = nutriDay(todayISO()); d.h = d.h || {}; d.h[key] = !d.h[key]; saveState(); render();
+}
+function habitStreak(key){
+  const days = (STATE.nutri && STATE.nutri.days) || {};
+  let n = 0, dt = new Date();
+  const todayOn = days[todayISO()] && days[todayISO()].h && days[todayISO()].h[key];
+  if(!todayOn) dt = addDays(dt, -1);                     // today is still open; the streak counts up to yesterday
+  for(let i=0;i<400;i++){
+    const iso = isoLocal(dt), h = days[iso] && days[iso].h;
+    if(h && h[key]){ n++; dt = addDays(dt, -1); } else break;
+  }
+  return n;
+}
+
+/* ---------- weekly check-in ---------- */
+function nutriTrend(){
+  const cut = Date.now() - 21*86400000;
+  const pts = bodyLogSorted().filter(function(e){ return dateMs(e.date) >= cut; });
+  if(pts.length < 3) return null;
+  const span = (dateMs(pts[pts.length-1].date) - dateMs(pts[0].date))/86400000;
+  if(span < 10) return null;
+  const xs = pts.map(function(e){ return dateMs(e.date)/86400000; }), ys = pts.map(function(e){ return e.kg; });
+  const mx = xs.reduce(function(a,b){return a+b;},0)/xs.length, my = ys.reduce(function(a,b){return a+b;},0)/ys.length;
+  let num = 0, den = 0; xs.forEach(function(x,i){ num += (x-mx)*(ys[i]-my); den += (x-mx)*(x-mx); });
+  return {perWeek: den ? num/den*7 : 0, pts:pts, span:span};
+}
+function nutriAdherence(){
+  const days = (STATE.nutri && STATE.nutri.days) || {}; let n = 0;
+  for(let i=1;i<=7;i++){ const d = days[isoLocal(addDays(new Date(), -i))]; if(d && d.ate && Object.keys(d.ate).length >= 2) n++; }
+  return n;
+}
+function nutriCheckDue(){
+  const n = NS(), last = n.lastCheck || n.since;
+  return !last || (Date.now() - dateMs(last)) >= 7*86400000;
+}
+function nutriVerdict(){
+  const n = NS(), tr = nutriTrend(), kg = nutriWeight();
+  if(!tr || !kg) return null;
+  const pct = tr.perWeek/kg*100, goal = n.goal||'maintain';
+  const band = goal==='lose' ? [-1.0,-0.25] : goal==='gain' ? [0.1,0.5] : [-0.25,0.25];
+  const plan = goal==='lose' ? -0.5 : goal==='gain' ? 0.25 : 0;
+  let change = 0, msg;
+  const w = function(v){ return (v>0?'+':v<0?'\u2212':'\u00b1')+Math.abs(isLb()?v*2.20462:v).toFixed(1)+' '+U(); };
+  if(pct < band[0]) { change = 150;
+    msg = goal==='lose' ? '<b>Losing faster than planned.</b> Fast loss costs muscle and energy. Add <b>150 kcal</b> a day \u2014 about a yogurt with oats.'
+        : goal==='gain' ? '<b>Gaining slower than planned.</b> Add <b>150 kcal</b> a day \u2014 about one extra yogurt with oats.'
+        : '<b>Weight is drifting down.</b> Add <b>150 kcal</b> a day to hold it.'; }
+  else if(pct > band[1]) { change = -150;
+    msg = goal==='lose' ? '<b>Losing slower than planned.</b> Take <b>150 kcal</b> a day off \u2014 about a slice of bread and a little less oil.'
+        : goal==='gain' ? '<b>Gaining faster than planned.</b> Most of that would be fat. Take <b>150 kcal</b> a day off.'
+        : '<b>Weight is drifting up.</b> Take <b>150 kcal</b> a day off to hold it.'; }
+  else msg = '<b>Right on track.</b> Keep the targets as they are.';
+  const adh = nutriAdherence();
+  if(change && n.since && (Date.now()-dateMs(n.since)) < 10*86400000){ msg = '<b>Early days.</b> The first check-in that changes anything comes after your first full week on the plan.'; change = 0; }
+  if(change && adh < 4){ msg = '<b>Not enough to go on yet.</b> Meals were ticked on '+adh+' of the last 7 days, so the scale may be reflecting that. Keep the targets and tick what you eat this week.'; change = 0; }
+  const t = nutriTargets(false);
+  if(change < 0 && t && t.atFloor){ msg = '<b>Your target is already at the safe minimum.</b> It will not go lower. More steps in the day is the better lever now.'; change = 0; }
+  if(Math.abs((n.adj||0)+change) > 600) change = 0;
+  return {rate:tr.perWeek, pct:pct, planned:plan*kg/100, change:change, msg:msg, tr:tr, w:w};
+}
+function nutriAcceptCheck(change){
+  const n = NS();
+  n.adj = (n.adj||0) + (change||0);
+  n.lastCheck = todayISO();
+  n.checks.push({date:todayISO(), change:change||0});
+  saveState(); render(); toast(change ? 'Targets updated' : 'Targets kept');
+}
+
+/* ---------- shopping ---------- */
+function nutriShopping(){
+  const out = {}, start = new Date();
+  for(let i=0;i<7;i++){
+    const iso = isoLocal(addDays(start, i)), plan = nutriPlan(iso);
+    if(!plan) continue;
+    plan.slots.forEach(function(s){ if(s.meal) s.meal.items.forEach(function(x){ out[x[0]] = (out[x[0]]||0) + x[1]; }); });
+  }
+  return out;
+}
+function shopQty(id, g){
+  const fd = FOODS[id];
+  if(id==='bread') { const l = Math.ceil(g/500); return l+(l===1?' loaf':' loaves'); }
+  if(id==='tortilla') { const p = Math.ceil(g/fd.unit/6); return p+(p===1?' pack':' packs'); }
+  if(id==='ricecake') return Math.ceil(g/fd.unit/12)+' pack';
+  if(id==='whey') return Math.ceil(g/fd.unit)+' scoops';
+  if(fd.unit) { const n = Math.ceil(g/fd.unit); return n+' '+fd.uname[n===1?0:1]; }
+  const r = Math.ceil(g/50)*50, big = function(v){ return String(Math.round(v/50)*50/1000).replace(/^(\d+\.\d\d).*/,'$1'); };
+  if(fd.ml) return r >= 1000 ? big(r)+' l' : r+' ml';
+  return r >= 1000 ? big(r)+' kg' : r+' g';
+}
+function shopState(){
+  const n = NS();
+  if(!n.shop || (Date.now()-dateMs(n.shop.from)) > 6*86400000) n.shop = {from:todayISO(), got:{}};
+  return n.shop;
+}
+function shopToggle(id){ const s = shopState(); s.got[id] = !s.got[id]; saveState(); render(); }
+function shopReset(){ NS().shop = {from:todayISO(), got:{}}; saveState(); render(); }
+function shopShare(){
+  const list = nutriShopping(), got = shopState().got;
+  const txt = 'Shopping \u00b7 next 7 days\n' + AISLES.map(function(a){
+    const rows = Object.keys(list).filter(function(id){ return FOODS[id].a===a[0] && !got[id]; });
+    return rows.length ? '\n'+a[1]+'\n'+rows.map(function(id){ return '\u2022 '+FOODS[id].n+' \u2014 '+shopQty(id, list[id]); }).join('\n') : '';
+  }).join('') + '\n';
+  if(navigator.share){ navigator.share({title:'Shopping list', text:txt}).catch(function(){}); return; }
+  try{ navigator.clipboard.writeText(txt).then(function(){ toast('List copied'); }); }catch(e){ toast('Could not copy'); }
+}
+
+/* ---------- setup ---------- */
+function nutriStartSetup(){
+  const n = NS(), l = latestBody(), g = STATE.profile.goals||[];
+  NUTRI_SETUP = {
+    sex: n.sex||'', birthYear: n.birthYear||'', height: STATE.profile.heightCm||'', weight: l ? bwTxt(l.kg) : '',
+    goal: n.goal || (g.indexOf('lose_fat')>=0 ? 'lose' : g.indexOf('build_muscle')>=0 ? 'gain' : 'maintain'),
+    activity: n.activity||'desk', diet: n.diet||'any', noDairy: !!n.noDairy
+  };
+  navigate('fuel_setup');
+}
+function nsSet(k, v){ NUTRI_SETUP[k] = v; render(); }
+function nsRead(){
+  ['birthYear','height','weight'].forEach(function(k){ const el = document.getElementById('ns_'+k); if(el) NUTRI_SETUP[k] = el.value; });
+}
+function nutriSaveSetup(){
+  nsRead();
+  const s = NUTRI_SETUP, yr = parseInt(s.birthYear,10), h = parseFloat(s.height), w = parseFloat(s.weight);
+  const nowY = new Date().getFullYear();
+  if(!s.sex){ toast('Choose male or female'); return; }
+  if(!(yr > 1920 && yr <= nowY)){ toast('Add your year of birth'); return; }
+  if(nowY - yr < 18){ toast('Nutrition targets are for adults 18 and over'); return; }
+  if(!(h > 120 && h < 230)){ toast('Add your height in cm'); return; }
+  const kg = isLb() ? w/2.20462 : w;
+  if(!(kg > 35 && kg < 300)){ toast('Add your weight'); return; }
+  const n = NS();
+  n.sex = s.sex; n.birthYear = yr; n.goal = s.goal; n.activity = s.activity; n.diet = s.diet; n.noDairy = !!s.noDairy;
+  if(!n.on){ n.on = true; n.since = n.since || todayISO(); }
+  STATE.profile.heightCm = Math.round(h);
+  const l = latestBody();
+  if(!l || Math.abs(l.kg - kg) > 0.05){
+    STATE.bodyLog = (STATE.bodyLog||[]).filter(function(e){ return e.date!==todayISO(); });
+    STATE.bodyLog.push({date:todayISO(), kg:Math.round(kg*100)/100});
+  }
+  saveState(); NUTRI_SETUP = null; NUTRI_TAB = 'today'; navigate('fuel');
+}
+function nutriTurnOff(){
+  if(!confirm('Turn off Nutrition? Your settings and ticks are kept, so turning it back on picks up where you left off.')) return;
+  NS().on = false; saveState(); render();
+}
+function nutriTurnOn(){ const n = NS(); if(n.sex){ n.on = true; saveState(); navigate('fuel'); } else nutriStartSetup(); }
+
+function renderFuelSetup(){
+  const s = NUTRI_SETUP || (nutriStartSetup(), NUTRI_SETUP);
+  const chips = function(key, opts){ return '<div class="chip-row">'+opts.map(function(o){
+    return '<div class="chip '+(s[key]===o[0]?'selected':'')+'" onclick="nsRead();nsSet(\''+key+'\',\''+o[0]+'\')">'+o[1]+'</div>'; }).join('')+'</div>'; };
+  return '<div class="top-row"><div class="back-btn" role="button" tabindex="0" aria-label="Back" onclick="goBack(\'profile\')">'+ICON.back+'</div>'
+    + '<div class="eyebrow">Nutrition \u00b7 beta</div></div>'
+    + '<h1 style="font-size:28px;margin:6px 0 6px;">Set up Fuel</h1>'
+    + '<p style="color:var(--text-2);font-size:14px;line-height:1.5;margin-bottom:16px;">Daily targets, a meal plan sized to them and a weekly check-in. It all stays on your phone.</p>'
+    + '<div class="card nu-setup">'
+    + '<div class="field"><label>Sex</label>'+chips('sex',[['m','Male'],['f','Female']])+'</div>'
+    + '<div class="nu-2"><div class="field"><label for="ns_birthYear">Year of birth</label><input id="ns_birthYear" type="number" inputmode="numeric" placeholder="e.g. 1990" value="'+esc(s.birthYear)+'"></div>'
+    + '<div class="field"><label for="ns_height">Height</label><div class="unit-input"><input id="ns_height" type="number" inputmode="decimal" placeholder="178" value="'+esc(s.height)+'"><span>cm</span></div></div></div>'
+    + '<div class="field"><label for="ns_weight">Weight today</label><div class="unit-input"><input id="ns_weight" type="number" inputmode="decimal" step="0.1" placeholder="80" value="'+esc(s.weight)+'"><span>'+U()+'</span></div></div>'
+    + '<div class="field"><label>Goal</label>'+chips('goal',[['lose','Lose fat'],['maintain','Maintain'],['gain','Build muscle']])+'</div>'
+    + '<div class="field"><label>Outside training, your day is\u2026</label>'+chips('activity',[['desk','Mostly sitting'],['mixed','On my feet some'],['active','Physical job']])+'</div>'
+    + '<div class="field"><label>Food</label>'+chips('diet',[['any','Everything'],['pescatarian','Pescatarian'],['vegetarian','Vegetarian'],['vegan','Vegan']])
+    + '<div class="chip-row" style="margin-top:9px;"><div class="chip '+(s.noDairy?'selected':'')+'" onclick="nsRead();nsSet(\'noDairy\','+(!s.noDairy)+')">No dairy</div></div></div>'
+    + '<button class="btn btn-primary btn-block" style="margin-top:6px;" onclick="nutriSaveSetup()">'+(nutriOn()?'Save':'Turn on Fuel')+'</button>'
+    + '</div>'
+    + nutriDisclaimer();
+}
+function nutriDisclaimer(){
+  return '<p class="nu-disc">Beta. Estimates for healthy adults, not medical advice. Pregnant, breastfeeding, under 18, or managing a condition such as diabetes, kidney disease or an eating disorder? Talk to your doctor before following calorie targets.</p>';
+}
+
+/* ---------- screens ---------- */
+function fmtK(v){ return Math.round(v).toLocaleString('en-US'); }
+function nuBar(label, got, goal, color){
+  const pct = Math.max(0, Math.min(100, goal ? got/goal*100 : 0));
+  return '<div class="nu-mac"><div class="nu-ml"><b>'+label+'</b><span>'+Math.round(got)+' / '+goal+' g</span></div><div class="nu-bar"><i style="width:'+pct+'%;background:'+color+'"></i></div></div>';
+}
+function nuRing(left, goal, eaten){
+  const r = 50, C = 2*Math.PI*r, frac = Math.max(0, Math.min(1, eaten/goal));
+  const over = left < 0;
+  return '<div class="nu-ring"><svg width="118" height="118" viewBox="0 0 118 118" aria-hidden="true"><circle cx="59" cy="59" r="'+r+'" stroke="var(--bg-3)" stroke-width="11" fill="none"/>'
+    + '<circle cx="59" cy="59" r="'+r+'" stroke="'+(over?'var(--amber)':'var(--blue)')+'" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 59 59)"/></svg>'
+    + '<div class="nu-rc"><b>'+fmtK(Math.abs(left))+'</b><span>'+(over?'kcal over':'kcal left')+'</span></div></div>';
+}
+function renderFuel(){
+  if(!nutriOn()) return renderFuelSetup();
+  const tabs = '<div class="nu-tabs">'+[['today','Today'],['check','Check-in'],['shop','Shopping']].map(function(t){
+    return '<button class="'+(NUTRI_TAB===t[0]?'on':'')+'" onclick="NUTRI_TAB=\''+t[0]+'\';render();window.scrollTo(0,0)">'+t[1]+'</button>'; }).join('')+'</div>';
+  const head = '<div class="nu-head"><div><div class="eyebrow">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'short'}))+'</div><h1>Fuel</h1></div><span class="nu-beta">BETA</span></div>';
+  const body = NUTRI_TAB==='check' ? fuelCheckin() : NUTRI_TAB==='shop' ? fuelShopping() : fuelToday();
+  return head + tabs + body + nutriDisclaimer();
+}
+function fuelToday(){
+  const date = todayISO(), plan = nutriPlan(date), t = plan.t, eat = nutriEaten(date), d = (STATE.nutri.days[date])||{}, ate = d.ate||{};
+  const dayChips = '<div class="nu-daytype"><button class="'+(plan.train?'on':'')+'" onclick="nutriSetTrain(true)">Training day</button><button class="'+(!plan.train?'on':'')+'" onclick="nutriSetTrain(false)">Rest day</button></div>';
+  let html = '<div class="card nu-top">'+dayChips
+    + '<div class="nu-row">'+nuRing(t.kcal-eat.k, t.kcal, eat.k)
+    + '<div style="flex:1;min-width:0;">'+nuBar('Protein', eat.p, t.p, 'var(--green)')+nuBar('Carbs', eat.c, t.c, 'var(--blue)')+nuBar('Fat', eat.f, t.f, 'var(--orange)')+'</div></div>'
+    + '<div class="wr-meta" style="margin-top:12px;">Target '+fmtK(t.kcal)+' kcal \u00b7 '+({lose:'fat loss',gain:'lean gain',maintain:'maintain'}[STATE.nutri.goal||'maintain'])
+    + (STATE.nutri.adj ? ' \u00b7 '+(STATE.nutri.adj>0?'+':'\u2212')+Math.abs(STATE.nutri.adj)+' from check-ins' : '')+'</div></div>';
+  html += '<div class="card nu-meals">' + plan.slots.map(function(s){
+    if(!s.meal) return '<div class="nu-meal"><div class="nu-ic">\u2014</div><div class="nu-mb"><div class="nu-mk">'+esc(s.label)+'</div><div class="wr-meta">No meal fits your food settings here.</div></div></div>';
+    const m = s.meal, on = !!ate[s.key];
+    return '<div class="nu-meal'+(on?' done':'')+'"><div class="nu-ic" onclick="NUTRI_SHEET={k:\'meal\',slot:\''+s.key+'\'};render()">'+m.m.e+'</div>'
+      + '<div class="nu-mb" onclick="NUTRI_SHEET={k:\'meal\',slot:\''+s.key+'\'};render()"><div class="nu-mk">'+esc(s.label)+'</div><div class="nu-mt">'+esc(m.m.n)+'</div>'
+      + '<div class="wr-meta">'+fmtK(m.mac.k)+' kcal \u00b7 '+m.mac.p+' g protein</div></div>'
+      + (on ? '' : '<button class="nu-swap" onclick="NUTRI_FILTER=\'all\';NUTRI_SHEET={k:\'swap\',slot:\''+s.key+'\'};render()">Swap</button>')
+      + '<button class="nu-chk" aria-label="'+(on?'Untick':'Ate it')+'" onclick="nutriToggleAte(\''+s.key+'\')">'+(on?ICON.check:'')+'</button></div>';
+  }).join('') + '</div>';
+  const x = d.x||[];
+  html += (x.length ? '<div class="card nu-extras"><div class="eyebrow" style="margin-bottom:6px;">Also eaten</div>'+x.map(function(e,i){
+      return '<div class="nu-x"><span>'+esc(e.l)+'</span><span class="wr-meta">'+e.k+' kcal \u00b7 '+e.p+' g</span><button aria-label="Remove" onclick="nutriDelExtra('+i+')">'+ICON.x+'</button></div>'; }).join('')+'</div>' : '')
+    + '<div class="nu-quick"><button class="chip" onclick="nutriAddExtra(\'Protein snack\',110,20)">+20 g protein</button><button class="chip" onclick="NUTRI_SHEET={k:\'extra\'};render()">'+ICON.plus+' Ate something else</button></div>';
+  if(plan.train) html += '<div class="nu-tip"><b>Training today.</b> Have the snack 60\u201390 minutes before. Afterwards, your next meal covers recovery \u2014 nothing special needed.</div>';
+  // habits
+  const h = d.h||{};
+  html += '<div class="section nu-sec"><div class="section-title">Today\u2019s habits</div><div class="card nu-habits">'+NUTRI_HABITS.map(function(x){
+    const st = habitStreak(x[0]);
+    return '<div class="nu-hab" onclick="nutriHabit(\''+x[0]+'\')"><span class="nu-chk sm'+(h[x[0]]?' on':'')+'">'+(h[x[0]]?ICON.check:'')+'</span>'+esc(x[1])
+      + (st>1 ? '<span class="nu-streak">'+ICON.flame+st+'</span>' : '')+'</div>'; }).join('')+'</div></div>';
+  if(nutriCheckDue() && nutriVerdict()) html = '<div class="nu-tip nu-due" onclick="NUTRI_TAB=\'check\';render()"><b>Weekly check-in ready.</b> See how your weight moved and whether to adjust. '+ICON.chevron+'</div>' + html;
+  return html;
+}
+function fuelCheckin(){
+  const n = NS(), v = nutriVerdict(), kg = nutriWeight(), t = nutriTargets(false), tt = nutriTargets(true);
+  let html = '';
+  if(!v){
+    const cnt = nutriTrendCount();
+    html += '<div class="card"><div class="eyebrow">Weekly check-in</div><h2 style="font-size:21px;margin:8px 0 6px;">Weigh in 2\u20133 times a week</h2>'
+      + '<p style="color:var(--text-2);font-size:14px;line-height:1.5;margin:0 0 14px;">The check-in needs about 10 days of weigh-ins to see a trend through the daily ups and downs. Mornings, before breakfast. '
+      + (cnt ? 'You have '+cnt+' in the last 3 weeks.' : '')+'</p>'
+      + '<button class="btn btn-primary btn-block" onclick="openBodySheet()">Log weight</button></div>';
+  } else {
+    const due = nutriCheckDue();
+    const chart = lineChart('nuw', v.tr.pts.map(function(e){ return {t:dateMs(e.date), iso:e.date, y:bwNum(e.kg), tip:'<b>'+bwTxt(e.kg)+' '+U()+'</b><span>'+esc(fmtDay(e.date))+'</span>'}; }), function(x){ return (Math.round(x*10)/10).toFixed(1); }, U());
+    html += '<div class="card"><div class="eyebrow">Weight \u00b7 last 3 weeks</div>'+chart
+      + '<div class="nu-vs"><div><b>'+v.w(v.rate)+'</b><span>per week, you</span></div><div><b class="dim">'+v.w(v.planned)+'</b><span>per week, planned</span></div></div>'
+      + '<div class="nu-tip">'+v.msg+'</div>'
+      + (due ? (v.change ? '<div class="nu-btns"><button class="btn btn-primary" onclick="nutriAcceptCheck('+v.change+')">'+(v.change>0?'+':'\u2212')+Math.abs(v.change)+' kcal</button><button class="btn btn-secondary" onclick="nutriAcceptCheck(0)">Keep it</button></div>'
+                        : '<button class="btn btn-primary btn-block" style="margin-top:12px;" onclick="nutriAcceptCheck(0)">Got it</button>')
+             : '<p class="wr-meta" style="margin-top:12px;">Next check-in '+esc(fmtDay(isoLocal(addDays(new Date(dateMs(n.lastCheck)), 7))))+'.</p>')
+      + '</div>';
+  }
+  html += '<div class="section nu-sec"><div class="section-title">Your targets</div><div class="card">'
+    + profRow('Training', fmtK(tt.kcal)+' kcal \u00b7 '+tt.p+' g protein')
+    + profRow('Rest', fmtK(t.kcal)+' kcal \u00b7 '+t.p+' g protein')
+    + profRow('Carbs \u00b7 fat, rest', t.c+' g \u00b7 '+t.f+' g')
+    + (n.adj ? profRow('From check-ins', (n.adj>0?'+':'\u2212')+Math.abs(n.adj)+' kcal') : '')
+    + '<p class="wr-meta" style="margin-top:10px;line-height:1.5;">From your weight, height, age and day. They move with your weigh-ins; you never go below '+fmtK(t.floor)+' kcal.</p>'
+    + '<div class="nu-btns"><button class="btn btn-secondary" onclick="nutriStartSetup()">Edit settings</button>'+(n.adj?'<button class="btn btn-ghost" onclick="NS().adj=0;saveState();render();toast(\'Back to the base targets\')">Reset adjustments</button>':'')+'</div>'
+    + '</div></div>';
+  return html;
+}
+function nutriTrendCount(){ const cut = Date.now()-21*86400000; return bodyLogSorted().filter(function(e){ return dateMs(e.date)>=cut; }).length; }
+function fuelShopping(){
+  const list = nutriShopping(), st = shopState(), got = st.got;
+  const ids = Object.keys(list);
+  let html = '<div class="nu-shophead"><div class="wr-meta">Everything on your plan for the next 7 days. Swaps and settings update it.</div>'
+    + '<div class="nu-btns" style="margin-top:10px;"><button class="btn btn-secondary btn-sm" onclick="shopShare()">'+ICON.share+' Share list</button>'
+    + '<button class="btn btn-ghost btn-sm" onclick="shopReset()">Untick all</button></div></div>';
+  html += AISLES.map(function(a){
+    const rows = ids.filter(function(id){ return FOODS[id].a===a[0]; }).sort(function(x,y){ return (got[x]?1:0)-(got[y]?1:0) || FOODS[x].n.localeCompare(FOODS[y].n); });
+    if(!rows.length) return '';
+    return '<div class="section nu-sec"><div class="section-title">'+esc(a[1])+'</div><div class="card nu-shop">'+rows.map(function(id){
+      return '<div class="nu-li'+(got[id]?' got':'')+'" onclick="shopToggle(\''+id+'\')"><span class="nu-bx">'+(got[id]?ICON.check:'')+'</span><span class="nu-ln">'+esc(FOODS[id].n)+'</span><span class="nu-q">'+esc(shopQty(id, list[id]))+'</span></div>';
+    }).join('')+'</div></div>';
+  }).join('');
+  return html;
+}
+
+/* ---------- sheets ---------- */
+function nutriSheetMarkup(){
+  if(!NUTRI_SHEET || !nutriOn()) return '';
+  const close = '<button class="btn btn-ghost btn-block" onclick="NUTRI_SHEET=null;render()">Close</button>';
+  const wrap = function(label, inner){ return '<div class="fsheet-wrap" onclick="if(event.target===this){NUTRI_SHEET=null;render();}"><div class="fsheet nu-sheet" role="dialog" aria-modal="true" aria-label="'+esc(label)+'"><div class="grab"></div>'+inner+'</div></div>'; };
+  const plan = nutriPlan(todayISO());
+  if(NUTRI_SHEET.k==='extra'){
+    return wrap('Add something', '<h3>Ate something else?</h3><p class="wr-meta" style="margin:0;">A rough guess is plenty.</p>'
+      + '<div class="nu-presets">'+NUTRI_EXTRAS.map(function(x){ return '<button onclick="nutriAddExtra(\''+x[0].replace(/'/g,"\\'")+'\','+x[1]+','+x[2]+')"><b>'+esc(x[0])+'</b><span>'+x[1]+' kcal \u00b7 '+x[2]+' g</span></button>'; }).join('')+'</div>'
+      + '<div class="field"><label for="nxL">Or your own</label><input id="nxL" type="text" placeholder="What was it?"></div>'
+      + '<div class="nu-2"><div class="field"><div class="unit-input"><input id="nxK" type="number" inputmode="numeric" placeholder="kcal"><span>kcal</span></div></div>'
+      + '<div class="field"><div class="unit-input"><input id="nxP" type="number" inputmode="numeric" placeholder="protein"><span>g</span></div></div></div>'
+      + '<button class="btn btn-primary btn-block" onclick="nutriAddCustom()">Add</button>'+close);
+  }
+  const slot = plan.slots.find(function(s){ return s.key===NUTRI_SHEET.slot; });
+  if(!slot) return '';
+  if(NUTRI_SHEET.k==='meal' && slot.meal){
+    const m = slot.meal, on = !!((STATE.nutri.days[todayISO()]||{}).ate||{})[slot.key];
+    return wrap(m.m.n, '<div class="eyebrow">'+esc(slot.label)+'</div><h3 style="font-size:22px;">'+m.m.e+' '+esc(m.m.n)+'</h3>'
+      + '<div class="nu-macs4">'+[['kcal',fmtK(m.mac.k)],['protein',m.mac.p+' g'],['carbs',m.mac.c+' g'],['fat',m.mac.f+' g']].map(function(x){ return '<div><b>'+x[1]+'</b><span>'+x[0]+'</span></div>'; }).join('')+'</div>'
+      + (m.items.length ? '<div class="nu-ing">'+m.items.map(function(x){ return '<div><span>'+esc(FOODS[x[0]].n.replace(/ \(.*\)/,''))+'</span><b>'+esc(amountTxt(x[0], x[1]))+'</b></div>'; }).join('')+'</div>' : '')
+      + '<p style="font-size:14px;line-height:1.55;color:var(--text-2);margin:0;">'+(m.m.min ? '<b style="color:var(--text-1);">'+m.m.min+' min.</b> ' : '')+esc(m.m.how)+'</p>'
+      + (m.fixed ? '<p class="wr-meta" style="margin:0;">Numbers are a typical estimate.</p>' : '<p class="wr-meta" style="margin:0;">Amounts are sized to your '+esc(slot.label.toLowerCase().replace(/ \u00b7.*/,''))+' target. Raw or dry weights.</p>')
+      + '<button class="btn btn-primary btn-block" onclick="NUTRI_SHEET=null;nutriToggleAte(\''+slot.key+'\')">'+(on?'Untick':ICON.check+' Ate it')+'</button>'
+      + (on ? '' : '<button class="btn btn-secondary btn-block" onclick="NUTRI_FILTER=\'all\';NUTRI_SHEET={k:\'swap\',slot:\''+slot.key+'\'}">Swap it</button>')
+      + close);
+  }
+  if(NUTRI_SHEET.k==='swap'){
+    const f = NUTRI_FILTER;
+    let pool = MEALS.filter(function(m){ return m.s.indexOf(slot.type)>=0 && mealAllowed(m); });
+    if(slot.type==='s') pool = pool.filter(function(m){ return !m.out; });
+    pool = pool.filter(function(m){
+      const fl = mealFlags(m);
+      return f==='all' ? !m.out : f==='quick' ? (!m.out && m.min<=10) : f==='nomeat' ? (!m.out && !/[mf]/.test(fl)) : f==='budget' ? m.t.indexOf('budget')>=0 : f==='out' ? !!m.out : true;
+    });
+    const cur = slot.meal ? slot.meal.m.id : null;
+    const filters = [['all','All'],['quick','Under 10 min'],['nomeat','No meat'],['budget','Budget']].concat(slot.type!=='s' && NS().diet!=='vegan' ? [['out','Eating out']] : []);
+    return wrap('Swap '+slot.label, '<div class="eyebrow">'+esc(slot.label)+' \u00b7 about '+fmtK(slot.kcal)+' kcal</div><h3 style="font-size:22px;">Pick something else</h3>'
+      + '<div class="chip-row">'+filters.map(function(x){ return '<div class="chip '+(f===x[0]?'selected':'')+'" onclick="NUTRI_FILTER=\''+x[0]+'\';render()">'+x[1]+'</div>'; }).join('')+'</div>'
+      + (pool.length ? pool.map(function(m){
+          const s = scaleMeal(m, slot.kcal);
+          const desc = s.items.length ? s.items.slice(0,4).map(function(x){ const fd = FOODS[x[0]], nm = fd.n.replace(/ \(.*\)/,'').replace(/, .*/,'').toLowerCase();
+            return amountTxt(x[0],x[1])+(fd.uname && nm===fd.uname[1] ? '' : ' '+nm); }).join(' \u00b7 ') : m.how;
+          return '<button class="nu-opt'+(m.id===cur?' sel':'')+'" onclick="nutriPick(\''+slot.key+'\',\''+m.id+'\')"><span class="nu-ic">'+m.e+'</span><span class="nu-ob"><b>'+esc(m.n)+'</b>'
+            + '<span class="wr-meta">'+esc(desc)+'</span><span class="nu-tags"><i>'+fmtK(s.mac.k)+' kcal \u00b7 '+s.mac.p+' g protein</i>'+(m.min?'<i>'+m.min+' min</i>':'')+(m.t.indexOf('budget')>=0?'<i>budget</i>':'')+'</span></span></button>';
+        }).join('') : '<p class="wr-meta">Nothing here with your food settings.</p>')
+      + close);
+  }
+  return '';
+}
+
+/* ---------- entry points elsewhere ---------- */
+function fuelHomeCard(){
+  if(!nutriOn()) return '';
+  const date = todayISO(), plan = nutriPlan(date); if(!plan) return '';
+  const eat = nutriEaten(date), left = plan.t.kcal - eat.k;
+  const next = plan.slots.find(function(s){ return s.meal && !((STATE.nutri.days[date]||{}).ate||{})[s.key]; });
+  return '<div class="card card-tight lift-row nu-home" style="cursor:pointer;margin-top:14px;" onclick="NUTRI_TAB=\'today\';navigate(\'fuel\')">'
+    + '<div class="nu-hico">'+(next ? next.meal.m.e : '\u2705')+'</div>'
+    + '<div class="lift-body"><div class="eyebrow" style="font-size:11px;">Fuel today'+(nutriCheckDue()&&nutriVerdict()?' \u00b7 check-in ready':'')+'</div><div class="wr-title">'+(left>=0 ? fmtK(left)+' kcal left' : fmtK(-left)+' kcal over')+'</div>'
+    + '<div class="wr-meta">'+Math.round(eat.p)+' / '+plan.t.p+' g protein \u00b7 '+(next ? 'next: '+esc(next.meal.m.n) : 'all meals ticked')+'</div></div>'+ico(ICON.chevron)+'</div>';
+}
+function fuelProfileSection(){
+  const n = STATE.nutri;
+  const on = nutriOn();
+  return '<div class="section"><div class="section-title">Nutrition <span class="nu-beta sm">BETA</span></div><div class="card">'
+    + '<p style="margin:0 0 12px;font-size:13.5px;color:var(--text-2);line-height:1.5;">'
+    + (on ? 'On. Targets, a daily meal plan, a weekly check-in and a shopping list live in the Fuel tab.'
+          : 'Daily calorie and protein targets, a meal plan sized to them, swaps, a weekly check-in from your weigh-ins and a shopping list. Off until you turn it on.')+'</p>'
+    + (on ? '<div style="display:flex;gap:9px;"><button class="btn btn-secondary" style="flex:1;" onclick="nutriStartSetup()">Settings</button><button class="btn btn-ghost" style="flex:1;" onclick="nutriTurnOff()">Turn off</button></div>'
+          : '<button class="btn btn-primary btn-block" onclick="nutriTurnOn()">Try Fuel (beta)</button>')
+    + '</div></div>';
+}
+ICON.fuel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5c-1.6-1.3-3.7-1.6-5.2-.5C4.4 8.7 4.5 12.6 6 15.8c1.2 2.7 3 4.7 4.4 4.7.8 0 1-.5 1.6-.5s.8.5 1.6.5c1.4 0 3.2-2 4.4-4.7 1.5-3.2 1.6-7.1-.8-8.8-1.5-1.1-3.6-.8-5.2.5z"/><path d="M12 7.5c0-2.2 1.1-3.8 3.2-4.5"/></svg>';
+
 function boot(){
   if(TEST_MODE) document.body.classList.add('test-mode');
   registerWorker();
