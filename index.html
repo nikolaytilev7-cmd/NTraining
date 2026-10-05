@@ -1086,6 +1086,43 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .nu-intro-row>span{font-size:22px;width:40px;height:40px;border-radius:12px;background:var(--bg-2);display:flex;align-items:center;justify-content:center;flex:none;}
 .nu-intro-row b{font-size:15px;}
 .nu-intro-row p{margin:2px 0 0;font-size:13px;color:var(--text-2);line-height:1.45;}
+.nu-search input{width:100%;padding:12px 14px;border-radius:13px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-1);font-size:15px;font-family:inherit;}
+.nu-search input:focus{outline:none;border-color:var(--blue);}
+#nuSwapList{display:flex;flex-direction:column;gap:9px;}
+.nu-grp{margin:6px 0 -2px;font-size:11px;}
+.nu-build{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:1.5px dashed var(--border);border-radius:16px;padding:12px;color:var(--text-1);font-family:inherit;}
+.nu-build>svg{width:20px;height:20px;color:var(--blue);flex:none;margin:0 8px;}
+.nu-build>span{display:flex;flex-direction:column;gap:2px;}
+.nu-foods{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;}
+.nu-food{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;color:var(--text-1);font-family:inherit;font-size:14px;font-weight:600;}
+.nu-food span{flex:1;min-width:0;}
+.nu-food i{font-style:normal;font-size:12px;color:var(--text-3);font-weight:600;white-space:nowrap;}
+.nu-food svg{width:16px;height:16px;color:var(--blue);flex:none;}
+.nu-bitems div{align-items:center;}
+.nu-step{display:flex;align-items:center;gap:8px;}
+.nu-step b{min-width:72px;text-align:center;font-size:13.5px;}
+.nu-step button{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--bg-3);color:var(--text-1);font-size:16px;font-weight:700;font-family:inherit;padding:0;}
+.nu-scanchip{flex:0 0 46px !important;padding:10px 0 !important;}
+.nu-scanchip svg{width:19px !important;height:19px !important;}
+.nu-build>svg{width:22px;height:22px;}
+.nu-search2{display:flex;gap:8px;}
+.nu-search2 input{flex:1;min-width:0;}
+.nu-search2 button{flex:none;width:48px;border-radius:13px;border:1px solid var(--border);background:var(--blue-dim);color:var(--blue);display:flex;align-items:center;justify-content:center;}
+.nu-search2 button svg{width:22px;height:22px;}
+.nu-cam{position:relative;border-radius:18px;overflow:hidden;background:#000;aspect-ratio:4/3;}
+.nu-cam video{width:100%;height:100%;object-fit:cover;display:block;}
+.nu-frame{position:absolute;left:12%;right:12%;top:30%;bottom:30%;border:2.5px solid rgba(255,255,255,.85);border-radius:12px;box-shadow:0 0 0 999px rgba(0,0,0,.35);}
+.nu-frame::after{content:'';position:absolute;left:6%;right:6%;top:50%;height:2px;background:#E6555A;box-shadow:0 0 8px #E6555A;animation:nuScan 1.6s ease-in-out infinite alternate;}
+@keyframes nuScan{from{transform:translateY(-22px);}to{transform:translateY(22px);}}
+.nu-code{grid-template-columns:1fr auto;align-items:stretch;}
+.nu-code input{padding:12px 14px;border-radius:13px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-1);font-size:16px;font-family:inherit;letter-spacing:1px;min-width:0;}
+.nu-photo{position:relative;overflow:hidden;}
+.nu-photo input{position:absolute;inset:0;opacity:0;}
+.nu-spin{width:36px;height:36px;border-radius:50%;border:3px solid var(--bg-3);border-top-color:var(--blue);margin:18px auto;animation:nuSpin .8s linear infinite;}
+@keyframes nuSpin{to{transform:rotate(360deg);}}
+.nu-online{width:100%;text-align:left;background:none;border:0;color:var(--blue);font-weight:700;font-size:14px;padding:8px 2px;font-family:inherit;display:flex;align-items:center;gap:4px;}
+.nu-online svg{width:15px;height:15px;}
+.nu-food small{color:var(--text-3);font-weight:600;}
 </style>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
@@ -2009,7 +2046,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-05g';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-05i';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -2225,6 +2262,10 @@ function applyBackup(text){
       const nd = STATE.nutri.days = STATE.nutri.days || {};
       Object.keys(inc.nutri.days||{}).forEach(function(k){ if(!nd[k]) nd[k] = inc.nutri.days[k]; });
       ['sex','birthYear','goal','activity','diet'].forEach(function(k){ if(STATE.nutri[k]==null && inc.nutri[k]!=null) STATE.nutri[k] = inc.nutri[k]; });
+      const haveC = new Set((STATE.nutri.custom||[]).map(function(m){ return m.id; }));
+      STATE.nutri.custom = (STATE.nutri.custom||[]).concat((inc.nutri.custom||[]).filter(function(m){ return m && m.id && !haveC.has(m.id); }));
+      STATE.nutri.fav = Object.assign({}, inc.nutri.fav||{}, STATE.nutri.fav||{});
+      STATE.nutri.foods = Object.assign({}, inc.nutri.foods||{}, STATE.nutri.foods||{});
     }
   }
   if(inc.profile && (!STATE.profile || !STATE.profile.name)) STATE.profile = inc.profile;
@@ -3071,6 +3112,7 @@ function goBack(fallback){
 
 function render(){
   const app = document.getElementById('app');
+  if(window._scanLive) scanStop();          // a re-render replaces the video; the scanner restarts itself if still open
   stopAnimation();
   syncWakeLock();
   if(!STATE.onboardingComplete && ROUTE.name!=='onboarding' && ROUTE.name!=='recommend'){
@@ -9797,6 +9839,10 @@ const MEALS = [
    it:[['skyr',250],['banana',120],['oats',30],['walnuts',15]], how:'Skyr in a bowl, sliced banana, oats and chopped walnuts on top.'},
   {id:'eggs_toast', s:'b', e:'\ud83c\udf5e', n:'Scrambled eggs on toast', min:8, t:['budget'],
    it:[['egg',165],['milk',30],['bread',80],['cucumber',120]], how:'Eggs and milk whisked, stirred slowly over low heat. On toast, cucumber on the side.'},
+  {id:'oats_milk_banana', s:'b', e:'\ud83e\udd63', n:'Oats with milk & banana', min:5, t:['budget'], bgn:'овесени ядки с прясно мляко и банан',
+   it:[['oats',70],['milk',250],['banana',120]], how:'Oats cooked in the milk for 3\u20134 minutes, or soaked overnight. Sliced banana on top.'},
+  {id:'oats_milk_whey', s:'b', e:'\ud83e\udd63', n:'Oats with milk, banana & whey', min:5, t:[], bgn:'овесени ядки мляко банан протеин',
+   it:[['oats',60],['milk',250],['banana',100],['whey',30]], how:'Oats cooked in the milk, off the heat, protein stirred in so it does not clump. Banana on top.'},
   {id:'pb_oats', s:'b', e:'\ud83e\udd5c', n:'Peanut butter protein oats', min:5, t:[],
    it:[['oats',60],['milk',250],['whey',30],['peanut_butter',15],['banana',60]], how:'Cook the oats in the milk, take off the heat, stir in the protein, top with peanut butter and banana.'},
   {id:'cottage_toast', s:'b', e:'\ud83e\udd6a', n:'Cottage cheese toast with tomato', min:3, t:['budget'],
@@ -9970,6 +10016,32 @@ const MEALS = [
   {id:'almonds_fruit', s:'s', e:'\ud83c\udf4f', n:'Almonds + an apple', min:1, t:[], it:[['apple',180],['almonds',20]], how:'A small handful of almonds.'},
 ];
 const MEAL_BY_ID = {}; MEALS.forEach(function(m){ MEAL_BY_ID[m.id] = m; });
+/* Bulgarian words for search, so "овесени ядки" finds oats */
+const FOOD_BG = {oats:'овесени ядки овес',greek_yog:'гръцко кисело мляко йогурт',skyr:'скир',yogurt:'кисело мляко',cottage:'котидж',sirene:'сирене фета',
+  kashkaval:'кашкавал',milk:'мляко прясно мляко',egg:'яйца яйце',whey:'протеин уей суроватъчен whey protein shake',tofu:'тофу',hummus:'хумус',chicken:'пилешко пиле пилешки гърди',
+  turkey:'пуешко пуйка',beef:'телешко говеждо кайма',pork:'свинско',ham:'шунка',salmon:'сьомга',hake:'бяла риба хек мерлуза',tuna:'риба тон',rice:'ориз',
+  bulgur:'булгур',pasta:'паста макарони спагети',lentils:'леща',beans:'боб',chickpeas:'нахут',bread:'хляб филия пълнозърнест',tortilla:'тортила',
+  ricecake:'оризовки оризови',passata:'доматено пюре пасата',olive_oil:'зехтин олио',peanut_butter:'фъстъчено масло',walnuts:'орехи',almonds:'бадеми',
+  honey:'мед',olives:'маслини',banana:'банан банани',apple:'ябълка ябълки',berries:'горски плодове боровинки ягоди',potatoes:'картофи',tomato:'домати',
+  cucumber:'краставици',pepper:'чушки',onion:'лук',greens:'зелена салата марули',broccoli:'броколи',mixed_veg:'зеленчуци',carrot:'моркови',cabbage:'зеле',
+  zucchini:'тиквички',eggplant:'патладжан',mushrooms:'гъби',spinach:'спанак',sweet_potato:'сладки картофи',sweetcorn:'царевица',avocado:'авокадо',
+  orange:'портокал',edamame:'едамаме соя',chicken_thigh:'пилешки бутчета',mince_mix:'смесена кайма кебапче кюфте',trout:'пъстърва',mackerel:'скумрия',
+  shrimp:'скариди',smoked_salmon:'пушена сьомга',izvara:'извара',ayran:'айрян',mozzarella:'моцарела',parmesan:'пармезан',tempeh:'темпе',quinoa:'киноа',
+  couscous:'кускус',noodles:'нудли',pita:'питка пита',granola:'гранола мюсли',lyutenitsa:'лютеница',soy_sauce:'соев сос',coconut_milk:'кокосово мляко',
+  soy_yogurt:'соево кисело мляко',soy_milk:'соево мляко',chickpea_flour:'нахутено брашно'};
+/* what one tap adds in the meal builder */
+const FOOD_SERV = {oats:60,milk:250,soy_milk:250,whey:30,egg:110,bread:80,tortilla:60,banana:120,apple:180,orange:150,greek_yog:200,skyr:200,yogurt:200,
+  cottage:200,izvara:200,soy_yogurt:200,ayran:300,olive_oil:10,peanut_butter:15,honey:10,walnuts:15,almonds:20,sirene:40,kashkaval:30,parmesan:15,
+  rice:70,bulgur:70,pasta:80,quinoa:60,couscous:70,noodles:70,lentils:70,granola:40,ricecake:27,lyutenitsa:30,soy_sauce:10,berries:100,chicken:150,
+  turkey:150,beef:150,pork:150,salmon:150,hake:180,tuna:110,trout:200,mackerel:150,shrimp:150,smoked_salmon:60,ham:80,tofu:150,tempeh:120};
+function mealHay(m){
+  return (m.n+' '+(m.it||[]).map(function(x){ return FOODS[x[0]].n+' '+(FOOD_BG[x[0]]||''); }).join(' ')+' '+(m.bgn||'')).toLowerCase();
+}
+/* every word must be there; long words also match without their ending (банани \u2192 банан) */
+function searchHit(hay, q){ return q.toLowerCase().split(/\s+/).filter(Boolean).every(function(w){ return hay.indexOf(w)>=0 || (w.length>=6 && hay.indexOf(w.slice(0, w.length-2))>=0); }); }
+function customMeals(){ return (STATE.nutri && STATE.nutri.custom) || []; }
+function mealById(id){ return MEAL_BY_ID[id] || customMeals().find(function(m){ return m.id===id; }) || null; }
+function allMeals(){ return MEALS.concat(customMeals()); }
 const NUTRI_EXTRAS = [
   ['Protein snack', 110, 20], ['Coffee with milk', 50, 3], ['Piece of fruit', 80, 1], ['Handful of nuts', 180, 6],
   ['Banitsa, one piece', 350, 10], ['Slice of pizza', 280, 12], ['Beer, 0.5 l', 210, 2], ['Glass of wine', 120, 0],
@@ -9979,7 +10051,9 @@ const NUTRI_HABITS = [['protein','Protein target hit'],['veg','Veg at 2 meals'],
 
 let NUTRI_SHEET = null, NUTRI_TAB = 'today', NUTRI_FILTER = 'all', NUTRI_SETUP = null;
 
-function NS(){ if(!STATE.nutri) STATE.nutri = {on:false, days:{}, adj:0, checks:[]}; const n = STATE.nutri; n.days = n.days||{}; n.checks = n.checks||[]; n.adj = n.adj||0; return n; }
+function NS(){ if(!STATE.nutri) STATE.nutri = {on:false, days:{}, adj:0, checks:[]}; const n = STATE.nutri; n.days = n.days||{}; n.checks = n.checks||[]; n.adj = n.adj||0;
+  if(n.foods) Object.keys(n.foods).forEach(function(id){ if(!FOODS[id]) FOODS[id] = n.foods[id]; });   // products you scanned or found
+  return n; }
 function nutriOn(){ return !!(STATE.nutri && STATE.nutri.on && STATE.nutri.sex); }
 function nutriAge(){ const n = NS(); return n.birthYear ? new Date().getFullYear() - n.birthYear : null; }
 function nutriWeight(){ const l = latestBody(); return l ? l.kg : null; }
@@ -10010,6 +10084,7 @@ function roundGrams(id, g){
 /* the meal scaled to the slot: vegetables stay as written, the rest grows or shrinks */
 function scaleMeal(m, kcal){
   if(m.out) return {m:m, items:[], mac:{k:m.out.k,p:m.out.p,c:m.out.c,f:m.out.f}, fixed:true};
+  if(m.keep){ const mk = macrosOf(m.it); return {m:m, items:m.it.slice(), mac:{k:Math.round(mk.k), p:Math.round(mk.p), c:Math.round(mk.c), f:Math.round(mk.f)}, kept:true}; }
   const fixed = m.it.filter(function(x){ return FOODS[x[0]].veg; }), sc = m.it.filter(function(x){ return !FOODS[x[0]].veg; });
   const fk = macrosOf(fixed).k, sk = macrosOf(sc).k || 1;
   const fac = Math.max(0.5, Math.min(2.2, (kcal - fk)/sk));   // a big eater gets a bigger plate, within reason
@@ -10080,7 +10155,7 @@ function nutriSlots(t, train, when){
     : [['breakfast','b',0.26,'Breakfast'],['lunch','l',0.32,'Lunch'],['snack','s',0.12,'Snack'],['dinner','d',0.30,'Dinner']];
 }
 function nutriWhen(date){ const d = (STATE.nutri.days[date]) || {}; return d.when || STATE.nutri.when || 'pm'; }
-function slotPool(type){ return MEALS.filter(function(m){ return m.s.indexOf(type)>=0 && mealAllowed(m) && !m.out; }); }
+function slotPool(type){ return allMeals().filter(function(m){ return m.s.indexOf(type)>=0 && mealAllowed(m) && !m.out; }); }
 /* Variety by rotation, not by dice: each week every slot gets its own shuffled
    order of the meals that fit it, and day N of the week takes the Nth one, so
    nothing repeats inside a week unless the list is short. Favourites go in
@@ -10121,33 +10196,45 @@ function leftoverFor(date){
 function nutriPlan(date, trainOverride, depth){
   const train = typeof trainOverride==='boolean' ? trainOverride : nutriTrainGuess(date);
   const t = nutriTargets(train); if(!t) return null;
-  const d = (STATE.nutri.days[date]) || {}, pick = d.pick || {};
-  const used = [];
+  const n = STATE.nutri, d = (n.days[date]) || {}, pick = d.pick || {}, pin = n.pin || {};
   const when = nutriWhen(date);
   const left = depth ? null : leftoverFor(date);
-  const slots = nutriSlots(t, train, when).map(function(s){
-    const kcal = t.kcal*s[2];
-    let id = pick[s[0]], lo = false;
-    if(id && (!MEAL_BY_ID[id] || !mealAllowed(MEAL_BY_ID[id]))) id = null;
+  const ok = function(id){ const m = id && mealById(id); return m && mealAllowed(m) ? id : null; };
+  const shape = nutriSlots(t, train, when);
+  /* pass 1: what is already decided (a pick, a pin, leftovers) */
+  const used = [];
+  const rows = shape.map(function(s){
+    let id = ok(pick[s[0]]) || ok(pin[s[0]]), lo = false;
     if(!id && s[0]==='lunch' && left && used.indexOf(left)<0){ id = left; lo = true; }
-    if(!id) id = defaultMeal(date, s[0], s[1], kcal, used.concat(left && s[0]!=='lunch' ? [left] : []));
     if(id) used.push(id);
-    const label = (s[4]==='post' ? s[3]+' \u00b7 after training' : s[3]) + (lo ? ' \u00b7 leftovers' : '');
-    return {key:s[0], type:s[1], label:label, role:s[4]||'', leftover:lo, kcal:kcal, meal: id ? scaleMeal(MEAL_BY_ID[id], kcal) : null};
+    return {s:s, id:id, lo:lo};
+  });
+  /* a meal with its own amounts (your own, or eating out) uses its real calories;
+     the other meals share what is left, in their usual proportions */
+  let fixedK = 0, freeShare = 0;
+  rows.forEach(function(r){ const m = r.id && mealById(r.id); if(m && (m.keep || m.out)){ r.fixed = true; fixedK += scaleMeal(m, 0).mac.k; } else freeShare += r.s[2]; });
+  const scale = freeShare ? Math.max(0.5, (t.kcal - fixedK) / (t.kcal*freeShare)) : 1;
+  const slots = rows.map(function(r){
+    const s = r.s, kcal = r.fixed ? scaleMeal(mealById(r.id), 0).mac.k : t.kcal*s[2]*scale;
+    let id = r.id;
+    if(!id){ id = defaultMeal(date, s[0], s[1], kcal, used.concat(left && s[0]!=='lunch' ? [left] : [])); if(id) used.push(id); }
+    const label = (s[4]==='post' ? s[3]+' \u00b7 after training' : s[3]) + (r.lo ? ' \u00b7 leftovers' : '');
+    return {key:s[0], type:s[1], label:label, role:s[4]||'', leftover:r.lo, pinned: !pick[s[0]] && pin[s[0]]===id, kcal:kcal, meal: id ? scaleMeal(mealById(id), kcal) : null};
   });
   return {date:date, train:train, when:when, t:t, slots:slots};
 }
 function nutriEaten(date){
   const d = (STATE.nutri && STATE.nutri.days[date]) || {}, tot = {k:0,p:0,c:0,f:0};
   Object.keys(d.ate||{}).forEach(function(k){ const a = d.ate[k]; if(a){ tot.k+=a.k; tot.p+=a.p; tot.c+=a.c||0; tot.f+=a.f||0; } });
-  (d.x||[]).forEach(function(x){ tot.k+=x.k; tot.p+=x.p; });
+  (d.x||[]).forEach(function(x){ tot.k+=x.k; tot.p+=x.p; tot.c+=x.c||0; tot.f+=x.f||0; });
   return tot;
 }
 function nutriToggleAte(key){
   const date = todayISO(), d = nutriDay(date), plan = nutriPlan(date);
   d.ate = d.ate || {};
   if(d.ate[key]) delete d.ate[key];
-  else { const s = plan.slots.find(function(x){ return x.key===key; }); if(s && s.meal) d.ate[key] = {id:s.meal.m.id, k:s.meal.mac.k, p:s.meal.mac.p, c:s.meal.mac.c, f:s.meal.mac.f}; }
+  else { const s = plan.slots.find(function(x){ return x.key===key; }); if(s && s.meal){ d.ate[key] = {id:s.meal.m.id, k:s.meal.mac.k, p:s.meal.mac.p, c:s.meal.mac.c, f:s.meal.mac.f};
+    if(!s.meal.m.out && nutriUse(s.meal.m.id)){ saveState(); autoProteinHabit(date, plan); render(); toast('You have this often \u2014 added to favourites'); return; } } }
   autoProteinHabit(date, plan);
   saveState(); render();
 }
@@ -10155,7 +10242,27 @@ function autoProteinHabit(date, plan){
   const d = nutriDay(date); d.h = d.h || {};
   if(nutriEaten(date).p >= plan.t.p*0.9) d.h.protein = true;
 }
-function nutriFav(id){ const n = NS(); n.fav = n.fav || {}; if(n.fav[id]) delete n.fav[id]; else n.fav[id] = true; saveState(); render(); toast(n.fav[id] ? 'Favourite \u2014 comes round more often' : 'Removed from favourites'); }
+function nutriFav(id){
+  const n = NS(); n.fav = n.fav || {}; n.unfav = n.unfav || {};
+  if(n.fav[id]){ delete n.fav[id]; n.unfav[id] = true; } else { n.fav[id] = true; delete n.unfav[id]; }
+  saveState(); render(); toast(n.fav[id] ? 'Favourite \u2014 comes round more often' : 'Removed from favourites');
+}
+/* Something you keep choosing becomes a favourite by itself (unless you took it out). */
+function nutriUse(id){
+  const n = NS(); n.used = n.used || {}; n.fav = n.fav || {};
+  const today = todayISO(), list = (n.used[id] || []).filter(function(d){ return (Date.now()-dateMs(d)) < 30*86400000; });
+  if(list.indexOf(today) < 0) list.push(today);
+  n.used[id] = list.slice(-20);
+  if(list.length >= 3 && !n.fav[id] && !(n.unfav||{})[id]){ n.fav[id] = true; return true; }
+  return false;
+}
+function nutriUseCount(id){ const u = (STATE.nutri.used||{})[id] || []; return u.filter(function(d){ return (Date.now()-dateMs(d)) < 30*86400000; }).length; }
+function nutriPin(slotKey, id){
+  const n = NS(); n.pin = n.pin || {};
+  if(n.pin[slotKey]===id){ delete n.pin[slotKey]; toast('No longer every day'); }
+  else { n.pin[slotKey] = id; toast('Every day at this meal \u2014 swap any day you like'); }
+  saveState(); render();
+}
 function nutriHide(id){
   const n = NS(); n.hide = n.hide || {}; n.hide[id] = true;
   Object.keys(n.days||{}).forEach(function(k){ const p = n.days[k].pick; if(p) Object.keys(p).forEach(function(sl){ if(p[sl]===id) delete p[sl]; }); });
@@ -10169,11 +10276,12 @@ function nutriSetTrain(v, when){
 function nutriPick(key, id){
   const d = nutriDay(todayISO()); d.pick = d.pick || {}; d.pick[key] = id;
   if(d.ate && d.ate[key]) delete d.ate[key];
-  NUTRI_SHEET = null; saveState(); render(); toast('Swapped');
+  const m = mealById(id), auto = m && !m.out && nutriUse(id);
+  NUTRI_SHEET = null; NUTRI_Q = ''; saveState(); render(); toast(auto ? 'You pick this often \u2014 added to favourites' : 'Swapped');
 }
-function nutriAddExtra(label, k, p){
+function nutriAddExtra(label, k, p, c, f){
   const date = todayISO(), d = nutriDay(date); d.x = d.x || [];
-  d.x.push({l:label, k:Math.round(k), p:Math.round(p)});
+  d.x.push({l:label, k:Math.round(k), p:Math.round(p), c:Math.round(c||0), f:Math.round(f||0)});
   const plan = nutriPlan(date); if(plan) autoProteinHabit(date, plan);
   NUTRI_SHEET = null; saveState(); render(); toast('Added');
 }
@@ -10359,7 +10467,7 @@ function renderFuelSetup(){
     + '<div class="field"><label>Meal plan</label><div class="chip-row">'
     + '<div class="chip '+(s.leftovers!==false?'selected':'')+'" onclick="nsRead();nsSet(\'leftovers\','+(s.leftovers===false)+')">Dinner leftovers for lunch</div>'
     + '<div class="chip '+(s.bg?'selected':'')+'" onclick="nsRead();nsSet(\'bg\','+(!s.bg)+')">More Bulgarian dishes</div></div></div>'
-    + (Object.keys(NS().hide||{}).length ? '<div class="field"><label>Hidden meals</label><div class="wr-meta" style="margin-bottom:8px;">'+Object.keys(NS().hide).map(function(id){ return MEAL_BY_ID[id] ? esc(MEAL_BY_ID[id].n) : ''; }).filter(Boolean).join(', ')+'</div>'
+    + (Object.keys(NS().hide||{}).length ? '<div class="field"><label>Hidden meals</label><div class="wr-meta" style="margin-bottom:8px;">'+Object.keys(NS().hide).map(function(id){ return mealById(id) ? esc(mealById(id).n) : ''; }).filter(Boolean).join(', ')+'</div>'
         + '<button class="btn btn-ghost btn-sm" onclick="nsRead();NS().hide={};saveState();render();toast(\'All meals are back\')">Show them again</button></div>' : '')
     + '<button class="btn btn-primary btn-block" style="margin-top:6px;" onclick="nutriSaveSetup()">'+(nutriOn()?'Save':'Turn on Fuel')+'</button>'
     + '</div>'
@@ -10414,15 +10522,15 @@ function fuelToday(){
     if(!s.meal) return '<div class="nu-meal"><div class="nu-ic">\u2014</div><div class="nu-mb"><div class="nu-mk">'+esc(s.label)+'</div><div class="wr-meta">No meal fits your food settings here.</div></div></div>';
     const m = s.meal, on = !!ate[s.key];
     return '<div class="nu-meal'+(on?' done':'')+'"><div class="nu-ic" onclick="NUTRI_SHEET={k:\'meal\',slot:\''+s.key+'\'};render()">'+m.m.e+'</div>'
-      + '<div class="nu-mb" onclick="NUTRI_SHEET={k:\'meal\',slot:\''+s.key+'\'};render()"><div class="nu-mk">'+esc(s.label)+'</div><div class="nu-mt">'+esc(m.m.n)+'</div>'
+      + '<div class="nu-mb" onclick="NUTRI_SHEET={k:\'meal\',slot:\''+s.key+'\'};render()"><div class="nu-mk">'+esc(s.label)+(s.pinned?' \u00b7 every day':'')+'</div><div class="nu-mt">'+((NS().fav||{})[m.m.id]?'<span class="nu-heart">\u2665</span> ':'')+esc(m.m.n)+'</div>'
       + '<div class="wr-meta">'+fmtK(m.mac.k)+' kcal \u00b7 '+m.mac.p+' g protein</div></div>'
-      + (on ? '' : '<button class="nu-swap" onclick="NUTRI_FILTER=\'all\';NUTRI_SHEET={k:\'swap\',slot:\''+s.key+'\'};render()">Swap</button>')
+      + (on ? '' : '<button class="nu-swap" onclick="NUTRI_FILTER=\'all\';NUTRI_Q=\'\';NUTRI_SHEET={k:\'swap\',slot:\''+s.key+'\'};render()">Swap</button>')
       + '<button class="nu-chk" aria-label="'+(on?'Untick':'Ate it')+'" onclick="nutriToggleAte(\''+s.key+'\')">'+(on?ICON.check:'')+'</button></div>';
   }
   const x = d.x||[];
   html += (x.length ? '<div class="card nu-extras"><div class="eyebrow" style="margin-bottom:6px;">Also eaten</div>'+x.map(function(e,i){
       return '<div class="nu-x"><span>'+esc(e.l)+'</span><span class="wr-meta">'+e.k+' kcal \u00b7 '+e.p+' g</span><button aria-label="Remove" onclick="nutriDelExtra('+i+')">'+ICON.x+'</button></div>'; }).join('')+'</div>' : '')
-    + '<div class="nu-quick"><button class="chip" onclick="nutriAddExtra(\'Protein snack\',110,20)">+20 g protein</button><button class="chip" onclick="NUTRI_SHEET={k:\'extra\'};render()">'+ICON.plus+' Ate something else</button></div>';
+    + '<div class="nu-quick"><button class="chip" onclick="nutriAddExtra(\'Protein snack\',110,20)">+20 g protein</button><button class="chip" onclick="NUTRI_SHEET={k:\'extra\'};render()">'+ICON.plus+' Ate something else</button><button class="chip nu-scanchip" aria-label="Scan a barcode" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+'</button></div>';
   if(plan.train) html += '<div class="nu-tip">'+({
       am:'<b>Training in the morning.</b> The small snack 30\u201360 minutes before is enough \u2014 even just the banana. Breakfast after is your recovery meal, so it is the big one today.',
       mid:'<b>Training at midday.</b> Snack mid-morning, 1\u20132 hours before. Lunch straight after is the recovery meal and the biggest of the day.',
@@ -10491,16 +10599,18 @@ function fuelShopping(){
 function nutriSheetMarkup(){
   if(!NUTRI_SHEET || !nutriOn()) return '';
   const close = '<button class="btn btn-ghost btn-block" onclick="NUTRI_SHEET=null;render()">Close</button>';
-  const wrap = function(label, inner){ return '<div class="fsheet-wrap" onclick="if(event.target===this){NUTRI_SHEET=null;render();}"><div class="fsheet nu-sheet" role="dialog" aria-modal="true" aria-label="'+esc(label)+'"><div class="grab"></div>'+inner+'</div></div>'; };
+  const wrap = function(label, inner){ return '<div class="fsheet-wrap" onclick="if(event.target===this){scanStop();NUTRI_SHEET=null;render();}"><div class="fsheet nu-sheet" role="dialog" aria-modal="true" aria-label="'+esc(label)+'"><div class="grab"></div>'+inner+'</div></div>'; };
   const plan = nutriPlan(todayISO());
   if(NUTRI_SHEET.k==='extra'){
-    return wrap('Add something', '<h3>Ate something else?</h3><p class="wr-meta" style="margin:0;">A rough guess is plenty.</p>'
+    return wrap('Add something', '<h3>Ate something else?</h3><p class="wr-meta" style="margin:0;">A rough guess is plenty \u2014 or scan the packet.</p>'
+      + '<button class="nu-build" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+'<span><b>Scan a barcode</b><span class="wr-meta">Packaged food: exact numbers from Open Food Facts</span></span></button>'
       + '<div class="nu-presets">'+NUTRI_EXTRAS.map(function(x){ return '<button onclick="nutriAddExtra(\''+x[0].replace(/'/g,"\\'")+'\','+x[1]+','+x[2]+')"><b>'+esc(x[0])+'</b><span>'+x[1]+' kcal \u00b7 '+x[2]+' g</span></button>'; }).join('')+'</div>'
       + '<div class="field"><label for="nxL">Or your own</label><input id="nxL" type="text" placeholder="What was it?"></div>'
       + '<div class="nu-2"><div class="field"><div class="unit-input"><input id="nxK" type="number" inputmode="numeric" placeholder="kcal"><span>kcal</span></div></div>'
       + '<div class="field"><div class="unit-input"><input id="nxP" type="number" inputmode="numeric" placeholder="protein"><span>g</span></div></div></div>'
       + '<button class="btn btn-primary btn-block" onclick="nutriAddCustom()">Add</button>'+close);
   }
+  if(NUTRI_SHEET.k==='scan') return wrap('Scan a barcode', scanSheetHtml());
   const slot = plan.slots.find(function(s){ return s.key===NUTRI_SHEET.slot; });
   if(!slot) return '';
   if(NUTRI_SHEET.k==='meal' && slot.meal){
@@ -10510,36 +10620,315 @@ function nutriSheetMarkup(){
       + (m.items.length ? '<div class="nu-ing">'+m.items.map(function(x){ return '<div><span>'+esc(FOODS[x[0]].n.replace(/ \(.*\)/,''))+'</span><b>'+esc(amountTxt(x[0], x[1]))+'</b></div>'; }).join('')+'</div>' : '')
       + (slot.leftover ? '<div class="nu-tip" style="margin:0;"><b>Leftovers from last night.</b> Cook a double batch at dinner and lunch is ready. Swap it if you would rather have something else.</div>' : '')
       + '<p style="font-size:14px;line-height:1.55;color:var(--text-2);margin:0;">'+(m.m.min ? '<b style="color:var(--text-1);">'+m.m.min+' min.</b> ' : '')+esc(m.m.how)+'</p>'
-      + (m.fixed ? '<p class="wr-meta" style="margin:0;">Numbers are a typical estimate.</p>' : '<p class="wr-meta" style="margin:0;">Amounts are sized to your '+esc(slot.label.toLowerCase().replace(/ \u00b7.*/,''))+' target. Raw or dry weights.</p>')
+      + (m.fixed ? '<p class="wr-meta" style="margin:0;">Numbers are a typical estimate. The rest of the day adjusts around it.</p>'
+        : m.kept ? '<p class="wr-meta" style="margin:0;">Your own meal, your amounts. The rest of the day adjusts around it.</p>'
+        : '<p class="wr-meta" style="margin:0;">Amounts are sized to your '+esc(slot.label.toLowerCase().replace(/ \u00b7.*/,''))+' target. Raw or dry weights.</p>')
       + '<button class="btn btn-primary btn-block" onclick="NUTRI_SHEET=null;nutriToggleAte(\''+slot.key+'\')">'+(on?'Untick':ICON.check+' Ate it')+'</button>'
       + (on ? '' : '<button class="btn btn-secondary btn-block" onclick="NUTRI_FILTER=\'all\';NUTRI_SHEET={k:\'swap\',slot:\''+slot.key+'\'}">Swap it</button>')
       + (m.fixed ? '' : '<div class="nu-btns" style="margin-top:0;"><button class="btn btn-ghost" onclick="nutriFav(\''+m.m.id+'\')">'+((NS().fav||{})[m.m.id] ? '\u2665 Favourite' : '\u2661 Favourite')+'</button>'
-        + '<button class="btn btn-ghost" onclick="nutriHide(\''+m.m.id+'\')">Don\u2019t show again</button></div>')
+        + '<button class="btn btn-ghost" onclick="nutriPin(\''+slot.key+'\',\''+m.m.id+'\')">'+((NS().pin||{})[slot.key]===m.m.id ? '\u2713 Every day' : 'Every day')+'</button></div>'
+        + (m.m.custom ? '<button class="btn btn-ghost btn-block" style="margin-top:-4px;" onclick="nutriDeleteCustom(\''+m.m.id+'\')">Delete my meal</button>'
+                      : '<button class="btn btn-ghost btn-block" style="margin-top:-4px;color:var(--text-3);" onclick="nutriHide(\''+m.m.id+'\')">Don\u2019t show again</button>'))
       + close);
   }
   if(NUTRI_SHEET.k==='swap'){
     const f = NUTRI_FILTER;
-    let pool = MEALS.filter(function(m){ return m.s.indexOf(slot.type)>=0 && mealAllowed(m); });
-    if(slot.type==='s') pool = pool.filter(function(m){ return !m.out; });
-    pool = pool.filter(function(m){
-      const fl = mealFlags(m);
-      return f==='all' ? !m.out : f==='quick' ? (!m.out && m.min<=10) : f==='nomeat' ? (!m.out && !/[mf]/.test(fl)) : f==='budget' ? m.t.indexOf('budget')>=0 : f==='out' ? !!m.out : true;
-    });
-    const cur = slot.meal ? slot.meal.m.id : null, favs = NS().fav || {};
-    pool.sort(function(a,b){ return (favs[b.id]?1:0)-(favs[a.id]?1:0); });
     const filters = [['all','All'],['quick','Under 10 min'],['nomeat','No meat'],['budget','Budget']].concat(slot.type!=='s' && NS().diet!=='vegan' ? [['out','Eating out']] : []);
     return wrap('Swap '+slot.label, '<div class="eyebrow">'+esc(slot.label)+' \u00b7 about '+fmtK(slot.kcal)+' kcal</div><h3 style="font-size:22px;">Pick something else</h3>'
-      + '<div class="chip-row">'+filters.map(function(x){ return '<div class="chip '+(f===x[0]?'selected':'')+'" onclick="NUTRI_FILTER=\''+x[0]+'\';render()">'+x[1]+'</div>'; }).join('')+'</div>'
-      + (pool.length ? pool.map(function(m){
-          const s = scaleMeal(m, slot.kcal);
-          const desc = s.items.length ? s.items.slice(0,4).map(function(x){ const fd = FOODS[x[0]], nm = fd.n.replace(/ \(.*\)/,'').replace(/, .*/,'').toLowerCase();
-            return amountTxt(x[0],x[1])+(fd.uname && nm===fd.uname[1] ? '' : ' '+nm); }).join(' \u00b7 ') : m.how;
-          return '<button class="nu-opt'+(m.id===cur?' sel':'')+'" onclick="nutriPick(\''+slot.key+'\',\''+m.id+'\')"><span class="nu-ic">'+m.e+'</span><span class="nu-ob"><b>'+(favs[m.id]?'<span class="nu-heart">\u2665</span> ':'')+esc(m.n)+'</b>'
-            + '<span class="wr-meta">'+esc(desc)+'</span><span class="nu-tags"><i>'+fmtK(s.mac.k)+' kcal \u00b7 '+s.mac.p+' g protein</i>'+(m.min?'<i>'+m.min+' min</i>':'')+(m.t.indexOf('budget')>=0?'<i>budget</i>':'')+'</span></span></button>';
-        }).join('') : '<p class="wr-meta">Nothing here with your food settings.</p>')
+      + '<div class="nu-search"><input id="nuQ" type="search" placeholder="Search meals or foods \u2014 oats, банан, chicken\u2026" value="'+esc(NUTRI_Q)+'" oninput="nutriSearch(this.value)" autocomplete="off"></div>'
+      + '<div class="chip-row" id="nuFilters"'+(NUTRI_Q?' style="display:none"':'')+'>'+filters.map(function(x){ return '<div class="chip '+(f===x[0]?'selected':'')+'" onclick="NUTRI_FILTER=\''+x[0]+'\';render()">'+x[1]+'</div>'; }).join('')+'</div>'
+      + '<div id="nuSwapList">'+swapListHtml(slot)+'</div>'
       + close);
   }
+  if(NUTRI_SHEET.k==='build') return wrap('Build a meal', buildSheetHtml(slot) + close);
   return '';
+}
+
+function mealOptHtml(m, slot, cur, favs){
+  const sc = m.keep || m.out ? scaleMeal(m, 0) : scaleMeal(m, slot.kcal);
+  const desc = sc.items.length ? sc.items.slice(0,4).map(function(x){ const fd = FOODS[x[0]], nm = fd.n.replace(/ \(.*\)/,'').replace(/, .*/,'').toLowerCase();
+    return amountTxt(x[0],x[1])+(fd.uname && nm===fd.uname[1] ? '' : ' '+nm); }).join(' \u00b7 ') : m.how;
+  const other = m.s.indexOf(slot.type)<0 ? '<i>'+({b:'breakfast',l:'lunch',d:'dinner',s:'snack'}[m.s[0]])+' meal</i>' : '';
+  return '<button class="nu-opt'+(m.id===cur?' sel':'')+'" onclick="nutriPick(\''+slot.key+'\',\''+m.id+'\')"><span class="nu-ic">'+m.e+'</span><span class="nu-ob"><b>'+(favs[m.id]?'<span class="nu-heart">\u2665</span> ':'')+esc(m.n)+'</b>'
+    + '<span class="wr-meta">'+esc(desc)+'</span><span class="nu-tags"><i>'+fmtK(sc.mac.k)+' kcal \u00b7 '+sc.mac.p+' g protein</i>'+(m.custom?'<i>my meal</i>':'')+(m.min?'<i>'+m.min+' min</i>':'')+(m.t.indexOf('budget')>=0?'<i>budget</i>':'')+other+'</span></span></button>';
+}
+let NUTRI_Q = '';
+function nutriSearch(v){ NUTRI_Q = v; const el = document.getElementById('nuSwapList'), fl = document.getElementById('nuFilters');
+  const plan = nutriPlan(todayISO()), slot = plan && plan.slots.find(function(s){ return s.key===(NUTRI_SHEET||{}).slot; });
+  if(fl) fl.style.display = v ? 'none' : ''; if(el && slot) el.innerHTML = swapListHtml(slot); }
+function swapListHtml(slot){
+  const f = NUTRI_FILTER, q = NUTRI_Q.trim(), favs = NS().fav || {}, cur = slot.meal ? slot.meal.m.id : null;
+  const build = '<button class="nu-build" onclick="nutriOpenBuild(\''+slot.key+'\')">'+ICON.plus+'<span><b>Build your own meal</b><span class="wr-meta">Pick the foods and amounts you really eat</span></span></button>';
+  let all = allMeals().filter(mealAllowed);
+  if(q){
+    /* searching looks everywhere: oats for dinner is your call */
+    const hits = all.filter(function(m){ return searchHit(mealHay(m), q); })
+      .sort(function(a,b){ return (b.s.indexOf(slot.type)>=0)-(a.s.indexOf(slot.type)>=0) || (favs[b.id]?1:0)-(favs[a.id]?1:0); });
+    return (hits.length ? hits.slice(0,30).map(function(m){ return mealOptHtml(m, slot, cur, favs); }).join('')
+      : '<p class="wr-meta" style="margin:4px 0 10px;">No meal with \u201c'+esc(q)+'\u201d yet. Build it with the foods you eat:</p>') + build;
+  }
+  let pool = all.filter(function(m){ return m.s.indexOf(slot.type)>=0; });
+  if(slot.type==='s') pool = pool.filter(function(m){ return !m.out; });
+  pool = pool.filter(function(m){
+    const fl = mealFlags(m);
+    return f==='all' ? !m.out : f==='quick' ? (!m.out && m.min<=10) : f==='nomeat' ? (!m.out && !/[mf]/.test(fl)) : f==='budget' ? m.t.indexOf('budget')>=0 : f==='out' ? !!m.out : true;
+  });
+  /* your usual first: your own meals, favourites, then what you pick most */
+  const rank = function(m){ return (m.custom?4:0) + (favs[m.id]?2:0) + Math.min(1.5, nutriUseCount(m.id)*0.3); };
+  const usual = pool.filter(function(m){ return rank(m) > 0; }).sort(function(a,b){ return rank(b)-rank(a); });
+  const rest = pool.filter(function(m){ return rank(m) <= 0; });
+  return (usual.length && f==='all' ? '<div class="eyebrow nu-grp">Your usual</div>'+usual.map(function(m){ return mealOptHtml(m, slot, cur, favs); }).join('')+'<div class="eyebrow nu-grp">More ideas</div>' : '')
+    + (f!=='all' ? usual.concat(rest) : rest).map(function(m){ return mealOptHtml(m, slot, cur, favs); }).join('')
+    + (!pool.length ? '<p class="wr-meta">Nothing here with your food settings.</p>' : '')
+    + build;
+}
+
+
+/* ---------- barcode scanner + Open Food Facts ----------
+   The camera reads EAN/UPC codes with the browser's own BarcodeDetector where
+   there is one (Android Chrome) and a small ZXing WebAssembly reader loaded on
+   first use everywhere else (iPhone). The product comes from Open Food Facts,
+   the free, open food database. Both need a connection; everything else in
+   Fuel keeps working offline. Products you add are kept, so they show up in
+   search and in your own meals next time. */
+ICON.scan = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M8 8v8M11 8v8M14 8v8M17 8v8"/></svg>';
+let SCAN = {stream:null, det:null, timer:null}, OFF_RES = null;
+const OFF_FIELDS = 'code,product_name,product_name_bg,product_name_en,brands,nutriments,serving_quantity,product_quantity';
+function nutriOpenScan(mode){
+  const prev = NUTRI_SHEET && NUTRI_SHEET.k==='build' ? NUTRI_SHEET : null;
+  NUTRI_SHEET = {k:'scan', mode:mode, phase:'camera', back:prev, slot: prev ? prev.slot : (NUTRI_SHEET && NUTRI_SHEET.slot)};
+  render();
+}
+function scanBack(){ const b = NUTRI_SHEET && NUTRI_SHEET.back; NUTRI_SHEET = b || (NUTRI_SHEET && NUTRI_SHEET.mode==='extra' ? {k:'extra'} : null); render(); }
+async function scanDetector(){
+  if(SCAN.det) return SCAN.det;
+  const fm = ['ean_13','ean_8','upc_a','upc_e'];
+  try{ if('BarcodeDetector' in window){ const sup = await window.BarcodeDetector.getSupportedFormats(); if(sup.indexOf('ean_13')>=0){ SCAN.det = new window.BarcodeDetector({formats:fm}); return SCAN.det; } } }catch(e){}
+  let mod;
+  try{ mod = await import('https://cdn.jsdelivr.net/npm/barcode-detector@3/dist/es/ponyfill.min.js'); }
+  catch(e){ mod = await import('https://unpkg.com/barcode-detector@3/dist/es/ponyfill.min.js'); }   // second CDN if the first is blocked
+  SCAN.det = new mod.BarcodeDetector({formats:fm});
+  return SCAN.det;
+}
+function scanMsg(t){ const el = document.getElementById('nuScanMsg'); if(el) el.textContent = t; }
+async function scanStart(){
+  if(!NUTRI_SHEET || NUTRI_SHEET.k!=='scan' || NUTRI_SHEET.phase!=='camera' || window._scanLive) return;
+  const v = document.getElementById('nuVideo'); if(!v) return;
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ scanMsg('No camera here \u2014 type the number under the barcode instead.'); return; }
+  window._scanLive = true;
+  try{
+    scanMsg('Starting the camera\u2026');
+    const st = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}, width:{ideal:1280}, height:{ideal:720}}, audio:false});
+    if(!window._scanLive || !document.getElementById('nuVideo')){ st.getTracks().forEach(function(t){ t.stop(); }); return; }
+    SCAN.stream = st; v.srcObject = st; v.setAttribute('playsinline',''); await v.play();
+    scanMsg('Loading the reader\u2026');
+    const det = await scanDetector();
+    scanMsg('Point at the barcode and hold steady');
+    const tick = async function(){
+      if(!window._scanLive) return;
+      try{
+        const codes = await det.detect(v);
+        const c = codes && codes.find(function(x){ return /^\d{8,14}$/.test(x.rawValue); });
+        if(c){ try{ navigator.vibrate && navigator.vibrate(60); }catch(e){} scanStop(); offLookup(c.rawValue); return; }
+      }catch(e){}
+      SCAN.timer = setTimeout(tick, 220);
+    };
+    tick();
+  }catch(e){
+    window._scanLive = false;
+    scanMsg(e && e.name==='NotAllowedError' ? 'Camera access was blocked. Allow it in your browser settings, or type the barcode below.'
+          : /import|fetch|Failed/i.test(String(e)) ? 'The barcode reader needs a connection. Type the number below instead.'
+          : 'The camera could not start. Type the barcode below instead.');
+  }
+}
+function scanStop(){
+  window._scanLive = false; clearTimeout(SCAN.timer);
+  if(SCAN.stream){ SCAN.stream.getTracks().forEach(function(t){ t.stop(); }); SCAN.stream = null; }
+}
+async function scanPhoto(input){
+  const f = input.files && input.files[0]; if(!f) return;
+  scanStop(); scanMsg('Reading the photo\u2026');
+  try{
+    const det = await scanDetector(), bmp = await createImageBitmap(f);
+    const codes = await det.detect(bmp), c = codes && codes.find(function(x){ return /^\d{8,14}$/.test(x.rawValue); });
+    if(c) offLookup(c.rawValue); else scanMsg('No barcode found in that photo. Try closer, or type the number.');
+  }catch(e){ scanMsg('Could not read the photo. Type the number below instead.'); }
+}
+function scanManual(){
+  const v = ((document.getElementById('nuCode')||{}).value||'').replace(/\D/g,'');
+  if(v.length < 8){ toast('The number under the barcode has 8 or 13 digits'); return; }
+  scanStop(); offLookup(v);
+}
+function offProduct(p, code){
+  const n = p.nutriments || {};
+  let k = n['energy-kcal_100g']; if(k==null && n['energy_100g']!=null) k = n['energy_100g']/4.184;
+  if(k==null) return null;
+  const name = (p.product_name_bg || p.product_name || p.product_name_en || 'Product').trim();
+  return {code: code || p.code, name: name, brand: (p.brands||'').split(',')[0].trim(),
+    k: +k, p: +(n.proteins_100g||0), c: +(n.carbohydrates_100g||0), f: +(n.fat_100g||0),
+    serv: +p.serving_quantity || 0, pack: +p.product_quantity || 0};
+}
+async function offLookup(code){
+  if(!NUTRI_SHEET || NUTRI_SHEET.k!=='scan') return;
+  NUTRI_SHEET.phase = 'loading'; NUTRI_SHEET.code = code; render();
+  try{
+    const r = await fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json?fields='+OFF_FIELDS);
+    const j = await r.json();
+    const prod = j && j.status===1 && j.product ? offProduct(j.product, code) : null;
+    if(!NUTRI_SHEET || NUTRI_SHEET.k!=='scan') return;
+    if(prod){ NUTRI_SHEET.phase = 'found'; NUTRI_SHEET.prod = prod; NUTRI_SHEET.g = prod.serv || 100; }
+    else NUTRI_SHEET.phase = j && j.status===1 ? 'nonutri' : 'notfound';
+  }catch(e){ if(NUTRI_SHEET) NUTRI_SHEET.phase = 'offline'; }
+  render();
+}
+async function offSearch(){
+  const B = NUTRI_SHEET; if(!B || B.k!=='build') return;
+  const q = (B.fq||'').trim(); if(q.length < 3) return;
+  OFF_RES = {q:q, html:'<p class="wr-meta">Searching\u2026</p>'}; buildSearch(q);
+  try{
+    const r = await fetch('https://world.openfoodfacts.org/cgi/search.pl?search_simple=1&json=1&page_size=15&search_terms='+encodeURIComponent(q)+'&fields='+OFF_FIELDS);
+    const j = await r.json();
+    const list = (j.products||[]).map(function(p){ return offProduct(p); }).filter(Boolean);
+    OFF_RES = {q:q, list:list, html: list.length ? '<div class="eyebrow nu-grp">Shop products</div>' + list.map(function(pr, i){
+      return '<button class="nu-food" onclick="offPickSearch('+i+')"><span>'+esc(pr.name)+(pr.brand?' <small>'+esc(pr.brand)+'</small>':'')+'</span><i>'+Math.round(pr.k)+' kcal / 100 g</i>'+ICON.plus+'</button>'; }).join('')
+      : '<p class="wr-meta">Nothing found online either. Try a shorter word.</p>'};
+  }catch(e){ OFF_RES = {q:q, html:'<p class="wr-meta">Product search needs a connection.</p>'}; }
+  if(NUTRI_SHEET && NUTRI_SHEET.k==='build') buildSearch(q);
+}
+function offSaveFood(pr){
+  const n = NS(); n.foods = n.foods || {};
+  const id = 'off_'+pr.code;
+  n.foods[id] = {n: pr.name+(pr.brand ? ' ('+pr.brand+')' : ''), k:+pr.k.toFixed(1), p:+pr.p.toFixed(1), c:+pr.c.toFixed(1), f:+pr.f.toFixed(1), a:'pantry', off:true};
+  FOODS[id] = n.foods[id];
+  FOOD_SERV[id] = Math.round(pr.serv || 100);
+  return id;
+}
+function offPickSearch(i){
+  const pr = OFF_RES && OFF_RES.list && OFF_RES.list[i]; if(!pr || !NUTRI_SHEET || NUTRI_SHEET.k!=='build') return;
+  const id = offSaveFood(pr);
+  NUTRI_SHEET.items.push([id, Math.round(pr.serv || 100)]); NUTRI_SHEET.fq = ''; OFF_RES = null; saveState(); render();
+}
+function scanGrams(v){
+  const S = NUTRI_SHEET; if(!S || !S.prod) return;
+  S.g = Math.max(0, parseFloat(v)||0);
+  const el = document.getElementById('nuScanTot'); if(el) el.innerHTML = scanTotHtml();
+  const inp = document.getElementById('nuG'); if(inp && document.activeElement!==inp) inp.value = S.g;
+}
+function scanTotHtml(){
+  const S = NUTRI_SHEET, pr = S.prod, f = (S.g||0)/100;
+  return [['kcal',fmtK(pr.k*f)],['protein',Math.round(pr.p*f)+' g'],['carbs',Math.round(pr.c*f)+' g'],['fat',Math.round(pr.f*f)+' g']].map(function(x){ return '<div><b>'+x[1]+'</b><span>'+x[0]+'</span></div>'; }).join('');
+}
+function scanAdd(){
+  const S = NUTRI_SHEET, pr = S.prod, g = S.g||0; if(!pr || !(g > 0)){ toast('Set how much'); return; }
+  const id = offSaveFood(pr);
+  if(S.mode==='build' && S.back){ S.back.items.push([id, g]); S.back.fq = ''; NUTRI_SHEET = S.back; saveState(); render(); toast('Added to your meal'); return; }
+  const f = g/100;
+  nutriAddExtra(pr.name+' \u00b7 '+g+' g', pr.k*f, pr.p*f, pr.c*f, pr.f*f);
+}
+function scanSheetHtml(){
+  const S = NUTRI_SHEET;
+  const manual = '<div class="nu-2 nu-code"><input id="nuCode" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Number under the barcode" value="'+esc(S.code||'')+'"><button class="btn btn-secondary" onclick="scanManual()">Look up</button></div>';
+  const back = '<button class="btn btn-ghost btn-block" onclick="scanStop();scanBack()">'+(S.back ? 'Back to my meal' : 'Back')+'</button>';
+  if(S.phase==='camera'){
+    setTimeout(scanStart, 40);
+    return '<h3>Scan a barcode</h3>'
+      + '<div class="nu-cam"><video id="nuVideo" playsinline muted autoplay></video><i class="nu-frame"></i></div>'
+      + '<p id="nuScanMsg" class="wr-meta" style="margin:0;text-align:center;">Starting the camera\u2026</p>'
+      + manual
+      + '<label class="btn btn-ghost btn-block nu-photo">Use a photo instead<input type="file" accept="image/*" capture="environment" onchange="scanPhoto(this)"></label>'
+      + back + '<p class="nu-disc" style="margin:2px 0 0;">Product data: Open Food Facts, the open food database. Needs a connection.</p>';
+  }
+  if(S.phase==='loading') return '<h3>Looking it up\u2026</h3><p class="wr-meta">Barcode '+esc(S.code)+'</p><div class="nu-spin"></div>' + back;
+  if(S.phase==='found'){
+    const pr = S.prod, opts = [];
+    if(pr.serv) opts.push([pr.serv, '1 serving \u00b7 '+pr.serv+' g']);
+    opts.push([100, '100 g']);
+    if(pr.pack && pr.pack !== 100 && pr.pack <= 2000) opts.push([pr.pack, 'Whole pack \u00b7 '+pr.pack+' g']);
+    return '<div class="eyebrow">'+esc(pr.brand || 'Found')+'</div><h3 style="font-size:21px;">'+esc(pr.name)+'</h3>'
+      + '<p class="wr-meta" style="margin:0;">Per 100 g: '+Math.round(pr.k)+' kcal \u00b7 '+(+pr.p.toFixed(1))+' g protein \u00b7 '+(+pr.c.toFixed(1))+' g carbs \u00b7 '+(+pr.f.toFixed(1))+' g fat</p>'
+      + '<div class="field"><label for="nuG">How much?</label><div class="unit-input"><input id="nuG" type="number" inputmode="decimal" value="'+S.g+'" oninput="scanGrams(this.value)"><span>g / ml</span></div></div>'
+      + '<div class="chip-row">'+opts.map(function(o){ return '<div class="chip" onclick="scanGrams('+o[0]+');document.getElementById(\'nuG\').value='+o[0]+'">'+esc(o[1])+'</div>'; }).join('')+'</div>'
+      + '<div class="nu-macs4" id="nuScanTot">'+scanTotHtml()+'</div>'
+      + '<button class="btn btn-primary btn-block" onclick="scanAdd()">'+(S.mode==='build' ? 'Add to my meal' : 'Add to today')+'</button>'
+      + '<button class="btn btn-secondary btn-block" onclick="NUTRI_SHEET.phase=\'camera\';NUTRI_SHEET.code=\'\';render()">Scan another</button>'
+      + back;
+  }
+  const msg = S.phase==='offline' ? '<b>No connection.</b> The scanner looks products up online. Add it as a rough guess for now.'
+    : S.phase==='nonutri' ? '<b>Found, but without nutrition numbers.</b> Copy them from the label into a rough guess.'
+    : '<b>Not in the database yet.</b> Open Food Facts is filled in by people; this one is missing. Add it as a rough guess from the label.';
+  return '<h3>Barcode '+esc(S.code||'')+'</h3><div class="nu-tip" style="margin:0;">'+msg+'</div>'
+    + '<button class="btn btn-primary btn-block" onclick="NUTRI_SHEET={k:\'extra\'};render()">Add a rough guess</button>'
+    + '<button class="btn btn-secondary btn-block" onclick="NUTRI_SHEET.phase=\'camera\';render()">Try again</button>' + back;
+}
+
+/* ---------- build your own meal ---------- */
+function nutriOpenBuild(slotKey, seed){
+  const items = [];
+  (seed||[]).forEach(function(id){ if(FOODS[id]) items.push([id, FOOD_SERV[id]||100]); });
+  NUTRI_SHEET = {k:'build', slot:slotKey, items:items, name:'', fq:NUTRI_Q||''};
+  render();
+  setTimeout(function(){ const i = document.getElementById('nuFq'); if(i && !items.length) i.focus(); }, 60);
+}
+function foodHay(id){ return (FOODS[id].n+' '+(FOOD_BG[id]||'')).toLowerCase(); }
+function foodListHtml(){
+  const q = (NUTRI_SHEET.fq||'').trim(), have = NUTRI_SHEET.items.map(function(x){ return x[0]; });
+  const n = NS(), ok = function(id){ const fl = FOODS[id].fl||'', diet = n.diet||'any';
+    return !(diet==='vegan' && /[mfde]/.test(fl)) && !(diet==='vegetarian' && /[mf]/.test(fl)) && !(diet==='pescatarian' && /m/.test(fl)) && !(n.noDairy && /d/.test(fl)); };
+  const ids = Object.keys(FOODS).filter(function(id){ return ok(id) && have.indexOf(id)<0 && (!q || searchHit(foodHay(id), q)); });
+  /* the closest word first: "мляко" puts milk ahead of the yogurts */
+  const w = q.toLowerCase().split(/\s+/)[0] || '';
+  const pos = function(id){ const bg = (FOOD_BG[id]||'').toLowerCase(), en = FOODS[id].n.toLowerCase(); const a = bg.indexOf(w), b = en.indexOf(w); return Math.min(a<0?99:a, b<0?99:b); };
+  if(q) ids.sort(function(a,b){ return pos(a)-pos(b); });
+  else ids.sort(function(a,b){ return (FOOD_SERV[b]?1:0)-(FOOD_SERV[a]?1:0); });
+  return ids.slice(0, q ? 20 : 12).map(function(id){
+    const g = FOOD_SERV[id]||100, fd = FOODS[id], k = Math.round(fd.k*g/100);
+    return '<button class="nu-food" onclick="buildAdd(\''+id+'\')"><span>'+esc(fd.n)+'</span><i>'+esc(amountTxt(id,g))+' \u00b7 '+k+' kcal</i>'+ICON.plus+'</button>';
+  }).join('') + (q.length >= 3 ? '<button class="nu-online" onclick="offSearch()">Search shop products for \u201c'+esc(q)+'\u201d '+ICON.chevron+'</button>' : '')
+    + (OFF_RES && OFF_RES.q===q ? OFF_RES.html : '');
+}
+function buildSearch(v){ if(OFF_RES && OFF_RES.q!==v.trim()) OFF_RES = null; NUTRI_SHEET.fq = v; const el = document.getElementById('nuFoodList'); if(el) el.innerHTML = foodListHtml(); }
+function buildAdd(id){ NUTRI_SHEET.items.push([id, FOOD_SERV[id]||100]); NUTRI_SHEET.fq = ''; render(); }
+function buildStep(i, dir){
+  const it = NUTRI_SHEET.items[i], fd = FOODS[it[0]];
+  const step = fd.unit ? (fd.unit>=100 ? fd.unit/2 : fd.unit) : it[1] >= 200 ? 25 : 10;
+  it[1] = Math.round((it[1] + dir*step)*10)/10;
+  if(it[1] <= 0) NUTRI_SHEET.items.splice(i,1);
+  render();
+}
+function buildSheetHtml(slot){
+  const B = NUTRI_SHEET, items = B.items, mac = macrosOf(items);
+  const autoName = items.slice(0,3).map(function(x){ return FOODS[x[0]].n.replace(/ \(.*\)/,'').replace(/, .*/,''); }).join(', ').replace(/, ([^,]*)$/,' & $1');
+  return '<div class="eyebrow">'+esc(slot.label.replace(/ \u00b7.*/,''))+'</div><h3 style="font-size:22px;">Build your own meal</h3>'
+    + (items.length ? '<div class="nu-ing nu-bitems">'+items.map(function(x,i){
+        return '<div><span>'+esc(FOODS[x[0]].n)+'</span><span class="nu-step"><button aria-label="Less" onclick="buildStep('+i+',-1)">\u2212</button><b>'+esc(amountTxt(x[0], x[1]))+'</b><button aria-label="More" onclick="buildStep('+i+',1)">+</button></span></div>'; }).join('')+'</div>'
+      + '<div class="nu-macs4">'+[['kcal',fmtK(mac.k)],['protein',Math.round(mac.p)+' g'],['carbs',Math.round(mac.c)+' g'],['fat',Math.round(mac.f)+' g']].map(function(x){ return '<div><b>'+x[1]+'</b><span>'+x[0]+'</span></div>'; }).join('')+'</div>'
+      : '<p class="wr-meta" style="margin:0;">Add the foods one by one. Amounts are raw or dry; tap \u2212 and + to match what you use.</p>')
+    + '<div class="nu-search nu-search2"><input id="nuFq" type="search" placeholder="Add a food \u2014 oats, мляко, banana\u2026" value="'+esc(B.fq||'')+'" oninput="buildSearch(this.value)" autocomplete="off">'
+    + '<button aria-label="Scan a barcode" onclick="nutriOpenScan(\'build\')">'+ICON.scan+'</button></div>'
+    + '<div id="nuFoodList" class="nu-foods">'+foodListHtml()+'</div>'
+    + (items.length ? '<div class="field" style="margin-top:4px;"><label for="nuBn">Name</label><input id="nuBn" type="text" placeholder="'+esc(autoName)+'" value="'+esc(B.name||'')+'" oninput="NUTRI_SHEET.name=this.value"></div>'
+      + '<button class="btn btn-primary btn-block" onclick="buildSave()">Save & use for '+esc(slot.label.replace(/ \u00b7.*/,'').toLowerCase())+'</button>'
+      + '<p class="wr-meta" style="margin:0;">Saved to your meals and kept exactly as you made it. The rest of the day adjusts around it.</p>' : '');
+}
+function buildSave(){
+  const B = NUTRI_SHEET, n = NS(); if(!B.items.length) return;
+  const plan = nutriPlan(todayISO()), slot = plan.slots.find(function(s){ return s.key===B.slot; });
+  const name = (B.name||'').trim() || B.items.slice(0,3).map(function(x){ return FOODS[x[0]].n.replace(/ \(.*\)/,'').replace(/, .*/,''); }).join(', ').replace(/, ([^,]*)$/,' & $1');
+  const type = slot ? slot.type : 'b';
+  const m = {id:'c_'+Date.now().toString(36), s:type==='l'||type==='d' ? 'ld' : type, e:{b:'\ud83e\udd63',l:'\ud83c\udf7d\ufe0f',d:'\ud83c\udf7d\ufe0f',s:'\ud83c\udf4e'}[type],
+    n:name, min:0, t:['custom'], custom:true, keep:true, it:B.items.map(function(x){ return [x[0], x[1]]; }), how:'Your own meal.'};
+  n.custom = (n.custom||[]).concat([m]);
+  n.fav = n.fav || {}; n.fav[m.id] = true;
+  const d = nutriDay(todayISO()); d.pick = d.pick || {}; d.pick[B.slot] = m.id;
+  NUTRI_SHEET = null; NUTRI_Q = ''; saveState(); render(); toast('Saved to your meals');
+}
+function nutriDeleteCustom(id){
+  if(!confirm('Delete this meal of yours?')) return;
+  const n = NS(); n.custom = (n.custom||[]).filter(function(m){ return m.id!==id; });
+  if(n.fav) delete n.fav[id];
+  if(n.pin) Object.keys(n.pin).forEach(function(k){ if(n.pin[k]===id) delete n.pin[k]; });
+  Object.keys(n.days||{}).forEach(function(k){ const p = n.days[k].pick; if(p) Object.keys(p).forEach(function(sl){ if(p[sl]===id) delete p[sl]; }); });
+  NUTRI_SHEET = null; saveState(); render(); toast('Deleted');
 }
 
 /* ---------- entry points elsewhere ---------- */
