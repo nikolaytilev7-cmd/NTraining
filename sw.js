@@ -7,8 +7,8 @@
  * CACHE and PHOTOS are rewritten on every build (integrate2.py). Old caches are
  * deleted on activate, so two versions never fight over the same origin.
  */
-const CACHE = 'nt-training-v129';
-const PHOTOS = './photos.js?v=2026-10-05j';
+const CACHE = 'nt-training-v130';
+const PHOTOS = './photos.js?v=2026-10-05k';
 /* The icons carry a version in their FILENAME: iOS keeps its own copy of a
    home-screen icon that no cache header reaches. Rename on every icon change. */
 const SHELL = ['./index.html', './manifest.json', PHOTOS,
@@ -52,7 +52,10 @@ self.addEventListener('fetch', e => {
     // only the app itself is stored as the app; welcome.html keeps its own entry
     const isApp = /\/(index\.html)?$/.test(url.pathname);
     e.respondWith(
-      fetch(req)
+      // past the browser's own HTTP cache too (GitHub Pages lets it keep a page
+      // for 10 minutes), so an update shows up on the next open
+      fetch(req.url, {cache: 'no-cache', credentials: 'same-origin'})
+        .catch(() => fetch(req))
         .then(res => {
           if (isGoodPage(res)) {
             const copy = res.clone();
