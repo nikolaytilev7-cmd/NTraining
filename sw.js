@@ -7,8 +7,8 @@
  * CACHE and PHOTOS are rewritten on every build (integrate2.py). Old caches are
  * deleted on activate, so two versions never fight over the same origin.
  */
-const CACHE = 'nt-training-v101';
-const PHOTOS = './photos.js?v=2026-09-30a';
+const CACHE = 'nt-training-v106';
+const PHOTOS = './photos.js?v=2026-10-05b';
 /* The icons carry a version in their FILENAME: iOS keeps its own copy of a
    home-screen icon that no cache header reaches. Rename on every icon change. */
 const SHELL = ['./index.html', './manifest.json', PHOTOS,

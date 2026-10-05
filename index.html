@@ -952,6 +952,17 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
   .fh-title{font-size:22px;}
   .pv-hero{min-height:0;}
 }
+.warm-mode .focus-hero .fig-wrap{height:min(34vh,360px);min-height:190px;}
+@media (max-height:700px){.warm-mode .focus-hero .fig-wrap{height:26vh;min-height:150px;}}
+.warm-mode .focus-why{margin-top:8px !important;font-size:14px !important;}
+.warm-clock{text-align:center;margin:8px 0 2px;}
+.warm-clock .wc-num{font-size:46px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+.warm-clock.gap .wc-num{color:var(--amber);}
+.warm-clock .wc-lbl{font-size:12.5px;color:var(--text-3);font-weight:700;margin-top:6px;text-transform:uppercase;letter-spacing:.08em;}
+.warm-clock .wc-track{height:6px;border-radius:6px;background:var(--bg-3);margin:12px auto 0;max-width:280px;overflow:hidden;}
+.warm-clock .wc-track i{display:block;height:100%;background:var(--grad,var(--blue));border-radius:6px;transition:width .9s linear;}
+.skip-opt{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:10px;}
+.skip-opt small{font-weight:600;font-size:12px;opacity:.8;}
 .save-alert{margin-bottom:10px;border-color:var(--red);
   background:color-mix(in srgb, var(--red) 14%, transparent);color:var(--text-1);
   font-size:13px;line-height:1.5;font-weight:600;}
@@ -1880,7 +1891,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-09-30a';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-05b';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -6828,46 +6839,130 @@ function completeWarmItem(){
   if(anyLeft >= 0){ SESSION._warmIdx = anyLeft; render(); return; }
   finishWarmup();                                 // everything ticked
 }
+/* The warm-up runs itself. One tap starts it; each drill gets its own clock,
+   the voice names it, the last three seconds beep, and five seconds of "next
+   up" lead into the next one. Nothing is logged — these are short movements
+   done on the move, and stopping to tap after each one broke the flow. "Next"
+   still moves on early, and pause holds the clock. */
+const WARM_GAP = 5;
+function warmSecs(it){ return Math.max(15, Math.round(it.sec || 45)); }
+function warmTotalLeft(){
+  const items = warmItems(), r = SESSION._warmRun; if(!r) return items.reduce(function(s,it){ return s+warmSecs(it); },0);
+  let t = r.left + (r.gap ? 0 : 0);
+  for(let j=r.idx+1;j<items.length;j++) t += warmSecs(items[j]) + WARM_GAP;
+  return t;
+}
+function warmSay(it, first){
+  const per = /each side|per side/i.test(it.note||''), way = /each way/i.test(it.note||'');
+  say((first ? 'Warm-up. ' : '')+it.label.replace(/—.*/,'').trim()+'. '+warmSecs(it)+' seconds.'+(per ? ' Switch sides halfway.' : way ? ' Change direction halfway.' : ''), true);
+}
+function startWarmTimer(){
+  const items = warmItems(); if(!items.length){ finishWarmup(); return; }
+  const idx = Math.max(0, Math.min(items.length-1, SESSION._warmIdx||0));
+  SESSION._warmRun = { idx:idx, left:warmSecs(items[idx]), gap:false };
+  SESSION._warmT = Date.now();
+  countBeep(0); warmSay(items[idx], true);
+  render(); tickWarm();
+}
+function warmGoTo(i){
+  const items = warmItems(); const r = SESSION._warmRun;
+  if(i >= items.length){ endWarmTimer(true); return; }
+  SESSION._warmIdx = i;
+  if(r){ r.idx = i; r.left = warmSecs(items[i]); r.gap = false; SESSION._warmT = Date.now(); countBeep(0); warmSay(items[i]); }
+  render();
+}
+function warmNextNow(){
+  const r = SESSION._warmRun, items = warmItems();
+  const i = r ? r.idx : (SESSION._warmIdx||0);
+  SESSION._warmDone = SESSION._warmDone || {}; SESSION._warmDone[i] = true;
+  if(!r){ completeWarmItem(); return; }
+  warmGoTo(i+1);
+}
+function warmAdd(sec){ const r = SESSION._warmRun; if(!r) return; r.left += sec; updateWarmClock(); }
+function endWarmTimer(say_){
+  clearTimeout(SESSION._warmHandle); SESSION._warmRun = null;
+  if(say_) say('Warm-up done. Let’s go.', true);
+  finishWarmup();
+}
+function tickWarm(){
+  clearTimeout(SESSION._warmHandle);
+  SESSION._warmHandle = setTimeout(function(){
+    if(!SESSION || SESSION.phase!=='warmup' || !SESSION._warmRun) return;
+    const r = SESSION._warmRun, items = warmItems();
+    if(SESSION.paused){ SESSION._warmT = Date.now(); tickWarm(); return; }
+    const before = r.left;
+    r.left -= tickDelta('_warmT');
+    const it = items[r.idx];
+    if(!r.gap){
+      const half = Math.floor(warmSecs(it)/2);
+      if(/each side|per side/i.test(it.note||'') && before > half && r.left <= half && r.left > 3) say('Switch sides.', true);
+      if(r.left > 0 && r.left <= 3) countBeep(r.left);
+      if(r.left <= 0){
+        SESSION._warmDone = SESSION._warmDone || {}; SESSION._warmDone[r.idx] = true;
+        if(r.idx+1 >= items.length){ countBeep(0); endWarmTimer(true); return; }
+        r.gap = true; r.left = WARM_GAP;
+        say('Next up, '+items[r.idx+1].label.replace(/—.*/,'').trim()+'.', true);
+        render(); tickWarm(); return;
+      }
+    } else if(r.left <= 0){ warmGoTo(r.idx+1); tickWarm(); return; }
+    updateWarmClock(); tickWarm();
+  }, 1000);
+}
+function updateWarmClock(){
+  const r = SESSION._warmRun; if(!r) return;
+  const el = document.getElementById('warmClock'); if(el) el.textContent = fmtMMSS(Math.max(0, r.left));
+  const bar = document.getElementById('warmBar');
+  if(bar && !r.gap){ const tot = warmSecs(warmItems()[r.idx]); bar.style.width = Math.max(0, Math.min(100, 100*(1 - r.left/tot)))+'%'; }
+  const tl = document.getElementById('warmLeft'); if(tl) tl.textContent = Math.ceil(warmTotalLeft()/60)+' min left';
+}
 function renderWarmupPhase(){
-  const w = SESSION.workout;
   const items = warmItems();
   if(!items.length){ return '<div class="card"><p>No warm-up for this day.</p>'
     +'<button class="btn btn-primary btn-block" style="margin-top:14px;" onclick="finishWarmup()">Start the main part</button></div>'; }
+  const r = SESSION._warmRun;
   if(SESSION._warmIdx==null) SESSION._warmIdx = 0;
-  const idx = Math.max(0, Math.min(items.length-1, SESSION._warmIdx));
+  const idx = r ? r.idx : Math.max(0, Math.min(items.length-1, SESSION._warmIdx));
   const done = SESSION._warmDone||{};
-  const nDone = items.filter((_,i)=>done[i]).length;
-  const cur = items[idx];
-
-  const eb = esc(cur.phase || 'Warm-up') + ' \u00b7 ' + (idx+1) + ' of ' + items.length;
-  let html = '';
+  const gap = r && r.gap;
+  const cur = gap ? items[idx+1] : items[idx];
+  const eb = (gap ? 'Next up' : esc(cur.phase || 'Warm-up')) + ' · ' + ((gap?idx+1:idx)+1) + ' of ' + items.length;
+  let html = '<div class="warm-mode">';
   window._figureMirror = false;
-  if(cur.move){
-    window._activeFigureExId = cur.move;          // drives the same animation engine
-    html += focusHero(cur.move, eb, cur.label);
-  } else {
+  if(cur.move){ window._activeFigureExId = cur.move; html += focusHero(cur.move, eb, cur.label); }
+  else {
     window._activeFigureExId = null;
-    html += '<div class="card" style="text-align:center;"><div class="eyebrow">'+eb+'</div><h2 style="font-size:24px;margin:8px 0 2px;">'+esc(cur.label)+'</h2>'
-          + '<p style="color:var(--text-3);font-size:13.5px;margin:12px 0 0;">Take this one at your own pace.</p></div>';
+    html += '<div class="card" style="text-align:center;"><div class="eyebrow">'+eb+'</div><h2 style="font-size:24px;margin:8px 0 2px;">'+esc(cur.label)+'</h2></div>';
   }
   html += '<div class="focus-body">'
-    + (cur.note ? '<p class="focus-why" style="font-size:15px;font-weight:700;color:var(--text-1);margin-top:14px;">'+esc(cur.note)+'</p>' : '')
-    + (idx > 0 ? '<div class="focus-links"><button onclick="goWarmItem('+(idx-1)+')">Back</button></div>' : '')
-    + '</div>';
-  html += focusDock(nDone+1 >= items.length ? 'Done \u2014 start the main part' : 'Done, next movement', 'completeWarmItem()');
-
-  // the rest of the list stays visible, so you can see what is coming and jump
+    + (cur.note ? '<p class="focus-why" style="font-size:15px;font-weight:700;color:var(--text-1);margin-top:12px;">'+esc(cur.note)+'</p>' : '');
+  if(r){
+    html += '<div class="warm-clock'+(gap?' gap':'')+'"><div class="wc-num" id="warmClock">'+fmtMMSS(Math.max(0,r.left))+'</div>'
+      + '<div class="wc-lbl">'+(gap ? 'get ready' : 'this drill')+' · <span id="warmLeft">'+Math.ceil(warmTotalLeft()/60)+' min left</span></div>'
+      + (gap ? '' : '<div class="wc-track"><i id="warmBar" style="width:'+Math.max(0,Math.min(100,100*(1-r.left/warmSecs(cur))))+'%"></i></div>')
+      + '</div>'
+      + '<div class="focus-links">'
+      + (idx > 0 && !gap ? '<button onclick="warmGoTo('+(idx-1)+')">Back</button>' : '')
+      + '<button onclick="togglePause()">'+(SESSION.paused?'Resume':'Pause')+'</button>'
+      + (!gap ? '<button onclick="warmAdd(15)">+15 s</button>' : '')
+      + '<button onclick="endWarmTimer(false)">Skip warm-up</button></div>';
+  } else {
+    html += '<p class="wr-meta" style="text-align:center;margin-top:10px;">'+items.length+' drills · about '+Math.ceil(warmTotalLeft()/60)+' min · it moves on by itself</p>';
+  }
+  html += '</div></div>';
+  html += r ? focusDock(gap ? 'Start it now' : (idx+1 >= items.length ? 'Done — start the main part' : 'Next drill'), gap ? 'warmGoTo('+(idx+1)+');tickWarm()' : 'warmNextNow()')
+            : focusDock('Start warm-up · '+Math.ceil(warmTotalLeft()/60)+' min', 'startWarmTimer()');
+  // the whole list stays visible, so you can see what is coming
   html += '<div class="card" style="margin-top:14px;">'
-    + items.map((it,i)=> i===idx ? '' :
-        '<div class="workout-row" style="cursor:pointer;" onclick="goWarmItem('+i+')">'
+    + items.map((it,i)=> (i===idx && !gap) || (gap && i===idx+1) ? '' :
+        '<div class="workout-row" style="cursor:pointer;" onclick="'+(r?'warmGoTo('+i+')':'goWarmItem('+i+')')+'">'
         + '<div class="wr-status '+(done[i]?'done':'')+'">'+(done[i]?ICON.check:ICON.play)+'</div>'
         + '<div class="wr-body"><div class="wr-title" style="font-size:14px;'+(done[i]?'color:var(--text-3);':'')+'">'+esc(it.label)+'</div>'
-        + (it.note?'<div class="wr-meta">'+esc(it.note)+'</div>':'') + '</div></div>').join('')
-    + '<button class="btn btn-ghost btn-sm btn-block" style="margin-top:10px;" onclick="finishWarmup()">Skip the rest of the warm-up</button>'
+        + '<div class="wr-meta">'+warmSecs(it)+' s'+(it.note?' · '+esc(it.note):'')+'</div></div></div>').join('')
+    + (r ? '' : '<button class="btn btn-ghost btn-sm btn-block" style="margin-top:10px;" onclick="finishWarmup()">Skip the warm-up</button>')
     + '</div>';
   return html;
 }
-function finishWarmup(){ SESSION.phase='main'; render(); }
+function finishWarmup(){ clearTimeout(SESSION._warmHandle); SESSION._warmRun = null; SESSION.phase='main'; render(); }
 
 /* Unilateral work is the single easiest thing for a training app to get wrong:
    a "set" of one-arm press means a set on EACH arm. Three kinds exist —
@@ -7035,6 +7130,13 @@ function renderFocusSheet(){
   } else if(kind==='muscles' && ex){
     h = '<h3>'+esc(ex.name)+' · muscles</h3><div class="card-tight" style="background:var(--bg-2);border-radius:var(--radius-m);">'+muscleMap(ex)+'</div>'
       + '<button class="btn btn-ghost btn-block" onclick="closeSheet()">Back to the set</button>';
+  } else if(kind==='skip' && ctx.skipOpts){
+    h = '<h3>Skip</h3><p style="color:var(--text-2);font-size:14px;margin:0 0 4px;">Short on time or not feeling it? Nothing you have done so far is lost.</p>'
+      + ctx.skipOpts.map(function(o, i){
+          return '<button class="btn '+(i===0?'btn-primary':'btn-secondary')+' btn-block skip-opt" onclick="SESSION._sheet=null;'+o[1]+'">'
+            + '<b>'+esc(o[0])+'</b>'+(o[2]?'<small>'+esc(o[2])+'</small>':'')+'</button>';
+        }).join('')
+      + '<button class="btn btn-ghost btn-block" onclick="closeSheet()">Keep going</button>';
   } else if(kind==='skip' && ctx.skip){
     h = '<h3>Skip '+esc(ex ? ex.name : 'this')+'?</h3><p style="color:var(--text-2);font-size:14px;margin:0;">'+esc(ctx.skipText||'The rest of it is dropped and you move on.')+'</p>'
       + '<button class="btn btn-danger btn-block" onclick="SESSION._sheet=null;'+ctx.skip+'">Skip it</button>'
@@ -7058,7 +7160,11 @@ function renderTraditionalPhase(){
     exId: ex.id,
     log: { title: 'How did '+(sideTxt ? 'the '+sideTxt.toLowerCase() : 'the set')+' go?', def: rec.low, weight: rec.weight!=null ? rec.weight : null,
            save: "SESSION._sheet=null;submitTraditionalSet('"+block.ex+"',"+rec.low+","+rec.high+","+(rec.weight||0)+")" },
-    skip: 'skipTraditionalExercise()', skipText: 'The sets left on '+ex.name+' are dropped and you move on to the next exercise.'
+    skip: 'skipTraditionalExercise()', skipText: 'The sets left on '+ex.name+' are dropped and you move on to the next exercise.',
+    skipOpts: (setNum < block.sets
+      ? [['Skip set '+setNum, 'skipTraditionalSet()', 'Set '+(setNum+1)+' of '+block.sets+' comes next'+(isPerSide(ex)?' \u2014 both sides of this set are skipped':'')],
+         ['Finish '+ex.name+' here', 'skipTraditionalExercise()', (block.sets-setNum+1)+' sets left are dropped; on to the next exercise']]
+      : [['Skip the last set', 'skipTraditionalExercise()', 'On to the next exercise']])
   };
   let html = focusHero(ex.id, 'Set '+setNum+' of '+block.sets+focusSideTag(ex), ex.name);
   html += '<div class="focus-body">' + focusBig(rec, ex) + firstBellHint(ex, rec) + focusWhy(rec) + rirLine(ex, w) + focusLinks(ex, true) + '</div>';
@@ -7384,8 +7490,7 @@ function submitTraditionalSet(exId, low, high, weight){
   // the right side is only half the set — go straight to the left before counting it
   if(isPerSide(ex) && currentSide()==='R'){
     SESSION.side='L';
-    startRest(Math.round(restSecondsFor(ex,'between_sets',w,doneBlock)*0.45), ()=>render(), 'Switch sides');
-    return;
+    switchSideNow(); return;
   }
   resetSide();
   const block = doneBlock;
@@ -7395,6 +7500,13 @@ function submitTraditionalSet(exId, low, high, weight){
   const movedOn = SESSION.setIndex===0;
   startRest(restSecondsFor(ex, movedOn?'between_exercises':'between_sets', w, block),
             ()=>render(), restLabelFor(ex, w, block));
+}
+function skipTraditionalSet(){
+  const w = SESSION.workout, block = w.blocks[SESSION.blockIndex];
+  resetSide(); SESSION.setIndex++;
+  if(!block || SESSION.setIndex >= block.sets){ SESSION.setIndex=0; SESSION.blockIndex++; }
+  if(SESSION.blockIndex>=w.blocks.length){ completeMainPart(); }
+  VOICE.preKey = null; render();
 }
 function skipTraditionalExercise(){
   const w = SESSION.workout; resetSide(); SESSION.setIndex=0; SESSION.blockIndex++;
@@ -7406,6 +7518,12 @@ function skipTraditionalExercise(){
    are moderate, so we run at the shorter end of each band. Moving to a
    DIFFERENT exercise needs less rest than repeating the same one, because the
    next pattern usually loads something else. */
+/* Changing hands is not a rest: the other side has been resting the whole set.
+   Ten seconds to swap the bell (fifteen for the get-up, which starts on the floor). */
+function switchSideRest(ex){ return ex && ex.cat==='skill' ? 15 : 10; }
+/* No timer between the sides of a set you log yourself: the left side is on
+   screen straight away and starts when you pick the bell up. */
+function switchSideNow(){ toast('Left side'); render(); window.scrollTo(0,0); }
 function restSecondsFor(ex, kind, w, block){
   if(typeof ex === 'string') ex = null;               // tolerate the old call shape
   let base;
@@ -7420,6 +7538,9 @@ function restSecondsFor(ex, kind, w, block){
   if(kind === 'superset_within') return 0;            // straight into the pair
   if(kind === 'superset_round')  return Math.max(45, Math.round(base*0.8));
   if(kind === 'between_exercises') return Math.round(base*0.8);
+  /* a per-side lift: each side already rested while the other worked, so the
+     rest after the pair is shorter \u2014 90 becomes 70, 75 becomes 55 */
+  if(kind === 'between_sets' && ex && isPerSide(ex)) return Math.max(45, Math.round(base*0.75/5)*5);
   return base;
 }
 function restLabelFor(ex, w, block){
@@ -7445,16 +7566,27 @@ function renderSupersetPhase(){
   const tag = String.fromCharCode(65+SESSION.blockIndex)+(which+1);
   SESSION._focusCtx = { exId: ex.id,
     log: { title: 'How did '+(sideTxt ? 'the '+sideTxt.toLowerCase() : tag)+' go?', def: rec.low, weight: rec.weight!=null ? rec.weight : null,
-           save: "SESSION._sheet=null;submitSupersetSet('"+exId+"',"+rec.low+","+rec.high+")" } };
+           save: "SESSION._sheet=null;submitSupersetSet('"+exId+"',"+rec.low+","+rec.high+")" },
+    skipOpts: [['Skip this pair this round', 'skipSupersetPair()', 'On to the next pair'+(SESSION.round+1<w.rounds?' \u2014 it comes back next round':'')],
+               ['End the supersets here', 'skipSupersetRest()', 'The rounds left are dropped']] };
   let html = focusHero(ex.id, tag+' · Round '+(SESSION.round+1)+' of '+w.rounds+focusSideTag(ex), ex.name);
   const nextId = which===0 ? pair[1] : null;
   html += '<div class="focus-body">' + focusBig(rec, ex) + firstBellHint(ex, rec) + focusWhy(rec)
     + (nextId && EX_BY_ID[nextId] ? '<p class="focus-why">Then straight into '+esc(EX_BY_ID[nextId].name)+'.</p>' : '')
-    + focusLinks(ex, false) + '</div>';
+    + focusLinks(ex, true) + '</div>';
   sayExercise(ex, rec, 'Set '+(SESSION.setIndex+1));
   html += focusDock(isPerSide(ex) ? 'Done — log '+sideTxt.toLowerCase() : 'Done — log it', "openSheet('log')");
   return html;
 }
+function skipSupersetPair(){
+  const w = SESSION.workout; resetSide(); SESSION.setIndex = 0; SESSION.blockIndex++;
+  if(SESSION.blockIndex >= w.pairs.length){
+    SESSION.blockIndex = 0; SESSION.round++;
+    if(SESSION.round >= w.rounds){ completeMainPart(); }
+  }
+  VOICE.preKey = null; render();
+}
+function skipSupersetRest(){ resetSide(); SESSION.setIndex = 0; completeMainPart(); render(); }
 function submitSupersetSet(exId, low, high){
   const result = parseInt(document.getElementById('resultInput').textContent,10);
   if(!(result > 0)){ SESSION._sheet='log'; render(); toast('Log at least 1 \u2014 or use Skip'); return; }   // a zero is a skip, not a set
@@ -7468,8 +7600,7 @@ function submitSupersetSet(exId, low, high){
   logSet({exerciseId:exId, programId:w.programId, programName:w.programName, week:w.week, workoutIndex:w.idx, workoutName:w.name, format:'superset', weight:usedWeight, result, difficulty:diff, reason:null, targetLow:low, targetHigh:high, side:sideS, pain:flags.pain, form:flags.form});
   if(isPerSide(exObj) && currentSide()==='R'){
     SESSION.side='L';
-    startRest(Math.round(restSecondsFor(exObj,'between_sets',w)*0.4), ()=>render(), 'Switch sides');
-    return;
+    switchSideNow(); return;
   }
   resetSide();
   SESSION.setIndex++;
@@ -7538,7 +7669,7 @@ function advanceComplex(){
   if(SESSION.blockIndex < chain.length-1){ SESSION.blockIndex++; render(); return; }
   if(perSide && currentSide()==='R'){
     SESSION.side='L'; SESSION.blockIndex=0;
-    startRest(20, ()=>render(), 'Switch sides'); return;
+    switchSideNow(); return;
   }
   // a round is logged as one unit of work, at the weight carried through it
   const first = EX_BY_ID[chain[0].ex];
@@ -8535,13 +8666,13 @@ function resumeCard(){
 }
 function resumeSession(){
   const s = pendingSession(); if(!s) return;
-  s.timerRunning = false; s.restSecondsLeft = 0; s._sheet = null; s._shareOpen = false; s._swapOpen = false; s.paused = false;
+  s.timerRunning = false; s.restSecondsLeft = 0; s._sheet = null; s._shareOpen = false; s._swapOpen = false; s.paused = false; s._warmRun = null;
   SESSION = s; navigate('active_workout');
 }
 function discardSession(){ clearSessionSnapshot(); render(); }
 function teardownSession(){
   if(!SESSION) return;
-  ['_emomHandle','_amrapHandle','_restHandle','_ftHandle'].forEach(function(k){ clearTimeout(SESSION[k]); });
+  ['_emomHandle','_amrapHandle','_restHandle','_ftHandle','_warmHandle'].forEach(function(k){ clearTimeout(SESSION[k]); });
   SESSION.timerRunning = false;
 }
 function closeWorkout(){
