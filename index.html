@@ -1067,7 +1067,7 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .nu-tags i{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.4px;padding:2px 7px;border-radius:6px;background:var(--bg-3);color:var(--text-2);}
 .nu-hico{width:42px;height:42px;border-radius:13px;background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;margin-right:12px;}
 .nu-disc{font-size:11.5px;color:var(--text-3);line-height:1.5;margin:22px 2px 6px;}
-.nu-daytype button{padding:8px 4px;font-size:12.5px;}
+.nu-daytype button{padding:8px 4px;font-size:12.5px;white-space:nowrap;}
 .nu-train .nu-ic{background:var(--blue-dim);color:var(--blue);cursor:default;}
 .nu-train .nu-ic svg{width:20px;height:20px;}
 .nu-train .nu-mb{cursor:default;}
@@ -1102,7 +1102,6 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .nu-step{display:flex;align-items:center;gap:8px;}
 .nu-step b{min-width:72px;text-align:center;font-size:13.5px;}
 .nu-step button{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--bg-3);color:var(--text-1);font-size:16px;font-weight:700;font-family:inherit;padding:0;}
-.nu-scanchip{flex:0 0 46px !important;padding:10px 0 !important;}
 .nu-scanchip svg{width:19px !important;height:19px !important;}
 .nu-build>svg{width:22px;height:22px;}
 .nu-search2{display:flex;gap:8px;}
@@ -1123,6 +1122,11 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .nu-online{width:100%;text-align:left;background:none;border:0;color:var(--blue);font-weight:700;font-size:14px;padding:8px 2px;font-family:inherit;display:flex;align-items:center;gap:4px;}
 .nu-online svg{width:15px;height:15px;}
 .nu-food small{color:var(--text-3);font-weight:600;}
+.nu-headr{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.nu-headr .nu-beta{margin-bottom:0;}
+.nu-scanbtn{display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:99px;border:0;background:var(--grad);color:#fff;font-weight:800;font-size:14px;font-family:inherit;box-shadow:0 6px 18px rgba(var(--accent-rgb),.35);}
+.nu-scanbtn svg{width:19px;height:19px;}
+.nu-quick .chip.nu-scanchip{flex:0 0 auto !important;padding:10px 12px !important;}
 </style>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
@@ -2046,7 +2050,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-05i';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-05j';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -10494,7 +10498,7 @@ function renderFuel(){
   if(!nutriOn()) return renderFuelSetup();
   const tabs = '<div class="nu-tabs">'+[['today','Today'],['check','Check-in'],['shop','Shopping']].map(function(t){
     return '<button class="'+(NUTRI_TAB===t[0]?'on':'')+'" onclick="NUTRI_TAB=\''+t[0]+'\';render();window.scrollTo(0,0)">'+t[1]+'</button>'; }).join('')+'</div>';
-  const head = '<div class="nu-head"><div><div class="eyebrow">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'short'}))+'</div><h1>Fuel</h1></div><span class="nu-beta">BETA</span></div>';
+  const head = '<div class="nu-head"><div><div class="eyebrow">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'short'}))+'</div><h1>Fuel</h1></div><div class="nu-headr"><span class="nu-beta">BETA</span><button class="nu-scanbtn" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+'<span>Scan</span></button></div></div>';
   const body = NUTRI_TAB==='check' ? fuelCheckin() : NUTRI_TAB==='shop' ? fuelShopping() : fuelToday();
   return head + tabs + body + nutriDisclaimer();
 }
@@ -10502,7 +10506,7 @@ function fuelToday(){
   const date = todayISO(), plan = nutriPlan(date), t = plan.t, eat = nutriEaten(date), d = (STATE.nutri.days[date])||{}, ate = d.ate||{};
   const dayChips = '<div class="eyebrow" style="font-size:11px;margin-bottom:7px;">When do you train today?</div><div class="nu-daytype">'
     + NUTRI_WHEN.map(function(w){ return '<button class="'+(plan.train && plan.when===w[0]?'on':'')+'" onclick="nutriSetTrain(true,\''+w[0]+'\')">'+w[1]+'</button>'; }).join('')
-    + '<button class="'+(!plan.train?'on':'')+'" onclick="nutriSetTrain(false)">Rest day</button></div>';
+    + '<button class="'+(!plan.train?'on':'')+'" onclick="nutriSetTrain(false)">Rest</button></div>';
   let html = '<div class="card nu-top">'+dayChips
     + '<div class="nu-row">'+nuRing(t.kcal-eat.k, t.kcal, eat.k)
     + '<div style="flex:1;min-width:0;">'+nuBar('Protein', eat.p, t.p, 'var(--green)')+nuBar('Carbs', eat.c, t.c, 'var(--blue)')+nuBar('Fat', eat.f, t.f, 'var(--orange)')+'</div></div>'
@@ -10530,7 +10534,7 @@ function fuelToday(){
   const x = d.x||[];
   html += (x.length ? '<div class="card nu-extras"><div class="eyebrow" style="margin-bottom:6px;">Also eaten</div>'+x.map(function(e,i){
       return '<div class="nu-x"><span>'+esc(e.l)+'</span><span class="wr-meta">'+e.k+' kcal \u00b7 '+e.p+' g</span><button aria-label="Remove" onclick="nutriDelExtra('+i+')">'+ICON.x+'</button></div>'; }).join('')+'</div>' : '')
-    + '<div class="nu-quick"><button class="chip" onclick="nutriAddExtra(\'Protein snack\',110,20)">+20 g protein</button><button class="chip" onclick="NUTRI_SHEET={k:\'extra\'};render()">'+ICON.plus+' Ate something else</button><button class="chip nu-scanchip" aria-label="Scan a barcode" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+'</button></div>';
+    + '<div class="nu-quick"><button class="chip" onclick="nutriAddExtra(\'Protein snack\',110,20)">+20 g protein</button><button class="chip" onclick="NUTRI_SHEET={k:\'extra\'};render()">'+ICON.plus+' Ate something else</button><button class="chip nu-scanchip" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+' Scan</button></div>';
   if(plan.train) html += '<div class="nu-tip">'+({
       am:'<b>Training in the morning.</b> The small snack 30\u201360 minutes before is enough \u2014 even just the banana. Breakfast after is your recovery meal, so it is the big one today.',
       mid:'<b>Training at midday.</b> Snack mid-morning, 1\u20132 hours before. Lunch straight after is the recovery meal and the biggest of the day.',
