@@ -1127,6 +1127,9 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .nu-scanbtn{display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:99px;border:0;background:var(--grad);color:#fff;font-weight:800;font-size:14px;font-family:inherit;box-shadow:0 6px 18px rgba(var(--accent-rgb),.35);}
 .nu-scanbtn svg{width:19px;height:19px;}
 .nu-quick .chip.nu-scanchip{flex:0 0 auto !important;padding:10px 12px !important;}
+.nu-gsearch{margin-bottom:12px;}
+.nu-gres{padding:8px 12px 10px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px;}
+.nu-gres .nu-grp{margin:6px 0 0;}
 </style>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
@@ -1567,7 +1570,7 @@ const PROGRAMS = [
    {name:'A · Strength',format:'traditional',mainMin:34,
     blocks:[{ex:'goblet_squat',sets:4,reps:[6,10]},{ex:'one_arm_row',sets:4,reps:[8,12]},{ex:'overhead_press',sets:3,reps:[6,10]},{ex:'sumo_deadlift',sets:3,reps:[8,12]}],
     finisher:{name:'Swing Clock',format:'emom',totalMinutes:5,pattern:['kb_swing','kb_swing','rest','kb_swing','kb_swing'],note:'Ten crisp swings a minute. Hips, not arms.'}},
-   {name:'B · Size',format:'superset',mainMin:26,rounds:2,
+   {name:'B · Size',format:'superset',mainMin:26,rounds:3,
     repScheme:{kb_floor_press:[10,15],bent_over_row:[10,15],reverse_lunge:[8,12],glute_bridge:[12,15],kb_curl:[10,15],tricep_ext:[10,15]},
     pairs:[['kb_floor_press','bent_over_row'],['reverse_lunge','glute_bridge'],['kb_curl','tricep_ext']],
     finisher:{name:'Carry Out',format:'emom',totalMinutes:4,pattern:['suitcase_carry','suitcase_carry','rest','suitcase_carry'],note:'Walk tall. Switch hands every minute.'}},
@@ -1582,7 +1585,7 @@ const PROGRAMS = [
    {name:'A · Heavy',format:'traditional',mainMin:38,
     blocks:[{ex:'kb_front_squat',sets:5,reps:[5,8]},{ex:'clean_press',sets:4,reps:[5,8]},{ex:'romanian_deadlift',sets:4,reps:[8,10]},{ex:'one_arm_row',sets:4,reps:[8,10]}],
     finisher:{name:'Engine',format:'amrap',totalMinutes:5,round:[{ex:'kb_swing',target:15},{ex:'push_up',target:10}],note:'As many rounds as you can with clean reps.'}},
-   {name:'B · Size',format:'superset',mainMin:28,rounds:2,
+   {name:'B · Size',format:'superset',mainMin:28,rounds:3,
     repScheme:{kb_floor_press:[8,12],bent_over_row:[10,12],cossack_squat:[6,8],single_leg_deadlift:[8,10],kb_curl:[10,15],tricep_ext:[10,15]},
     pairs:[['kb_floor_press','bent_over_row'],['cossack_squat','single_leg_deadlift'],['kb_curl','tricep_ext']],
     finisher:{name:'Grip Close',format:'emom',totalMinutes:5,pattern:['suitcase_carry','overhead_carry','rest','suitcase_carry','overhead_carry'],note:'Walk tall. Put it down before the posture goes.'}},
@@ -1598,7 +1601,7 @@ const PROGRAMS = [
    {name:'A · Heavy',format:'traditional',mainMin:40,
     blocks:[{ex:'kb_front_squat',sets:5,reps:[4,6]},{ex:'push_press',sets:5,reps:[4,6]},{ex:'romanian_deadlift',sets:4,reps:[6,8]},{ex:'windmill',sets:3}],
     finisher:{name:'Snatch Close',format:'emom',totalMinutes:5,pattern:['kb_snatch','rest','kb_snatch','rest','kb_snatch'],note:'Five a side, crisp. Technique first — this is the tired end of the session.'}},
-   {name:'B · Size',format:'superset',mainMin:28,rounds:2,
+   {name:'B · Size',format:'superset',mainMin:28,rounds:3,
     repScheme:{kb_floor_press:[8,12],one_arm_row:[8,12],front_rack_lunge:[8,10],kb_good_morning:[10,12],kb_curl:[8,12],tricep_ext:[8,12]},
     pairs:[['kb_floor_press','one_arm_row'],['front_rack_lunge','kb_good_morning'],['kb_curl','tricep_ext']],
     finisher:{name:'Burn Out',format:'amrap',totalMinutes:5,round:[{ex:'goblet_squat',target:10},{ex:'push_up',target:10},{ex:'kb_high_pull',target:'5/side'}],note:'Move well, then move fast.'}},
@@ -1613,14 +1616,14 @@ const PROGRAMS = [
    {name:'A · Double Squat',format:'traditional',mainMin:40,
     blocks:[{ex:'double_front_squat',sets:5,reps:[5,8]},{ex:'gorilla_row',sets:4,reps:[8,10]},{ex:'kb_good_morning',sets:3,reps:[8,12]},{ex:'windmill',sets:3}],
     finisher:{name:'Farmer Clock',format:'emom',totalMinutes:5,pattern:['farmer_carry','farmer_carry','rest','farmer_carry','farmer_carry'],note:'Heavy pair, tall walk.'}},
-   {name:'B · Upper Size',format:'superset',mainMin:28,rounds:2,
+   {name:'B · Upper Size',format:'superset',mainMin:28,rounds:3,
     repScheme:{kb_floor_press:[8,12],renegade_row:[6,8],push_press:[6,8],gorilla_row:[8,10],kb_curl:[10,12],tricep_ext:[10,12]},
     pairs:[['kb_floor_press','renegade_row'],['push_press','gorilla_row'],['kb_curl','tricep_ext']],
     finisher:{name:'Core Close',format:'amrap',totalMinutes:5,round:[{ex:'push_up',target:10},{ex:'around_world',target:8}],note:'Steady. Stop while the shapes are still good.'}},
    {name:'C · Engine',format:'emom',mainMin:25,totalMinutes:25,
     pattern:['double_front_squat','gorilla_row','kb_swing','renegade_row','rest'],
     finisher:{name:'Get-Up Close',format:'emom',totalMinutes:5,pattern:['turkish_getup','rest','turkish_getup','rest','turkish_getup'],note:'One slow rep a minute. Eyes on the bell.'}},
-   {name:'D · Lower Size',format:'superset',mainMin:28,rounds:2,
+   {name:'D · Lower Size',format:'superset',mainMin:28,rounds:3,
     repScheme:{front_rack_lunge:[8,10],romanian_deadlift:[10,12],cossack_squat:[6,8],glute_bridge:[12,15],kb_high_pull:[6,8],hollow_hold:[20,30]},
     pairs:[['front_rack_lunge','romanian_deadlift'],['cossack_squat','glute_bridge'],['kb_high_pull','hollow_hold']],
     finisher:{name:'Snatch Close',format:'emom',totalMinutes:5,pattern:['kb_snatch','rest','kb_snatch','rest','kb_snatch'],note:'Crisp and relaxed. Put it down when the lockout gets soft.'}},
@@ -1669,7 +1672,7 @@ const PROGRAMS = [
     blocks:[{ex:'goblet_squat',sets:3},{ex:'kb_deadlift',sets:3},{ex:'one_arm_row',sets:3},{ex:'push_up',sets:3},{ex:'plank',sets:3}]},
    {name:'Swing & Core',format:'traditional',warmupMin:8,mainMin:32,finisher:{name:'Core Burner',format:'amrap',totalMinutes:4,round:[{ex:'plank',target:'20 sec'},{ex:'kb_swing',target:10},{ex:'push_up',target:8}],note:'Four minutes, steady pace. Stop a rep or two short of failure on every round.'},
     blocks:[{ex:'kb_swing',sets:4},{ex:'overhead_press',sets:3},{ex:'reverse_lunge',sets:3},{ex:'around_world',sets:3}]},
-   {name:'Technique Circuit',format:'superset',warmupMin:8,mainMin:32,rounds:3,
+   {name:'Technique Circuit',format:'superset',circuit:true,warmupMin:8,mainMin:32,rounds:3,
     pairs:[['goblet_squat','push_up'],['kb_deadlift','plank']]},
   ]},
  {id:'iron_engine',name:'IRON ENGINE',tagline:'Strength & fitness · Intermediate',weeks:8,daysPerWeek:3,level:'intermediate',
@@ -1750,7 +1753,7 @@ const PROGRAMS = [
       round:[{ex:'kb_swing',target:15},{ex:'mountain_climber',target:20},{ex:'reverse_lunge',target:'6/side'}],
       note:'Pick a pace you can hold for all six minutes, not the first one.'},
     blocks:[{ex:'kb_front_squat',sets:3},{ex:'one_arm_row',sets:3},{ex:'kb_floor_press',sets:3}]},
-   {name:'Interval Circuit',format:'superset',warmupMin:8,mainMin:28,rounds:4,
+   {name:'Interval Circuit',format:'superset',circuit:true,warmupMin:8,mainMin:28,rounds:4,
     pairs:[['kb_swing','push_up'],['goblet_squat','one_arm_row']]},
    {name:'Long Grind',format:'amrap',warmupMin:10,mainMin:26,totalMinutes:26,
     round:[{ex:'kb_swing',target:15},{ex:'goblet_squat',target:10},{ex:'renegade_row',target:'5/side'},{ex:'figure_8',target:10}]},
@@ -2050,7 +2053,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-05k';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-06c';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -3355,7 +3358,7 @@ function setExp(id){ ONB_DATA.experience=id; render(); }
 function onbStep3(){
   /* The light end matters: a 4 or a 6 is what a press or a halo starts on,
      and someone who owns only those had no way to say so. */
-  const weights=[4,6,8,10,12,16,20,24,28,32];
+  const weights=STD_BELLS.slice();                 // every 2 kg up to 28, then the 4 kg steps competition bells come in
   return '<div class="eyebrow">Step 3 of 6</div><h2 style="font-size:26px;margin:8px 0 10px;">What is actually in your gym?</h2>'
   +'<p style="color:var(--text-3);margin-bottom:18px;font-size:13.5px;">Every weight you can reach today. A bell you do not own will never be programmed.</p>'
   +tokenGrid(weights.map(function(w){
@@ -6416,8 +6419,11 @@ function renderWorkoutPreview(pr){
         +' \u00b7 rest '+restSecondsFor(ex,'between_sets',w,b)+'s');
     }).join('');
   else if(w.format==='superset') mainList = w.pairs.map((pair,i)=>
-      '<div class="eyebrow" style="margin:12px 0 4px;">Pair '+(i+1)+' \u00b7 '+w.rounds+' rounds</div>'
-      + pair.map(id=>exRow(id,'back to back')).join('')).join('');
+      '<div class="eyebrow" style="margin:12px 0 4px;">Pair '+String.fromCharCode(65+i)+' \u00b7 '+w.rounds+' rounds'
+      + (w.circuit ? '' : ' \u00b7 rest '+Math.max.apply(null, pair.map(function(id){ return EX_BY_ID[id] ? restSecondsFor(EX_BY_ID[id],'superset_round',w) : 60; }))+'s')+'</div>'
+      + pair.map((id,k)=>{ const e = EX_BY_ID[id], rng = e ? plannedReps(e, w) : null;
+          return exRow(id, String.fromCharCode(65+i)+(k+1)+' \u00b7 '+(rng ? rng[0]+'\u2013'+rng[1]+(e.timeBased?' sec':' reps')+(isPerSide(e)?' per side':'') : '')+(k===0?' \u00b7 straight into '+String.fromCharCode(65+i)+'2':'')); }).join('')).join('')
+      + (w.circuit ? '<p class="wr-meta" style="margin-top:8px;">A circuit: every pair once, then rest, '+w.rounds+' laps.</p>' : '');
   else if(w.format==='emom') mainList = (w.pattern||[]).map((id,i)=> id==='rest'
       ? '<div class="ex-row"><div class="ex-row-body"><div class="ex-row-title" style="color:var(--text-3);">Rest minute</div></div></div>'
       : exRow(id,'minute '+(i+1)+(isPerSide(EX_BY_ID[id])?' \u00b7 alternates sides':'')+', then repeats')).join('');
@@ -6569,7 +6575,8 @@ function doneSegments(){
     return d;
   }
   if(w.format==='superset'){
-    return SESSION.round*w.pairs.length*2 + SESSION.blockIndex*2 + SESSION.setIndex;
+    return w.circuit ? SESSION.round*w.pairs.length*2 + SESSION.blockIndex*2 + SESSION.setIndex
+                     : SESSION.blockIndex*w.rounds*2 + SESSION.round*2 + SESSION.setIndex;
   }
   if(w.format==='emom') return SESSION.minute;
   if(w.format==='complex'){ const n=(w.chain||[]).length, sd=complexSides(w);
@@ -6634,7 +6641,7 @@ const VOICE = { on:false, last:'', preKey:null };
 function voiceSupported(){ return typeof window!=='undefined' && 'speechSynthesis' in window; }
 function audioSupported(){ return typeof window!=='undefined' && !!(window.AudioContext||window.webkitAudioContext); }
 function coachSupported(){ return voiceSupported() || audioSupported(); }
-function loadVoicePref(){ VOICE.on = !!(STATE.profile && STATE.profile.voice); }
+function loadVoicePref(){ VOICE.on = !!(STATE.profile && STATE.profile.voice); applyAudioSession(); }
 function toggleVoice(){
   VOICE.on = !VOICE.on;
   STATE.profile.voice = VOICE.on; STATE.profile.voiceHintSeen = true; saveState();
@@ -6758,9 +6765,15 @@ function setVoiceGender(g){
   render();
 }
 try{ if('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = function(){ VOICE_CACHE = null; }; }catch(e){}
-/* iOS plays Web Audio through the ringer channel, so the silent switch mutes
-   every beep. Declaring the session as playback puts it on the media channel. */
-try{ if(navigator.audioSession) navigator.audioSession.type = 'playback'; }catch(e){}
+/* How the coach shares the speaker with your music. 'playback' stopped Spotify
+   and Apple Music outright the moment the first beep played; 'transient' plays
+   the cues over the music (iOS lowers it for a moment at most). The price is
+   that the silent switch can mute the beeps, so playback stays available as a
+   setting for people who train without music. */
+function applyAudioSession(){
+  try{ if(navigator.audioSession) navigator.audioSession.type = (STATE.profile && STATE.profile.musicMix === false) ? 'playback' : 'transient'; }catch(e){}
+}
+applyAudioSession();
 function testCoach(){
   const wasOn = VOICE.on;
   if(!wasOn){ VOICE.on = true; }
@@ -6855,7 +6868,7 @@ function nextUpInfo(){
     ex = EX_BY_ID[p[SESSION.setIndex]]; if(!ex) return null;
     rec = getRecommendation(ex, w.programId, w);
     prefix = 'Set '+(SESSION.setIndex+1);
-    detail = (SESSION.setIndex===0?'A1':'A2')+' · Round '+(SESSION.round+1)+' of '+w.rounds;
+    detail = String.fromCharCode(65+SESSION.blockIndex)+(SESSION.setIndex+1)+' · Round '+(SESSION.round+1)+' of '+w.rounds;
   } else if(w.format==='complex' && w.chain){
     const c = w.chain[SESSION.blockIndex]; if(!c) return null;
     ex = EX_BY_ID[c.ex]; if(!ex) return null;
@@ -7552,7 +7565,9 @@ function neverReadiness(){
 }
 function setCoachPref(k, on){
   if(k==='voice'){ if(!!VOICE.on !== !!on) toggleVoice(); render(); return; }
-  STATE.profile[k] = !!on; saveState(); render();
+  STATE.profile[k] = !!on; saveState();
+  if(k==='musicMix'){ applyAudioSession(); toast(on ? 'Your music keeps playing under the coach' : 'Coach plays through the silent switch; music pauses'); }
+  render();
 }
 function voicePickerMarkup(){
   const g = wantedGender(), v = pickVoice();
@@ -7586,6 +7601,7 @@ function coachPrefsSection(){
   return '<div class="section"><div class="section-title">Coaching</div><div class="card card-tight" style="padding:4px 16px;">'
     + (coachSupported() ? row('voice','Voice coach','Calls the next set and beeps the countdown', !!VOICE.on)
         + (voiceSupported() ? voicePickerMarkup() : '')
+        + row('musicMix','Play over my music','Spotify and Apple Music keep playing. If the beeps are silent, check the phone\u2019s silent switch', !(STATE.profile && STATE.profile.musicMix === false))
         + '<div style="padding:0 0 10px;"><button class="btn btn-ghost btn-sm" onclick="testCoach()">'+ICON.soundOn+' Test the sound</button></div>' : '')
     + row('readiness','Readiness check','Three questions before each session', readinessWanted())
     + '<div class="pref-row" style="border-bottom:0;padding-bottom:4px;"><div style="flex:1;min-width:0;"><div class="wr-title">Colour theme</div><div class="wr-meta">How the app looks</div></div></div>'
@@ -7734,7 +7750,9 @@ function restSecondsFor(ex, kind, w, block){
     base = top <= 8 ? 90 : top <= 12 ? 75 : top <= 15 ? 60 : 50;
   }
   if(kind === 'superset_within') return 0;            // straight into the pair
-  if(kind === 'superset_round')  return Math.max(45, Math.round(base*0.8));
+  /* after both movements of a pair: the working muscles had the partner's set to
+     recover, so the full rest of the harder one is enough — never under a minute */
+  if(kind === 'superset_round')  return Math.max(60, base);
   if(kind === 'between_exercises') return Math.round(base*0.8);
   /* a per-side lift: each side already rested while the other worked, so the
      rest after the pair is shorter \u2014 90 becomes 70, 75 becomes 55 */
@@ -7765,8 +7783,12 @@ function renderSupersetPhase(){
   SESSION._focusCtx = { exId: ex.id,
     log: { title: 'How did '+(sideTxt ? 'the '+sideTxt.toLowerCase() : tag)+' go?', def: rec.low, weight: rec.weight!=null ? rec.weight : null,
            save: "SESSION._sheet=null;submitSupersetSet('"+exId+"',"+rec.low+","+rec.high+")" },
-    skipOpts: [['Skip this pair this round', 'skipSupersetPair()', 'On to the next pair'+(SESSION.round+1<w.rounds?' \u2014 it comes back next round':'')],
-               ['End the supersets here', 'skipSupersetRest()', 'The rounds left are dropped']] };
+    skipOpts: w.circuit
+      ? [['Skip this pair this round', 'skipSupersetPair()', 'On to the next pair'+(SESSION.round+1<w.rounds?' \u2014 it comes back next round':'')],
+         ['End the supersets here', 'skipSupersetRest()', 'The rounds left are dropped']]
+      : [['Skip this round', 'skipSupersetPair()', SESSION.round+1<w.rounds ? 'Straight to round '+(SESSION.round+2)+' of this pair' : 'On to the next pair'],
+         ['Finish this pair', 'skipSupersetWhole()', SESSION.blockIndex+1<w.pairs.length ? 'On to pair '+String.fromCharCode(66+SESSION.blockIndex) : 'That was the last pair'],
+         ['End the supersets here', 'skipSupersetRest()', 'The pairs left are dropped']] };
   let html = focusHero(ex.id, tag+' · Round '+(SESSION.round+1)+' of '+w.rounds+focusSideTag(ex), ex.name);
   const nextId = which===0 ? pair[1] : null;
   html += '<div class="focus-body">' + focusBig(rec, ex) + firstBellHint(ex, rec) + focusWhy(rec)
@@ -7777,11 +7799,22 @@ function renderSupersetPhase(){
   return html;
 }
 function skipSupersetPair(){
-  const w = SESSION.workout; resetSide(); SESSION.setIndex = 0; SESSION.blockIndex++;
-  if(SESSION.blockIndex >= w.pairs.length){
-    SESSION.blockIndex = 0; SESSION.round++;
-    if(SESSION.round >= w.rounds){ completeMainPart(); }
+  const w = SESSION.workout; resetSide(); SESSION.setIndex = 0;
+  if(w.circuit){
+    SESSION.blockIndex++;
+    if(SESSION.blockIndex >= w.pairs.length){
+      SESSION.blockIndex = 0; SESSION.round++;
+      if(SESSION.round >= w.rounds){ completeMainPart(); }
+    }
+  } else {
+    SESSION.round++;
+    if(SESSION.round >= w.rounds){ SESSION.round = 0; SESSION.blockIndex++; if(SESSION.blockIndex >= w.pairs.length) completeMainPart(); }
   }
+  VOICE.preKey = null; render();
+}
+function skipSupersetWhole(){
+  const w = SESSION.workout; resetSide(); SESSION.setIndex = 0; SESSION.round = 0; SESSION.blockIndex++;
+  if(SESSION.blockIndex >= w.pairs.length) completeMainPart();
   VOICE.preKey = null; render();
 }
 function skipSupersetRest(){ resetSide(); SESSION.setIndex = 0; completeMainPart(); render(); }
@@ -7804,16 +7837,32 @@ function submitSupersetSet(exId, low, high){
   SESSION.setIndex++;
   if(SESSION.setIndex>=2){
     SESSION.setIndex=0;
-    // hold on to the pair that just finished — the round rest is sized by it,
+    // hold on to the pair that just finished — the rest is sized by it,
     // and the index below is about to move past it
     const donePair = w.pairs[SESSION.blockIndex] || [];
-    SESSION.blockIndex++;
-    if(SESSION.blockIndex>=w.pairs.length){
-      SESSION.blockIndex=0; SESSION.round++;
-      if(SESSION.round>=w.rounds){ completeMainPart(); render(); return; }
-      const hardest = donePair.map(id=>EX_BY_ID[id])
-        .sort((a,b)=>restSecondsFor(b,'superset_round',w)-restSecondsFor(a,'superset_round',w))[0];
-      startRest(restSecondsFor(hardest,'superset_round',w), ()=>render(), 'Round complete'); return;
+    const hardest = donePair.map(id=>EX_BY_ID[id])
+      .sort((a,b)=>restSecondsFor(b,'superset_round',w)-restSecondsFor(a,'superset_round',w))[0];
+    const restS = restSecondsFor(hardest,'superset_round',w);
+    if(w.circuit){
+      /* written as a circuit: every pair once, then one rest for the lap */
+      SESSION.blockIndex++;
+      if(SESSION.blockIndex>=w.pairs.length){
+        SESSION.blockIndex=0; SESSION.round++;
+        if(SESSION.round>=w.rounds){ completeMainPart(); render(); return; }
+        startRest(restS, ()=>render(), 'Round complete'); return;
+      }
+    } else {
+      /* a superset: the two movements back to back, then a rest, for all of
+         the pair's rounds — then the next pair. Running every pair before the
+         first rest turned a size day into a circuit. */
+      SESSION.round++;
+      const tag = String.fromCharCode(65+SESSION.blockIndex);
+      if(SESSION.round>=w.rounds){
+        SESSION.round=0; SESSION.blockIndex++;
+        if(SESSION.blockIndex>=w.pairs.length){ completeMainPart(); render(); return; }
+        startRest(restS, ()=>render(), 'Pair '+tag+' done \u2014 next, pair '+String.fromCharCode(65+SESSION.blockIndex)); return;
+      }
+      startRest(restS, ()=>render(), 'Round '+SESSION.round+' of '+w.rounds+' done'); return;
     }
   }
   render();
@@ -9406,7 +9455,7 @@ function renderProfile(){
   +profRow('Program', STATE.selectedProgramId? PROG_BY_ID[STATE.selectedProgramId].name : 'None selected')
   +'</div>'
   +'<div class="section"><div class="section-title">Kettlebell Inventory</div><div class="card">'
-  +'<div class="chip-row">'+[...new Set([4,6,8,10,12,16,20,24,28,32].concat(p.inventory||[]))].sort((a,b)=>a-b).map(w=>'<div class="chip '+(p.inventory.includes(w)?'selected':'')+'" onclick="toggleInventory('+w+')">'+bellLabel(w)+'</div>').join('')+'</div>'
+  +'<div class="chip-row">'+[...new Set(STD_BELLS.concat(p.inventory||[]))].sort((a,b)=>a-b).map(w=>'<div class="chip '+(p.inventory.includes(w)?'selected':'')+'" onclick="toggleInventory('+w+')">'+bellLabel(w)+'</div>').join('')+'</div>'
   +'</div></div>'
   +'<div class="section"><div class="section-title">Body</div><div class="card">'
   +'<div class="field"><label for="profHeight">Height</label><div class="unit-input"><input type="number" inputmode="decimal" id="profHeight" placeholder="e.g. 178" value="'+(p.heightCm||'')+'" onchange="setHeight(this.value)"><span>cm</span></div></div>'
@@ -10039,18 +10088,49 @@ const FOOD_SERV = {oats:60,milk:250,soy_milk:250,whey:30,egg:110,bread:80,tortil
   rice:70,bulgur:70,pasta:80,quinoa:60,couscous:70,noodles:70,lentils:70,granola:40,ricecake:27,lyutenitsa:30,soy_sauce:10,berries:100,chicken:150,
   turkey:150,beef:150,pork:150,salmon:150,hake:180,tuna:110,trout:200,mackerel:150,shrimp:150,smoked_salmon:60,ham:80,tofu:150,tempeh:120};
 function mealHay(m){
-  return (m.n+' '+(m.it||[]).map(function(x){ return FOODS[x[0]].n+' '+(FOOD_BG[x[0]]||''); }).join(' ')+' '+(m.bgn||'')).toLowerCase();
+  return (m.n+' '+(m.it||[]).map(function(x){ return FOODS[x[0]] ? FOODS[x[0]].n+' '+(FOOD_BG[x[0]]||'') : ''; }).join(' ')+' '+(m.bgn||'')+' '+(MEAL_BG[m.id]||'')).toLowerCase();
 }
 /* every word must be there; long words also match without their ending (банани \u2192 банан) */
-function searchHit(hay, q){ return q.toLowerCase().split(/\s+/).filter(Boolean).every(function(w){ return hay.indexOf(w)>=0 || (w.length>=6 && hay.indexOf(w.slice(0, w.length-2))>=0); }); }
+function searchHit(hay, q){
+  const one = function(w){ return hay.indexOf(w)>=0 || (w.length>=6 && hay.indexOf(w.slice(0, w.length-2))>=0); };
+  return q.toLowerCase().split(/\s+/).filter(Boolean).every(function(w){ const t = translit(w); return one(w) || (t!==w && one(t)); });
+}
 function customMeals(){ return (STATE.nutri && STATE.nutri.custom) || []; }
 function mealById(id){ return MEAL_BY_ID[id] || customMeals().find(function(m){ return m.id===id; }) || null; }
 function allMeals(){ return MEALS.concat(customMeals()); }
 const NUTRI_EXTRAS = [
-  ['Protein snack', 110, 20], ['Coffee with milk', 50, 3], ['Piece of fruit', 80, 1], ['Handful of nuts', 180, 6],
-  ['Banitsa, one piece', 350, 10], ['Slice of pizza', 280, 12], ['Beer, 0.5 l', 210, 2], ['Glass of wine', 120, 0],
-  ['Chocolate bar', 240, 3], ['Sandwich', 350, 18],
+  ['Protein snack', 110, 20, 'протеин'], ['Coffee with milk', 50, 3, 'кафе с мляко'], ['Piece of fruit', 80, 1, 'плод'], ['Handful of nuts', 180, 6, 'ядки шепа'],
+  ['Banitsa, one piece', 350, 10, 'баница'], ['Banitsa + ayran', 470, 16, 'баница с айран'], ['Slice of pizza', 280, 12, 'пица парче'], ['Beer, 0.5 l', 210, 2, 'бира'], ['Glass of wine', 120, 0, 'вино чаша'],
+  ['Chocolate bar', 240, 3, 'шоколад'], ['Sandwich', 350, 18, 'сандвич'],
+  ['Mekitsa', 300, 6, 'мекица'], ['Croissant', 280, 6, 'кроасан'], ['Kifla / sweet bun', 300, 7, 'кифла'], ['Shopska salad', 250, 9, 'шопска салата'],
+  ['Kebapche, one', 140, 9, 'кебапче'], ['Kyufte, one', 150, 9, 'кюфте'], ['Fries, portion', 380, 4, 'пържени картофи'], ['Doner / duner', 650, 32, 'дюнер'],
+  ['Ice cream, scoop', 140, 2, 'сладолед'], ['Cola, 330 ml', 140, 0, 'кола'], ['Rakia, 50 ml', 110, 0, 'ракия'], ['Boza, 250 ml', 160, 2, 'боза'],
+  ['Biscuits, 3', 150, 2, 'бисквити'], ['Wafer', 150, 2, 'вафла'], ['Popcorn, bowl', 200, 4, 'пуканки'],
 ];
+/* the meals in Bulgarian, so "баница" or "боб" finds them */
+const MEAL_BG = {oats_yog:'овесени ядки гръцко кисело мляко горски плодове', omelette_b:'омлет със сирене домат', skyr_bowl:'скир банан орехи', eggs_toast:'бъркани яйца филия',
+  oats_milk_banana:'овесени ядки с прясно мляко и банан', oats_milk_whey:'овесени ядки мляко банан протеин', pb_oats:'овесени ядки фъстъчено масло протеин', cottage_toast:'филия котидж домат',
+  ham_sandwich:'сандвич шунка кашкавал', tofu_scramble:'тофу чушки', pb_banana_oats:'овесени ядки фъстъчено масло банан', chicken_rice:'пилешко ориз шопска салата',
+  turkey_bulgur:'пуешко булгур', tuna_wrap:'тортила риба тон', lentil_stew:'яхния червена леща', beef_potatoes:'кайма картофи салата', chicken_pasta:'паста пилешко домати',
+  chickpea_feta:'салата нахут сирене яйце', chickpea_bulgur:'салата нахут булгур', omelette_d:'омлет сирене хляб', salmon_potatoes:'сьомга картофи салата', bean_stew:'боб яхния сирене',
+  tuna_pasta:'паста риба тон', pork_veg:'свинско зеленчуци булгур', chicken_wrap:'тортила пилешко хумус', hake_rice:'бяла риба ориз броколи', tofu_stirfry:'тофу ориз',
+  bean_chili:'чили боб ориз', out_grill:'ресторант скара салата', out_pizza:'пица ресторант', out_doner:'дюнер дюрюм', eggs_panagyurski:'яйца по панагюрски',
+  popara:'попара извара', lyutenitsa_toast:'филия лютеница яйца сирене', salmon_toast:'пушена сьомга яйца', yog_granola:'кисело мляко гранола', overnight_skyr:'овесени ядки скир ябълка',
+  breakfast_burrito:'бурито яйца', shakshuka:'шакшука яйца домати', tofu_avocado_toast:'авокадо тофу филия', socca_omelette:'омлет нахутено брашно', soy_yog_bowl:'соево кисело мляко',
+  pb_smoothie:'смути банан фъстъчено масло', bob_chorba:'боб чорба', leshta_chorba:'леща чорба', chicken_soup:'пилешка супа', tarator_chicken:'таратор пилешко',
+  caesar_light:'салата цезар пилешко', burrito_bowl:'бурито купа пилешко', poke_bowl:'поке сьомга', gyros_pita:'гирос пита дзадзики', quinoa_feta:'киноа салата сирене',
+  tempeh_bowl:'темпе киноа', ham_avocado_wrap:'тортила шунка авокадо', stuffed_peppers:'пълнени чушки', moussaka_light:'мусака', chicken_gyuvech:'гювеч пилешко',
+  sarmi:'сарми зелеви', skara_shopska:'кебапче кюфте шопска скара', trout_potatoes:'пъстърва картофи', mackerel_bulgur:'скумрия булгур', chicken_curry:'къри пилешко',
+  shrimp_noodles:'скариди нудли', chili_con_carne:'чили кон карне', turkey_bolognese:'болонезе пуешко', teriyaki_salmon:'сьомга терияки', fajitas:'фахитас пилешко',
+  veg_gyuvech:'гювеч зеленчуков', chickpea_curry:'къри нахут', lentil_bolognese:'болонезе леща', sweet_potato_bowl:'сладък картоф боб', ayran_walnuts:'айран орехи',
+  izvara_honey:'извара мед', egg_lyutenitsa:'яйце лютеница', edamame_snack:'едамаме', skyr_granola:'скир гранола', roasted_chickpeas:'печен нахут',
+  salmon_ricecakes:'оризовки сьомга', orange_almonds:'портокал бадеми', soy_yog_snack:'соево кисело мляко', pb_ricecakes:'оризовки фъстъчено масло',
+  out_mehana:'механа ресторант скара', out_banitsa:'баница с айран закуска', out_sushi:'суши', out_burger:'бургер', out_asian:'китайско азиатска храна', out_breakfast:'кафене закуска',
+  banana_skyr:'банан скир', cottage_walnuts:'котидж орехи', apple_pb:'ябълка фъстъчено масло', shake_banana:'протеин шейк банан', yog_oats:'кисело мляко овесени ядки мед',
+  ricecakes_ham:'оризовки шунка', eggs_boiled:'варени яйца', hummus_veg:'хумус зеленчуци', almonds_fruit:'бадеми ябълка'};
+/* Cyrillic typed into a Latin name: баница \u2192 banitsa, айрян \u2192 ayryan */
+const TRANSLIT = {а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sht',ъ:'a',ь:'y',ю:'yu',я:'ya'};
+function translit(q){ return q.toLowerCase().split('').map(function(c){ return TRANSLIT[c]!=null ? TRANSLIT[c] : c; }).join(''); }
 const NUTRI_HABITS = [['protein','Protein target hit'],['veg','Veg at 2 meals'],['water','2\u20133 L water'],['sleep','7 h+ sleep']];
 
 let NUTRI_SHEET = null, NUTRI_TAB = 'today', NUTRI_FILTER = 'all', NUTRI_SETUP = null;
@@ -10504,10 +10584,12 @@ function renderFuel(){
 }
 function fuelToday(){
   const date = todayISO(), plan = nutriPlan(date), t = plan.t, eat = nutriEaten(date), d = (STATE.nutri.days[date])||{}, ate = d.ate||{};
+  const searchBar = '<div class="nu-search nu-search2 nu-gsearch"><input id="nuGQ" type="search" placeholder="Ate something? Search \u2014 баница, oats, chicken\u2026" value="'+esc(NUTRI_GQ)+'" oninput="globalSearch(this.value)" autocomplete="off">'
+    + '<button aria-label="Scan a barcode" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+'</button></div><div id="nuGList">'+(NUTRI_GQ ? globalListHtml(NUTRI_GQ) : '')+'</div>';
   const dayChips = '<div class="eyebrow" style="font-size:11px;margin-bottom:7px;">When do you train today?</div><div class="nu-daytype">'
     + NUTRI_WHEN.map(function(w){ return '<button class="'+(plan.train && plan.when===w[0]?'on':'')+'" onclick="nutriSetTrain(true,\''+w[0]+'\')">'+w[1]+'</button>'; }).join('')
     + '<button class="'+(!plan.train?'on':'')+'" onclick="nutriSetTrain(false)">Rest</button></div>';
-  let html = '<div class="card nu-top">'+dayChips
+  let html = searchBar + '<div class="card nu-top">'+dayChips
     + '<div class="nu-row">'+nuRing(t.kcal-eat.k, t.kcal, eat.k)
     + '<div style="flex:1;min-width:0;">'+nuBar('Protein', eat.p, t.p, 'var(--green)')+nuBar('Carbs', eat.c, t.c, 'var(--blue)')+nuBar('Fat', eat.f, t.f, 'var(--orange)')+'</div></div>'
     + '<div class="wr-meta" style="margin-top:12px;">Target '+fmtK(t.kcal)+' kcal \u00b7 '+({lose:'fat loss',gain:'lean gain',maintain:'maintain'}[STATE.nutri.goal||'maintain'])
@@ -10608,13 +10690,14 @@ function nutriSheetMarkup(){
   if(NUTRI_SHEET.k==='extra'){
     return wrap('Add something', '<h3>Ate something else?</h3><p class="wr-meta" style="margin:0;">A rough guess is plenty \u2014 or scan the packet.</p>'
       + '<button class="nu-build" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+'<span><b>Scan a barcode</b><span class="wr-meta">Packaged food: exact numbers from Open Food Facts</span></span></button>'
-      + '<div class="nu-presets">'+NUTRI_EXTRAS.map(function(x){ return '<button onclick="nutriAddExtra(\''+x[0].replace(/'/g,"\\'")+'\','+x[1]+','+x[2]+')"><b>'+esc(x[0])+'</b><span>'+x[1]+' kcal \u00b7 '+x[2]+' g</span></button>'; }).join('')+'</div>'
+      + '<div class="nu-presets">'+NUTRI_EXTRAS.slice(0,10).map(function(x){ return '<button onclick="nutriAddExtra(\''+x[0].replace(/'/g,"\\'")+'\','+x[1]+','+x[2]+')"><b>'+esc(x[0])+'</b><span>'+x[1]+' kcal \u00b7 '+x[2]+' g</span></button>'; }).join('')+'</div>'
       + '<div class="field"><label for="nxL">Or your own</label><input id="nxL" type="text" placeholder="What was it?"></div>'
       + '<div class="nu-2"><div class="field"><div class="unit-input"><input id="nxK" type="number" inputmode="numeric" placeholder="kcal"><span>kcal</span></div></div>'
       + '<div class="field"><div class="unit-input"><input id="nxP" type="number" inputmode="numeric" placeholder="protein"><span>g</span></div></div></div>'
       + '<button class="btn btn-primary btn-block" onclick="nutriAddCustom()">Add</button>'+close);
   }
   if(NUTRI_SHEET.k==='scan') return wrap('Scan a barcode', scanSheetHtml());
+  if(NUTRI_SHEET.k==='qmeal') return wrap('Add a meal', quickMealHtml() + close);
   const slot = plan.slots.find(function(s){ return s.key===NUTRI_SHEET.slot; });
   if(!slot) return '';
   if(NUTRI_SHEET.k==='meal' && slot.meal){
@@ -10824,7 +10907,8 @@ function scanTotHtml(){
 }
 function scanAdd(){
   const S = NUTRI_SHEET, pr = S.prod, g = S.g||0; if(!pr || !(g > 0)){ toast('Set how much'); return; }
-  const id = offSaveFood(pr);
+  NUTRI_GQ = '';
+  const id = S.local ? null : offSaveFood(pr);
   if(S.mode==='build' && S.back){ S.back.items.push([id, g]); S.back.fq = ''; NUTRI_SHEET = S.back; saveState(); render(); toast('Added to your meal'); return; }
   const f = g/100;
   nutriAddExtra(pr.name+' \u00b7 '+g+' g', pr.k*f, pr.p*f, pr.c*f, pr.f*f);
@@ -10848,14 +10932,14 @@ function scanSheetHtml(){
     if(pr.serv) opts.push([pr.serv, '1 serving \u00b7 '+pr.serv+' g']);
     opts.push([100, '100 g']);
     if(pr.pack && pr.pack !== 100 && pr.pack <= 2000) opts.push([pr.pack, 'Whole pack \u00b7 '+pr.pack+' g']);
-    return '<div class="eyebrow">'+esc(pr.brand || 'Found')+'</div><h3 style="font-size:21px;">'+esc(pr.name)+'</h3>'
+    return '<div class="eyebrow">'+esc(pr.brand || (S.local ? 'Food' : 'Found'))+'</div><h3 style="font-size:21px;">'+esc(pr.name)+'</h3>'
       + '<p class="wr-meta" style="margin:0;">Per 100 g: '+Math.round(pr.k)+' kcal \u00b7 '+(+pr.p.toFixed(1))+' g protein \u00b7 '+(+pr.c.toFixed(1))+' g carbs \u00b7 '+(+pr.f.toFixed(1))+' g fat</p>'
       + '<div class="field"><label for="nuG">How much?</label><div class="unit-input"><input id="nuG" type="number" inputmode="decimal" value="'+S.g+'" oninput="scanGrams(this.value)"><span>g / ml</span></div></div>'
       + '<div class="chip-row">'+opts.map(function(o){ return '<div class="chip" onclick="scanGrams('+o[0]+');document.getElementById(\'nuG\').value='+o[0]+'">'+esc(o[1])+'</div>'; }).join('')+'</div>'
       + '<div class="nu-macs4" id="nuScanTot">'+scanTotHtml()+'</div>'
       + '<button class="btn btn-primary btn-block" onclick="scanAdd()">'+(S.mode==='build' ? 'Add to my meal' : 'Add to today')+'</button>'
-      + '<button class="btn btn-secondary btn-block" onclick="NUTRI_SHEET.phase=\'camera\';NUTRI_SHEET.code=\'\';render()">Scan another</button>'
-      + back;
+      + (S.local || !S.code ? '<button class="btn btn-ghost btn-block" onclick="NUTRI_SHEET=null;render()">Close</button>'
+         : '<button class="btn btn-secondary btn-block" onclick="NUTRI_SHEET.phase=\'camera\';NUTRI_SHEET.code=\'\';render()">Scan another</button>' + back);
   }
   const msg = S.phase==='offline' ? '<b>No connection.</b> The scanner looks products up online. Add it as a rough guess for now.'
     : S.phase==='nonutri' ? '<b>Found, but without nutrition numbers.</b> Copy them from the label into a rough guess.'
@@ -10863,6 +10947,70 @@ function scanSheetHtml(){
   return '<h3>Barcode '+esc(S.code||'')+'</h3><div class="nu-tip" style="margin:0;">'+msg+'</div>'
     + '<button class="btn btn-primary btn-block" onclick="NUTRI_SHEET={k:\'extra\'};render()">Add a rough guess</button>'
     + '<button class="btn btn-secondary btn-block" onclick="NUTRI_SHEET.phase=\'camera\';render()">Try again</button>' + back;
+}
+
+
+/* ---------- one search for everything you might have eaten ---------- */
+let NUTRI_GQ = '';
+function globalSearch(v){ NUTRI_GQ = v; const el = document.getElementById('nuGList'); if(el) el.innerHTML = v.trim() ? globalListHtml(v) : ''; }
+function globalListHtml(q){
+  q = q.trim(); if(!q) return '';
+  const meals = allMeals().filter(mealAllowed).filter(function(m){ return searchHit(mealHay(m), q); }).slice(0, 6);
+  const foods = Object.keys(FOODS).filter(function(id){ return searchHit(foodHay(id), q); }).slice(0, 6);
+  const extras = NUTRI_EXTRAS.map(function(x,i){ return [x,i]; }).filter(function(e){ return searchHit((e[0][0]+' '+(e[0][3]||'')).toLowerCase(), q); }).slice(0, 4);
+  let h = '<div class="card nu-gres">';
+  if(extras.length) h += '<div class="eyebrow nu-grp">Quick add</div>' + extras.map(function(e){ const x = e[0];
+      return '<button class="nu-food" onclick="NUTRI_GQ=\'\';nutriAddExtra(\''+x[0].replace(/'/g,"\\'")+'\','+x[1]+','+x[2]+')"><span>'+esc(x[0])+'</span><i>'+x[1]+' kcal \u00b7 '+x[2]+' g protein</i>'+ICON.plus+'</button>'; }).join('');
+  if(meals.length) h += '<div class="eyebrow nu-grp">Meals</div>' + meals.map(function(m){
+      const sc = quickMealScale(m);
+      return '<button class="nu-food" onclick="openQuickMeal(\''+m.id+'\')"><span>'+m.e+' '+esc(m.n)+'</span><i>'+fmtK(sc.mac.k)+' kcal</i>'+ICON.chevron+'</button>'; }).join('');
+  if(foods.length) h += '<div class="eyebrow nu-grp">Foods</div>' + foods.map(function(id){ const fd = FOODS[id];
+      return '<button class="nu-food" onclick="openQuickFood(\''+id+'\')"><span>'+esc(fd.n)+'</span><i>'+Math.round(fd.k)+' kcal / 100 g</i>'+ICON.chevron+'</button>'; }).join('');
+  if(!meals.length && !foods.length && !extras.length) h += '<p class="wr-meta" style="margin:4px 0;">Nothing here called \u201c'+esc(q)+'\u201d.</p>';
+  h += (q.length >= 3 ? '<button class="nu-online" onclick="gOffSearch()">Search shop products for \u201c'+esc(q)+'\u201d '+ICON.chevron+'</button><div id="nuGOff"></div>' : '')
+    + '<button class="nu-online" onclick="NUTRI_GQ=\'\';NUTRI_SHEET={k:\'extra\'};render()">Not listed? Add it as a rough guess '+ICON.chevron+'</button>';
+  return h + '</div>';
+}
+/* a meal logged from search is sized like it would be in today's plan */
+function quickMealScale(m){
+  if(m.out || m.keep) return scaleMeal(m, 0);
+  const plan = nutriPlan(todayISO()), sl = plan && plan.slots.find(function(s){ return m.s.indexOf(s.type)>=0; });
+  return scaleMeal(m, sl ? sl.kcal : 500);
+}
+function openQuickMeal(id){ NUTRI_SHEET = {k:'qmeal', id:id, f:1}; render(); }
+function openQuickFood(id){
+  const fd = FOODS[id]; if(!fd) return;
+  const serv = FOOD_SERV[id] || (fd.unit || 100);
+  NUTRI_SHEET = {k:'scan', mode:'extra', phase:'found', local:true, code:'', g:serv,
+    prod:{name:fd.n, brand:'', k:fd.k, p:fd.p, c:fd.c, f:fd.f, serv:serv, pack:0}};
+  render();
+}
+async function gOffSearch(){
+  const q = NUTRI_GQ.trim(), el = document.getElementById('nuGOff'); if(!el || q.length<3) return;
+  el.innerHTML = '<p class="wr-meta">Searching\u2026</p>';
+  try{
+    const r = await fetch('https://world.openfoodfacts.org/cgi/search.pl?search_simple=1&json=1&page_size=12&search_terms='+encodeURIComponent(q)+'&fields='+OFF_FIELDS);
+    const j = await r.json();
+    const list = (j.products||[]).map(function(p){ return offProduct(p); }).filter(Boolean);
+    window._gOff = list;
+    el.innerHTML = list.length ? list.map(function(pr,i){ return '<button class="nu-food" onclick="gOffPick('+i+')"><span>'+esc(pr.name)+(pr.brand?' <small>'+esc(pr.brand)+'</small>':'')+'</span><i>'+Math.round(pr.k)+' kcal / 100 g</i>'+ICON.chevron+'</button>'; }).join('')
+      : '<p class="wr-meta">Nothing found online either.</p>';
+  }catch(e){ el.innerHTML = '<p class="wr-meta">Product search needs a connection.</p>'; }
+}
+function gOffPick(i){ const pr = (window._gOff||[])[i]; if(!pr) return; NUTRI_SHEET = {k:'scan', mode:'extra', phase:'found', code:pr.code, g:pr.serv||100, prod:pr}; render(); }
+function quickMealHtml(){
+  const S = NUTRI_SHEET, m = mealById(S.id); if(!m) return '';
+  const base = quickMealScale(m), f = S.f||1, k = base.mac.k*f, p = base.mac.p*f;
+  const plan = nutriPlan(todayISO());
+  const slots = plan.slots.filter(function(s){ return !m.out || s.type!=='s'; });
+  return '<div class="eyebrow">'+(m.out ? 'Eating out' : 'Meal')+'</div><h3 style="font-size:21px;">'+m.e+' '+esc(m.n)+'</h3>'
+    + (base.items.length ? '<p class="wr-meta" style="margin:0;">'+base.items.map(function(x){ return esc(amountTxt(x[0], Math.round(x[1]*f))+' '+FOODS[x[0]].n.replace(/ \(.*\)/,'').toLowerCase()); }).join(' \u00b7 ')+'</p>' : '<p class="wr-meta" style="margin:0;">'+esc(m.how)+'</p>')
+    + '<div class="field" style="margin:0;"><label>How much?</label><div class="chip-row">'+[[0.5,'Half'],[1,'One portion'],[1.5,'1\u00bd'],[2,'Double']].map(function(o){
+        return '<div class="chip '+(f===o[0]?'selected':'')+'" onclick="NUTRI_SHEET.f='+o[0]+';render()">'+o[1]+'</div>'; }).join('')+'</div></div>'
+    + '<div class="nu-macs4">'+[['kcal',fmtK(k)],['protein',Math.round(p)+' g'],['carbs',Math.round(base.mac.c*f)+' g'],['fat',Math.round(base.mac.f*f)+' g']].map(function(x){ return '<div><b>'+x[1]+'</b><span>'+x[0]+'</span></div>'; }).join('')+'</div>'
+    + '<button class="btn btn-primary btn-block" onclick="NUTRI_GQ=\'\';nutriAddExtra(\''+m.n.replace(/'/g,"\\'")+(f!==1?' \u00d7'+f:'')+'\','+k+','+p+','+(base.mac.c*f)+','+(base.mac.f*f)+')">'+ICON.check+' Ate it \u2014 add to today</button>'
+    + '<div class="eyebrow" style="margin-top:4px;">Or put it in today\u2019s plan</div><div class="chip-row">'+slots.map(function(s){
+        return '<div class="chip" onclick="NUTRI_GQ=\'\';nutriPick(\''+s.key+'\',\''+m.id+'\')">'+esc(s.label.replace(/ \u00b7.*/,''))+'</div>'; }).join('')+'</div>';
 }
 
 /* ---------- build your own meal ---------- */
