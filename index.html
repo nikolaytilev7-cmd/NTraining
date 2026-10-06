@@ -1130,6 +1130,14 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .nu-gsearch{margin-bottom:12px;}
 .nu-gres{padding:8px 12px 10px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px;}
 .nu-gres .nu-grp{margin:6px 0 0;}
+.lt-strip{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px auto 2px;padding:9px 14px;border-radius:14px;background:var(--bg-2);border:1px solid var(--border-soft);max-width:420px;}
+.lt-strip div{display:flex;flex-direction:column;align-items:center;min-width:0;}
+.lt-strip span{font-size:10.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--text-3);}
+.lt-strip b{font-size:15.5px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.lt-strip i{font-style:normal;color:var(--text-3);font-size:18px;}
+.lt-strip .up b{color:var(--green);}
+.lt-strip .down b{color:var(--amber);}
+.first-bell b{color:var(--text-1);}
 </style>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
@@ -2053,7 +2061,7 @@ const PROGRAMS = [
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-06c';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-06e';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -2254,6 +2262,7 @@ function applyBackup(text){
     inc.bodyLog.forEach(function(e){ if(e && e.date && e.kg>0 && !have.has(e.date)){ STATE.bodyLog.push({date:e.date, kg:+e.kg}); have.add(e.date); } });
   }
   if(inc.profile && inc.profile.heightCm && !STATE.profile.heightCm) STATE.profile.heightCm = inc.profile.heightCm;
+  if(inc.profile && inc.profile.sex && !STATE.profile.sex) STATE.profile.sex = inc.profile.sex;
   if(inc.sessionNotes && typeof inc.sessionNotes==='object'){
     STATE.sessionNotes = STATE.sessionNotes || {};
     Object.keys(inc.sessionNotes).forEach(function(k){ if(!STATE.sessionNotes[k]) STATE.sessionNotes[k] = inc.sessionNotes[k]; });
@@ -2487,9 +2496,17 @@ function levelIndex(){
   const e = (STATE.profile && STATE.profile.experience) || '';
   return e==='advanced' ? 2 : e==='intermediate' ? 1 : 0;   // unknown or "some" starts as a beginner
 }
+function profileSex(){ return (STATE.profile && STATE.profile.sex) || (STATE.nutri && STATE.nutri.sex) || null; }
+/* The table is written for an average man of about 80 kg. A woman starts on
+   roughly two thirds of it, and body weight moves it a little either way (the
+   square root: twice the body is not twice the bell). Unknown stays as written. */
 function startTargetKg(ex){
   const row = START_KG[ex.id] || START_BY_CAT[ex.cat] || [8,12,16];
-  return row[levelIndex()];   // bells are stored in kg whatever the display unit
+  const sex = profileSex(), lb = typeof latestBody==='function' ? latestBody() : null;
+  const ref = sex==='f' ? 65 : 80;
+  const bwF = lb && lb.kg ? Math.max(0.85, Math.min(1.15, Math.sqrt(lb.kg/ref))) : 1;
+  const sexF = sex==='f' ? 0.65 : 1;
+  return Math.max(4, row[levelIndex()]*sexF*bwF);   // bells are stored in kg whatever the display unit
 }
 function nearestBell(inv, target){
   return inv.reduce(function(best, w){
@@ -2565,6 +2582,21 @@ function plannedRepsRaw(ex, w, block, setIdx){
 }
 function getRecommendation(ex, programId, w, block){
   const r = getRecommendationRaw(ex, programId, w, block);
+  if(r && !r.first){
+    const last = lastLogFor(ex.id, programId, isPerSide(ex) ? currentSide() : null);
+    if(last){
+      r.prevW = isLoaded(ex) ? (last.weight || null) : null; r.prevR = last.result;
+      /* what the strip cannot show: how it felt, the other side, what the target was */
+      const extra = [];
+      if(last.difficulty) extra.push('marked '+diffLabel(last.difficulty));
+      if(last.targetLow!=null) extra.push('target was '+last.targetLow+'\u2013'+last.targetHigh);
+      const askedSide = isPerSide(ex) ? currentSide() : null;
+      if(askedSide && last.side && last.side!==askedSide) extra.push('that was your '+sideLabel(last.side).toLowerCase()+' side');
+      if(last.pain || last.form) extra.length = 0;
+      r.prevNote = extra.length ? 'Last time '+extra.join(', ') : null;
+      if(last.pain || last.form) r.prevNote = r.prevText ? 'Last time: '+r.prevText : null;
+    }
+  }
   if(r && r.low!=null && r.high!=null) r.high = Math.max(r.low, Math.min(r.high, r.low + repSpread(r.low, ex)));
   return r;
 }
@@ -3312,17 +3344,19 @@ function onbStep0(){
   +'<div class="field"><label>Height and weight <span style="color:var(--text-3);font-weight:600;text-transform:none;">optional</span></label>'
   +'<div class="two-inputs"><div class="unit-input"><input type="number" inputmode="decimal" id="onbHeight" placeholder="Height" value="'+(ONB_DATA.heightCm||'')+'"><span>cm</span></div>'
   +'<div class="unit-input"><input type="number" inputmode="decimal" id="onbWeight" placeholder="Weight" value="'+(ONB_DATA.bodyKg||'')+'"><span>kg</span></div></div>'
-  +'<p style="color:var(--text-3);font-size:12.5px;margin:8px 0 0;">Only to track your body weight next to your lifts. It stays on your phone.</p></div>'
+  +'<div class="chip-row" style="margin-top:10px;">'+[['m','Male'],['f','Female']].map(function(o){
+      return '<div class="chip '+(ONB_DATA.sex===o[0]?'selected':'')+'" onclick="onbKeep0();ONB_DATA.sex=(ONB_DATA.sex===\''+o[0]+'\'?null:\''+o[0]+'\');render()">'+o[1]+'</div>'; }).join('')+'</div>'
+  +'<p style="color:var(--text-3);font-size:12.5px;margin:8px 0 0;">Used for your starting bells and to track your body weight next to your lifts. It stays on your phone.</p></div>'
   +'<button class="btn btn-primary btn-block" onclick="onbNext0()">Get Started</button>'
   +'<button class="btn btn-ghost btn-block" style="margin-top:10px;" onclick="onbThemeDone(false)">Back</button>';
 }
-function onbNext0(){
-  ONB_DATA.name = document.getElementById('onbName').value.trim();
+function onbKeep0(){
+  const n = document.getElementById('onbName'); if(n) ONB_DATA.name = n.value.trim();
   const h = parseFloat((document.getElementById('onbHeight')||{}).value), w = parseFloat((document.getElementById('onbWeight')||{}).value);
   ONB_DATA.heightCm = (h>=100 && h<=250) ? Math.round(h) : null;
   ONB_DATA.bodyKg = (w>=30 && w<=300) ? Math.round(w*10)/10 : null;
-  ONB_STEP=1; render();
 }
+function onbNext0(){ onbKeep0(); ONB_STEP=1; render(); }
 function onbStep1(){
   const opts = [
     ['build_strength','Build strength','Heavier bells, fewer reps, longer rests'],
@@ -3473,7 +3507,7 @@ function finishOnboarding(){
     name: ONB_DATA.name||'Athlete', goals: ONB_DATA.goals.slice(), experience: ONB_DATA.experience,
     inventory: ONB_DATA.inventory.slice().sort((a,b)=>a-b), days: ONB_DATA.days, duration: ONB_DATA.duration,
     formats: ONB_DATA.formats.slice(), pairs: !!ONB_DATA.multipleKb, units:'kg',
-    heightCm: ONB_DATA.heightCm || null
+    heightCm: ONB_DATA.heightCm || null, sex: ONB_DATA.sex || null
   };
   if(ONB_DATA.bodyKg){
     STATE.bodyLog = (STATE.bodyLog||[]).filter(function(e){ return e.date!==todayISO(); });
@@ -7226,6 +7260,18 @@ function focusSideTag(ex){
   if(ex && ex.unilateral==='alternating') return ' · alternating';
   return '';
 }
+/* "Last time → today" sits right under the target, where the eye already is:
+   the comparison is the progression, so it should not hide in small print. */
+function lastTodayStrip(rec, ex){
+  if(!rec || rec.first || rec.prevW===undefined || rec.prevR==null) return '';
+  const unit = ex.timeBased ? ' sec' : '';
+  const lastTxt = (rec.prevW ? W(rec.prevW)+' '+U()+' \u00d7 ' : '')+rec.prevR+unit;
+  const todayReps = rec.low===rec.high ? rec.low : rec.low+'\u2013'+rec.high;
+  const todayTxt = (rec.weight ? W(rec.weight)+' '+U()+' \u00d7 ' : '')+todayReps+unit;
+  const up = rec.prevW && rec.weight && rec.weight > rec.prevW, down = rec.prevW && rec.weight && rec.weight < rec.prevW;
+  return '<div class="lt-strip"><div><span>Last time</span><b>'+esc(lastTxt)+'</b></div><i>\u2192</i>'
+    + '<div class="'+(up?'up':down?'down':'')+'"><span>Today</span><b>'+esc(todayTxt)+'</b></div></div>';
+}
 function focusBig(rec, ex){
   const u = U();
   const reps = rec.low===rec.high ? String(rec.low) : rec.low+'–'+rec.high;
@@ -7233,7 +7279,7 @@ function focusBig(rec, ex){
   return '<div class="focus-big"><div><div class="n fh-num">'+reps+'</div><div class="u">'+unit+'</div></div><span class="sep"></span>'
     + (rec.weight ? '<div><div class="n fb-w">'+W(rec.weight)+'</div><div class="u">'+U()+'</div></div>'
                   : '<div><div class="n sm">BW</div><div class="u">bodyweight</div></div>')
-    + '</div>';
+    + '</div>' + lastTodayStrip(rec, ex);
 }
 /* On the clock there is no log sheet to correct the bell in, so the bell is
    changed right on the screen. The choice sticks to that exercise for the rest
@@ -7295,14 +7341,16 @@ function stepBell(exId, delta){
    the bell where it can be changed before the set rather than after it. */
 function firstBellHint(ex, rec){
   if(!rec || !rec.weight || ex.timeBased || !(rec.first || rec.calib)) return '';
-  return '<p class="focus-why first-bell">'+(rec.first ? 'First time with this lift — change the bell if it is not right.'
-                                                       : 'Still finding your bell — adjust it if you need to.')+'</p>'
+  return '<p class="focus-why first-bell">'+(rec.first
+      ? 'First time with this lift. Start around <b>'+W(rec.weight)+' '+esc(U())+'</b> \u2014 you should finish the set with reps still in the tank. Too easy or too hard? Change the bell.'
+      : 'Still finding your bell \u2014 adjust it if you need to.')+'</p>'
     + bellAdjuster(ex, rec);
 }
 function focusWhy(rec){
   if(!rec) return '';
   const bits = [];
-  if(rec.prevText) bits.push('Last time: '+esc(rec.prevText)+'.');
+  if(rec.prevText && rec.prevW===undefined) bits.push('Last time: '+esc(rec.prevText)+'.');
+  else if(rec.prevNote) bits.push(esc(rec.prevNote)+'.');
   if(rec.note && !(rec.first && rec.weight)) bits.push(esc(rec.note)+'.');   // the first-bell line already says it
   return bits.length ? '<p class="focus-why">'+bits.join(' ')+'</p>' : '';
 }
@@ -9459,6 +9507,8 @@ function renderProfile(){
   +'</div></div>'
   +'<div class="section"><div class="section-title">Body</div><div class="card">'
   +'<div class="field"><label for="profHeight">Height</label><div class="unit-input"><input type="number" inputmode="decimal" id="profHeight" placeholder="e.g. 178" value="'+(p.heightCm||'')+'" onchange="setHeight(this.value)"><span>cm</span></div></div>'
+  +'<div class="field"><label>Sex <span style="color:var(--text-3);font-weight:600;text-transform:none;">for starting bells</span></label><div class="chip-row">'
+    +[['m','Male'],['f','Female']].map(function(o){ return '<div class="chip '+(profileSex()===o[0]?'selected':'')+'" onclick="STATE.profile.sex=\''+o[0]+'\';if(STATE.nutri&&STATE.nutri.sex)STATE.nutri.sex=\''+o[0]+'\';saveState();render()">'+o[1]+'</div>'; }).join('')+'</div></div>'
   +(latestBody() ? profRow('Body weight', bwTxt(latestBody().kg)+' '+U()+' \u00b7 '+fmtDay(latestBody().date)) : '')
   +'<div style="display:flex;gap:9px;margin-top:10px;"><button class="btn btn-secondary" style="flex:1;" onclick="openBodySheet()">Log weight</button>'
   +'<button class="btn btn-ghost" style="flex:1;" onclick="navigate(\'progress\')">See the trend</button></div>'
@@ -9909,6 +9959,12 @@ const MEALS = [
   // lunch
   {id:'chicken_rice', s:'l', e:'\ud83c\udf57', n:'Chicken, rice & shopska salad', min:25, t:['bg'],
    it:[['chicken',170],['rice',80],['tomato',120],['cucumber',100],['pepper',50],['sirene',25],['olive_oil',7]], how:'Chicken grilled or pan-fried, rice boiled. Salad: tomato, cucumber, pepper, grated feta, a little oil. Cook 2\u20133 days at once.'},
+  {id:'chicken_rice_basic', s:'ld', e:'\ud83c\udf57', n:'Chicken breast & rice', min:25, t:['budget','prep'],
+   it:[['chicken',170],['rice',80],['mixed_veg',150],['olive_oil',5]], how:'Chicken breast with salt, pepper and paprika, grilled or pan-fried. Rice boiled, vegetables steamed. The classic \u2014 cook three days at once.'},
+  {id:'chicken_potatoes', s:'ld', e:'\ud83c\udf57', n:'Chicken breast & roast potatoes', min:35, t:['budget'],
+   it:[['chicken',170],['potatoes',300],['greens',60],['olive_oil',7]], how:'Potatoes in wedges with the oil, 20 minutes at 210\u00b0C, chicken on the same tray for the last 15. Leaves on the side.'},
+  {id:'beef_rice', s:'ld', e:'\ud83c\udf5a', n:'Lean beef & rice bowl', min:20, t:['budget'],
+   it:[['beef',150],['rice',80],['pepper',100],['onion',40],['olive_oil',5]], how:'Mince browned with onion, pepper and paprika, over rice.'},
   {id:'turkey_bulgur', s:'l', e:'\ud83e\udd57', n:'Turkey & bulgur bowl', min:20, t:['prep'],
    it:[['turkey',160],['bulgur',70],['pepper',100],['cucumber',80],['greens',30],['olive_oil',7]], how:'Bulgur covered with boiling water for 15 minutes. Turkey sliced and pan-fried. Chopped veg and oil on top.'},
   {id:'tuna_wrap', s:'l', e:'\ud83c\udf2f', n:'Tuna wraps with salad', min:5, t:['budget'],
@@ -10071,7 +10127,7 @@ const MEALS = [
 const MEAL_BY_ID = {}; MEALS.forEach(function(m){ MEAL_BY_ID[m.id] = m; });
 /* Bulgarian words for search, so "овесени ядки" finds oats */
 const FOOD_BG = {oats:'овесени ядки овес',greek_yog:'гръцко кисело мляко йогурт',skyr:'скир',yogurt:'кисело мляко',cottage:'котидж',sirene:'сирене фета',
-  kashkaval:'кашкавал',milk:'мляко прясно мляко',egg:'яйца яйце',whey:'протеин уей суроватъчен whey protein shake',tofu:'тофу',hummus:'хумус',chicken:'пилешко пиле пилешки гърди',
+  kashkaval:'кашкавал',milk:'мляко прясно мляко',egg:'яйца яйце',whey:'протеин уей суроватъчен whey protein shake',tofu:'тофу',hummus:'хумус',chicken:'пилешко пиле пилешки гърди филе пилешко филе',
   turkey:'пуешко пуйка',beef:'телешко говеждо кайма',pork:'свинско',ham:'шунка',salmon:'сьомга',hake:'бяла риба хек мерлуза',tuna:'риба тон',rice:'ориз',
   bulgur:'булгур',pasta:'паста макарони спагети',lentils:'леща',beans:'боб',chickpeas:'нахут',bread:'хляб филия пълнозърнест',tortilla:'тортила',
   ricecake:'оризовки оризови',passata:'доматено пюре пасата',olive_oil:'зехтин олио',peanut_butter:'фъстъчено масло',walnuts:'орехи',almonds:'бадеми',
@@ -10093,7 +10149,9 @@ function mealHay(m){
 /* every word must be there; long words also match without their ending (банани \u2192 банан) */
 function searchHit(hay, q){
   const one = function(w){ return hay.indexOf(w)>=0 || (w.length>=6 && hay.indexOf(w.slice(0, w.length-2))>=0); };
-  return q.toLowerCase().split(/\s+/).filter(Boolean).every(function(w){ const t = translit(w); return one(w) || (t!==w && one(t)); });
+  const stop = {'с':1,'със':1,'и':1,'на':1,'в':1,'от':1,'за':1,'with':1,'and':1,'&':1,'+':1,'a':1,'the':1,'of':1,'in':1,'or':1,'или':1};
+  const words = q.toLowerCase().split(/[\s,]+/).filter(function(w){ return w && !stop[w]; });
+  return words.every(function(w){ const t = translit(w); return one(w) || (t!==w && one(t)); });
 }
 function customMeals(){ return (STATE.nutri && STATE.nutri.custom) || []; }
 function mealById(id){ return MEAL_BY_ID[id] || customMeals().find(function(m){ return m.id===id; }) || null; }
@@ -10108,7 +10166,8 @@ const NUTRI_EXTRAS = [
   ['Biscuits, 3', 150, 2, 'бисквити'], ['Wafer', 150, 2, 'вафла'], ['Popcorn, bowl', 200, 4, 'пуканки'],
 ];
 /* the meals in Bulgarian, so "баница" or "боб" finds them */
-const MEAL_BG = {oats_yog:'овесени ядки гръцко кисело мляко горски плодове', omelette_b:'омлет със сирене домат', skyr_bowl:'скир банан орехи', eggs_toast:'бъркани яйца филия',
+const MEAL_BG = {chicken_rice_basic:'пилешко филе с ориз пилешки гърди зеленчуци', chicken_potatoes:'пилешко филе с картофи на фурна', beef_rice:'телешка кайма с ориз',
+  oats_yog:'овесени ядки гръцко кисело мляко горски плодове', omelette_b:'омлет със сирене домат', skyr_bowl:'скир банан орехи', eggs_toast:'бъркани яйца филия',
   oats_milk_banana:'овесени ядки с прясно мляко и банан', oats_milk_whey:'овесени ядки мляко банан протеин', pb_oats:'овесени ядки фъстъчено масло протеин', cottage_toast:'филия котидж домат',
   ham_sandwich:'сандвич шунка кашкавал', tofu_scramble:'тофу чушки', pb_banana_oats:'овесени ядки фъстъчено масло банан', chicken_rice:'пилешко ориз шопска салата',
   turkey_bulgur:'пуешко булгур', tuna_wrap:'тортила риба тон', lentil_stew:'яхния червена леща', beef_potatoes:'кайма картофи салата', chicken_pasta:'паста пилешко домати',
@@ -10130,6 +10189,14 @@ const MEAL_BG = {oats_yog:'овесени ядки гръцко кисело м�
   ricecakes_ham:'оризовки шунка', eggs_boiled:'варени яйца', hummus_veg:'хумус зеленчуци', almonds_fruit:'бадеми ябълка'};
 /* Cyrillic typed into a Latin name: баница \u2192 banitsa, айрян \u2192 ayryan */
 const TRANSLIT = {а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sht',ъ:'a',ь:'y',ю:'yu',я:'ya'};
+/* how closely a meal's own name answers the search: whole-name hits first */
+function nameScore(m, q){
+  const nm = (m.n+' '+(MEAL_BG[m.id]||'')+' '+(m.bgn||'')).toLowerCase();
+  return q.toLowerCase().split(/[\s,]+/).filter(function(w){ return w.length>1; })
+    .reduce(function(n,w){ const t = translit(w); return n + (nm.indexOf(w)>=0 || (t!==w && nm.indexOf(t)>=0) ? 1 : 0); }, 0)
+    + (function(){ const w = q.toLowerCase().split(/[\s,]+/)[0]||'', t = translit(w), bg = (MEAL_BG[m.id]||'').toLowerCase(), en = m.n.toLowerCase();
+        return (bg.indexOf(w)===0 || en.indexOf(w)===0 || (t!==w && en.indexOf(t)===0)) ? 0.5 : 0; })();   // the dish named first beats the side
+}
 function translit(q){ return q.toLowerCase().split('').map(function(c){ return TRANSLIT[c]!=null ? TRANSLIT[c] : c; }).join(''); }
 const NUTRI_HABITS = [['protein','Protein target hit'],['veg','Veg at 2 meals'],['water','2\u20133 L water'],['sleep','7 h+ sleep']];
 
@@ -10509,7 +10576,7 @@ function nutriSaveSetup(){
   const kg = isLb() ? w/2.20462 : w;
   if(!(kg > 35 && kg < 300)){ toast('Add your weight'); return; }
   const n = NS();
-  n.sex = s.sex; n.birthYear = yr; n.goal = s.goal; n.activity = s.activity; n.diet = s.diet; n.noDairy = !!s.noDairy; n.bg = !!s.bg; n.leftovers = s.leftovers!==false;
+  n.sex = s.sex; STATE.profile.sex = s.sex; n.birthYear = yr; n.goal = s.goal; n.activity = s.activity; n.diet = s.diet; n.noDairy = !!s.noDairy; n.bg = !!s.bg; n.leftovers = s.leftovers!==false;
   if(!n.on){ n.on = true; n.since = n.since || todayISO(); }
   STATE.profile.heightCm = Math.round(h);
   const l = latestBody();
@@ -10584,7 +10651,7 @@ function renderFuel(){
 }
 function fuelToday(){
   const date = todayISO(), plan = nutriPlan(date), t = plan.t, eat = nutriEaten(date), d = (STATE.nutri.days[date])||{}, ate = d.ate||{};
-  const searchBar = '<div class="nu-search nu-search2 nu-gsearch"><input id="nuGQ" type="search" placeholder="Ate something? Search \u2014 баница, oats, chicken\u2026" value="'+esc(NUTRI_GQ)+'" oninput="globalSearch(this.value)" autocomplete="off">'
+  const searchBar = '<div class="nu-search nu-search2 nu-gsearch"><input id="nuGQ" type="search" placeholder="Ate something? Search foods and meals" value="'+esc(NUTRI_GQ)+'" oninput="globalSearch(this.value)" autocomplete="off">'
     + '<button aria-label="Scan a barcode" onclick="nutriOpenScan(\'extra\')">'+ICON.scan+'</button></div><div id="nuGList">'+(NUTRI_GQ ? globalListHtml(NUTRI_GQ) : '')+'</div>';
   const dayChips = '<div class="eyebrow" style="font-size:11px;margin-bottom:7px;">When do you train today?</div><div class="nu-daytype">'
     + NUTRI_WHEN.map(function(w){ return '<button class="'+(plan.train && plan.when===w[0]?'on':'')+'" onclick="nutriSetTrain(true,\''+w[0]+'\')">'+w[1]+'</button>'; }).join('')
@@ -10722,7 +10789,7 @@ function nutriSheetMarkup(){
     const f = NUTRI_FILTER;
     const filters = [['all','All'],['quick','Under 10 min'],['nomeat','No meat'],['budget','Budget']].concat(slot.type!=='s' && NS().diet!=='vegan' ? [['out','Eating out']] : []);
     return wrap('Swap '+slot.label, '<div class="eyebrow">'+esc(slot.label)+' \u00b7 about '+fmtK(slot.kcal)+' kcal</div><h3 style="font-size:22px;">Pick something else</h3>'
-      + '<div class="nu-search"><input id="nuQ" type="search" placeholder="Search meals or foods \u2014 oats, банан, chicken\u2026" value="'+esc(NUTRI_Q)+'" oninput="nutriSearch(this.value)" autocomplete="off"></div>'
+      + '<div class="nu-search"><input id="nuQ" type="search" placeholder="Search meals or foods" value="'+esc(NUTRI_Q)+'" oninput="nutriSearch(this.value)" autocomplete="off"></div>'
       + '<div class="chip-row" id="nuFilters"'+(NUTRI_Q?' style="display:none"':'')+'>'+filters.map(function(x){ return '<div class="chip '+(f===x[0]?'selected':'')+'" onclick="NUTRI_FILTER=\''+x[0]+'\';render()">'+x[1]+'</div>'; }).join('')+'</div>'
       + '<div id="nuSwapList">'+swapListHtml(slot)+'</div>'
       + close);
@@ -10750,7 +10817,7 @@ function swapListHtml(slot){
   if(q){
     /* searching looks everywhere: oats for dinner is your call */
     const hits = all.filter(function(m){ return searchHit(mealHay(m), q); })
-      .sort(function(a,b){ return (b.s.indexOf(slot.type)>=0)-(a.s.indexOf(slot.type)>=0) || (favs[b.id]?1:0)-(favs[a.id]?1:0); });
+      .sort(function(a,b){ return nameScore(b,q)-nameScore(a,q) || (b.s.indexOf(slot.type)>=0)-(a.s.indexOf(slot.type)>=0) || (favs[b.id]?1:0)-(favs[a.id]?1:0); });
     return (hits.length ? hits.slice(0,30).map(function(m){ return mealOptHtml(m, slot, cur, favs); }).join('')
       : '<p class="wr-meta" style="margin:4px 0 10px;">No meal with \u201c'+esc(q)+'\u201d yet. Build it with the foods you eat:</p>') + build;
   }
@@ -10955,7 +11022,8 @@ let NUTRI_GQ = '';
 function globalSearch(v){ NUTRI_GQ = v; const el = document.getElementById('nuGList'); if(el) el.innerHTML = v.trim() ? globalListHtml(v) : ''; }
 function globalListHtml(q){
   q = q.trim(); if(!q) return '';
-  const meals = allMeals().filter(mealAllowed).filter(function(m){ return searchHit(mealHay(m), q); }).slice(0, 6);
+  const meals = allMeals().filter(mealAllowed).filter(function(m){ return searchHit(mealHay(m), q); })
+    .sort(function(a,b){ return nameScore(b,q)-nameScore(a,q) || a.n.length-b.n.length; }).slice(0, 6);
   const foods = Object.keys(FOODS).filter(function(id){ return searchHit(foodHay(id), q); }).slice(0, 6);
   const extras = NUTRI_EXTRAS.map(function(x,i){ return [x,i]; }).filter(function(e){ return searchHit((e[0][0]+' '+(e[0][3]||'')).toLowerCase(), q); }).slice(0, 4);
   let h = '<div class="card nu-gres">';
@@ -11055,7 +11123,7 @@ function buildSheetHtml(slot){
         return '<div><span>'+esc(FOODS[x[0]].n)+'</span><span class="nu-step"><button aria-label="Less" onclick="buildStep('+i+',-1)">\u2212</button><b>'+esc(amountTxt(x[0], x[1]))+'</b><button aria-label="More" onclick="buildStep('+i+',1)">+</button></span></div>'; }).join('')+'</div>'
       + '<div class="nu-macs4">'+[['kcal',fmtK(mac.k)],['protein',Math.round(mac.p)+' g'],['carbs',Math.round(mac.c)+' g'],['fat',Math.round(mac.f)+' g']].map(function(x){ return '<div><b>'+x[1]+'</b><span>'+x[0]+'</span></div>'; }).join('')+'</div>'
       : '<p class="wr-meta" style="margin:0;">Add the foods one by one. Amounts are raw or dry; tap \u2212 and + to match what you use.</p>')
-    + '<div class="nu-search nu-search2"><input id="nuFq" type="search" placeholder="Add a food \u2014 oats, мляко, banana\u2026" value="'+esc(B.fq||'')+'" oninput="buildSearch(this.value)" autocomplete="off">'
+    + '<div class="nu-search nu-search2"><input id="nuFq" type="search" placeholder="Add a food \u2014 oats, milk, banana\u2026" value="'+esc(B.fq||'')+'" oninput="buildSearch(this.value)" autocomplete="off">'
     + '<button aria-label="Scan a barcode" onclick="nutriOpenScan(\'build\')">'+ICON.scan+'</button></div>'
     + '<div id="nuFoodList" class="nu-foods">'+foodListHtml()+'</div>'
     + (items.length ? '<div class="field" style="margin-top:4px;"><label for="nuBn">Name</label><input id="nuBn" type="text" placeholder="'+esc(autoName)+'" value="'+esc(B.name||'')+'" oninput="NUTRI_SHEET.name=this.value"></div>'
