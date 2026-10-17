@@ -1138,6 +1138,39 @@ body.test-mode::after{content:'';position:fixed;inset:0;border:3px solid #FF9F0A
 .lt-strip .up b{color:var(--green);}
 .lt-strip .down b{color:var(--amber);}
 .first-bell b{color:var(--text-1);}
+.lift-best{font-size:15px !important;white-space:nowrap;}
+.sum-prog .sp-head{font-size:19px;font-weight:800;margin-bottom:8px;}
+.sp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.sp-chip{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--bg-2);color:var(--text-2);border:1px solid var(--border-soft);}
+.sp-chip.ms{background:rgba(240,180,41,.12);border-color:rgba(240,180,41,.35);color:var(--amber);}
+.sp-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-soft);}
+.sp-row:first-of-type{border-top:0;}
+.sp-ex{flex:1;min-width:0;display:flex;flex-direction:column;}
+.sp-ex b{font-size:14.5px;}
+.sp-ex small{font-size:12px;color:var(--text-3);font-weight:600;}
+.sp-ch,.sp-next{font-size:13px;font-weight:800;white-space:nowrap;padding:4px 9px;border-radius:9px;background:var(--bg-2);color:var(--text-2);}
+.sp-ch.up,.sp-next.up{background:rgba(51,196,141,.13);color:var(--green);}
+.sp-ch.new{background:var(--blue-dim);color:var(--blue);}
+.rem-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.rem-days button{padding:11px 0;border-radius:11px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);font-weight:800;font-size:12.5px;font-family:inherit;}
+.rem-days button.on{background:var(--blue);border-color:var(--blue);color:#fff;}
+.rem-card{display:flex;align-items:center;gap:12px;margin-top:14px;}
+.rem-ico{width:40px;height:40px;border-radius:12px;background:var(--blue-dim);color:var(--blue);display:flex;align-items:center;justify-content:center;flex:none;}
+.rem-ico svg{width:22px;height:22px;}
+.rem-x{background:none;border:0;color:var(--text-3);padding:4px;display:flex;}
+.rem-x svg{width:16px;height:16px;}
+.rem-sum{margin-top:10px;}
+.rem-time{width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-1);font-size:17px;font-weight:700;font-family:inherit;color-scheme:dark;}
+.rem-sum svg,.btn svg.cal{width:17px;height:17px;}
+.cx-card{margin-top:10px;}
+.cx-row{cursor:pointer;}
+.cx-n{width:22px;height:22px;border-radius:50%;background:var(--blue-dim);color:var(--blue);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;margin-right:6px;}
+.cx-reps{display:flex;flex-direction:column;align-items:center;margin-left:auto;padding-left:8px;}
+.cx-reps b{font-family:var(--font-d);font-size:28px;font-weight:800;line-height:1;}
+.cx-reps small{font-size:10.5px;color:var(--text-3);font-weight:700;}
+.cx-log{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0;}
+.cx-log span{font-weight:700;font-size:14.5px;}
+.num-stepper.sm{max-width:150px;}
 </style>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0E13">
@@ -1598,8 +1631,8 @@ const PROGRAMS = [
     pairs:[['kb_floor_press','bent_over_row'],['cossack_squat','single_leg_deadlift'],['kb_curl','tricep_ext']],
     finisher:{name:'Grip Close',format:'emom',totalMinutes:5,pattern:['suitcase_carry','overhead_carry','rest','suitcase_carry','overhead_carry'],note:'Walk tall. Put it down before the posture goes.'}},
    {name:'C · Complex',format:'complex',mainMin:28,rounds:5,restSec:75,
-    chain:[{ex:'kb_clean',reps:2},{ex:'kb_front_squat',reps:3},{ex:'overhead_press',reps:2}],
-    note:'Two cleans, three front squats, two presses — then the other side. The bell only touches the floor between rounds.',
+    chain:[{ex:'kb_clean',reps:3},{ex:'kb_front_squat',reps:4},{ex:'overhead_press',reps:3}],
+    note:'Three cleans, four front squats, three presses — then the other side. The bell only touches the floor between rounds.',
     finisher:{name:'Swing Clock',format:'emom',totalMinutes:6,pattern:['kb_swing','push_up','figure_8','kb_swing','push_up','rest'],note:'Steady minutes. Finish every one with a few seconds to spare.'}},
   ]},
  {id:'nt_ss_3',brand:'NT',name:'NT STRENGTH & SIZE III',tagline:'Muscle & strength · Advanced · one bell',weeks:8,daysPerWeek:3,level:'advanced',
@@ -2058,10 +2091,24 @@ const PROGRAMS = [
       note:'Light bell. This is where the pattern gets grooved, not tested.'}},
   ]},
 ];
+/* A clock that ends on a rest minute ends with sixty seconds of standing
+   about. The work is over when the last working minute is, so trailing rest
+   minutes are cut from every EMOM (and its time estimate) before anything
+   reads it. */
+function trimEmomTail(t){
+  if(!t || t.format!=='emom' || !t.pattern || !t.pattern.length || !t.totalMinutes) return t;
+  const L = t.pattern.length;
+  while(t.totalMinutes > 1 && t.pattern[(t.totalMinutes-1) % L]==='rest'){
+    if(t.mainMin===t.totalMinutes) t.mainMin--;
+    t.totalMinutes--;
+  }
+  return t;
+}
+PROGRAMS.forEach(function(p){ (p.templates||[]).forEach(function(t){ trimEmomTail(t); trimEmomTail(t.finisher); }); });
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-06e';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-17b';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
@@ -2496,6 +2543,7 @@ function levelIndex(){
   const e = (STATE.profile && STATE.profile.experience) || '';
   return e==='advanced' ? 2 : e==='intermediate' ? 1 : 0;   // unknown or "some" starts as a beginner
 }
+ICON.calendar = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 13.5v3l2 1"/></svg>';
 function profileSex(){ return (STATE.profile && STATE.profile.sex) || (STATE.nutri && STATE.nutri.sex) || null; }
 /* The table is written for an average man of about 80 kg. A woman starts on
    roughly two thirds of it, and body weight moves it a little either way (the
@@ -3092,6 +3140,10 @@ function buildWorkoutInstance(program, week, idx){
     const perRound = (w.pairs ? w.pairs.length*2 : (w.chain||[]).length) || 2;
     w.mainMin = Math.max(12, Math.round(w.mainMin + (w.rounds-wasRounds)*perRound*1.4));
   }
+  if(w.chain){
+    const sides = complexSides(w);
+    w.chain = w.chain.map(function(c){ try{ const t = complexTarget(program.id, w.name, c, sides); return Object.assign({}, c, {reps:t.reps, bumped:t.bumped}); }catch(e){ return c; } });
+  }
   if(w.totalMinutes) w.totalMinutes = Math.max(8, w.totalMinutes + ph.ramp*2);
   if(w.totalMinutes) w.mainMin = w.totalMinutes;
   attachWarmup(w);                 // derived from this day's movements, not typed
@@ -3181,10 +3233,11 @@ function render(){
     case 'terms': body = renderTerms(ROUTE.params.k); break;
     case 'fuel': body = renderFuel(); break;
     case 'fuel_setup': body = renderFuelSetup(); break;
+    case 'reminders': body = renderReminders(); break;
     default: body = renderHome();
   }
   if(ROUTE.name!=='home') THEME_SHEET = false;
-  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name==='terms' ? 'exercises' : ROUTE.name==='fuel_setup' ? 'fuel' : ROUTE.name) + themeSheetMarkup() + importSheetMarkup() + bodySheetMarkup() + (ROUTE.name==='fuel' ? nutriSheetMarkup() : '');
+  app.innerHTML = shell(body, ROUTE.name==='exercise_progress' ? 'progress' : ROUTE.name==='builder' ? 'programs' : ROUTE.name==='terms' ? 'exercises' : ROUTE.name==='fuel_setup' ? 'fuel' : ROUTE.name==='reminders' ? 'profile' : ROUTE.name) + themeSheetMarkup() + importSheetMarkup() + bodySheetMarkup() + (ROUTE.name==='fuel' ? nutriSheetMarkup() : '');
   if(ROUTE.name==='terms' && ROUTE.params.k){ const el = document.getElementById('term-'+ROUTE.params.k); if(el) setTimeout(function(){ el.scrollIntoView({block:'center'}); }, 30); }
   if(ROUTE.name==='exercise_detail'){ initExerciseAnimation(ROUTE.params.id); }
   /* an exercise opened over the workout preview has its own figure to start */
@@ -3667,7 +3720,7 @@ function renderHome(){
     if(pos){
       const w = buildWorkoutInstance(prog, pos.week, pos.idx);
       todayCard = '<div class="card" style="background:var(--hero-bg);">'
-      +'<div class="eyebrow">Today\u2019s Workout</div>'
+      +'<div class="eyebrow">'+(isPlannedDay(todayISO())===true ? 'Training day \u00b7 Today\u2019s workout' : isPlannedDay(todayISO())===false ? 'Rest day \u00b7 next workout' : 'Today\u2019s Workout')+'</div>'
       +'<h2 style="font-size:24px;margin:8px 0 4px;">'+esc(w.name)+'</h2>'
       +'<p style="color:var(--text-3);font-size:13.5px;">'+w.totalMin+' min \u00b7 '+fmtLabel(w.format)+' \u00b7 Week '+pos.week+'</p>'
       +'<button class="btn btn-primary btn-block" style="margin-top:16px;" onclick="previewWorkout(\''+prog.id+'\','+pos.week+','+pos.idx+')">'+ICON.play+' Start Workout</button>'
@@ -3692,6 +3745,7 @@ function renderHome(){
   +'<div class="top-row" style="margin-bottom:6px;"><div><div class="eyebrow">'+greet.toUpperCase()+'</div><h1 style="font-size:30px;">'+esc(p.name||'Athlete')+'</h1></div></div>'
   +'<p style="color:var(--text-2);margin-bottom:20px;">Ready to train?</p>'
   +todayCard
+  +reminderCard()
   +fuelHomeCard()
   +testBanner()
   +resumeCard()
@@ -6578,6 +6632,7 @@ function initSession(w){
   // the session works on its own copy: a swap or a trimmed set count must
   // never reach back into the program's template
   w = JSON.parse(JSON.stringify(w));
+  trimEmomTail(w); trimEmomTail(w.finisher);
   SESSION = { workout:w, phase:(w.warmup&&w.warmup.length)?'warmup':'main', blockIndex:0, setIndex:0, round:0, minute:0, timeLeft:0, timerRunning:false,
     log:[], emomLog:[], pendingFeedback:null, restSecondsLeft:0, amrapRounds:0, amrapDone:false, amrapResults:{},
     finished:false, paused:false, endedEarly:false, startedAt:Date.now(), origWorkout:JSON.parse(JSON.stringify(w)),
@@ -7378,6 +7433,8 @@ function renderFocusSheet(){
       + (L.weight!=null && !ex.timeBased ? weightField(U(), L.weight) : '<div></div>') + '</div>'
       + feelField()
       + '<button class="btn btn-primary btn-block" onclick="'+L.save+'">Save set</button>';
+  } else if(kind==='clog'){
+    h = complexLogSheet();
   } else if(kind==='tech' && ex){
     const set = PHOTO_SETS[ex.id];
     h = '<h3>'+esc(ex.name)+'</h3>'
@@ -7651,6 +7708,10 @@ function coachPrefsSection(){
         + (voiceSupported() ? voicePickerMarkup() : '')
         + row('musicMix','Play over my music','Spotify and Apple Music keep playing. If the beeps are silent, check the phone\u2019s silent switch', !(STATE.profile && STATE.profile.musicMix === false))
         + '<div style="padding:0 0 10px;"><button class="btn btn-ghost btn-sm" onclick="testCoach()">'+ICON.soundOn+' Test the sound</button></div>' : '')
+    + '<div class="pref-row" style="cursor:pointer;" onclick="REMIND_DRAFT=null;navigate(\'reminders\')"><div style="flex:1;min-width:0;"><div class="wr-title">Training reminders</div><div class="wr-meta">'
+      + (STATE.profile.remind && STATE.profile.remind.days && STATE.profile.remind.days.length
+          ? esc(DOW.filter(function(d){ return STATE.profile.remind.days.indexOf(d[2])>=0; }).map(function(d){ return d[1]; }).join(', ')+' \u00b7 '+STATE.profile.remind.time)+(STATE.profile.remind.added?' \u00b7 in your calendar':'')
+          : 'Calendar alerts on your training days')+'</div></div>'+ico(ICON.chevron)+'</div>'
     + row('readiness','Readiness check','Three questions before each session', readinessWanted())
     + '<div class="pref-row" style="border-bottom:0;padding-bottom:4px;"><div style="flex:1;min-width:0;"><div class="wr-title">Colour theme</div><div class="wr-meta">How the app looks</div></div></div>'
     + '<div class="theme-seg">' + THEMES.map(function(t){ return '<button class="'+(themeName()===t[0]?'on':'')+'" onclick="setTheme(\''+t[0]+'\')"><i style="background:'+t[2]+'"></i>'+t[1]+'</button>'; }).join('') + '</div>'
@@ -7924,67 +7985,98 @@ function submitSupersetSet(exId, low, high){
    is what makes it its own format rather than a label on an old one. The whole
    chain runs on one side, then the other. */
 function complexSides(w){ return (w.chain||[]).some(c=>isPerSide(EX_BY_ID[c.ex])) ? 2 : 1; }
+/* A complex is ONE set: the bell does not go down between the movements, so
+   there is nothing to tap until the chain is finished — both sides of it. The
+   round is logged once, at the end, with the reps actually done per movement
+   (more than written is welcome; it raises the target next time). */
 function renderComplexPhase(){
   const w = SESSION.workout, chain = w.chain||[];
-  if(SESSION.round >= w.rounds){ completeMainPart(); return afterMainMarkup(); }
-  const step = chain[SESSION.blockIndex];
-  if(!step){ completeMainPart(); return afterMainMarkup(); }
-  const ex = EX_BY_ID[step.ex];
+  if(SESSION.round >= w.rounds || !chain.length){ completeMainPart(); return afterMainMarkup(); }
+  resetSide(); SESSION.blockIndex = 0;
   const perSide = complexSides(w) === 2;
-  if(!perSide) resetSide();
-  window._activeFigureExId = ex.id;
-  window._figureMirror = perSide && currentSide()==='L';
-
-  SESSION._focusCtx = { exId: ex.id };
-  let html = focusHero(ex.id, 'Round '+(SESSION.round+1)+' of '+w.rounds+(perSide ? ' \u00b7 <span class="fh-side">'+sideLabel(currentSide())+' side</span>' : ''), ex.name);
   const lead = EX_BY_ID[chain[0].ex], crec = withBell(lead, getRecommendation(lead, w.programId, w));
-  html += '<div class="focus-body">' + '<div class="focus-big"><div><div class="n">'+step.reps+'</div><div class="u">rep'+(step.reps===1?'':'s')+(isPerSide(ex)?' this side':'')+'</div></div>'
+  window._activeFigureExId = lead.id; window._figureMirror = false;
+  SESSION._focusCtx = { exId: lead.id };
+  const per = chain.reduce(function(n,c){ return n + c.reps; }, 0);
+  let html = focusHero(lead.id, 'Round '+(SESSION.round+1)+' of '+w.rounds+(perSide ? ' · right side, then left' : ''), 'The complex');
+  html += '<div class="focus-body"><div class="focus-big"><div><div class="n">'+per+'</div><div class="u">reps'+(perSide?' / side':'')+' in a row</div></div>'
         + (crec.weight ? '<span class="sep"></span><div><div class="n fb-w">'+W(crec.weight)+'</div><div class="u">'+esc(U())+'</div></div>' : '') + '</div>'
-        + bellAdjuster(lead, crec) + focusLinks(ex, false, true) + '</div>';
-  html += '<div class="card" style="margin-top:10px;"><div class="eyebrow" style="margin-bottom:8px;">The chain \u2014 the bell does not touch the floor</div>';
-  html += chain.map((c,i)=>{
+        + bellAdjuster(lead, crec) + '</div>';
+  html += '<div class="card cx-card"><div class="eyebrow" style="margin-bottom:8px;">The chain — the bell does not touch the floor</div>';
+  html += chain.map(function(c, i){
       const e = EX_BY_ID[c.ex];
-      const cur = i===SESSION.blockIndex;
-      return '<div class="ex-row" style="'+(cur?'border-color:var(--blue);background:var(--blue-glow);':'opacity:'+(i<SESSION.blockIndex?'0.45':'0.8')+';')+'">'
-        + '<div class="ex-icon">'+exIcon(e)+'</div>'
+      return '<div class="ex-row cx-row" onclick="SESSION._focusCtx={exId:\''+c.ex+'\'};openSheet(\'tech\')">'
+        + '<div class="cx-n">'+(i+1)+'</div><div class="ex-icon">'+exIcon(e)+'</div>'
         + '<div class="ex-row-body"><div class="ex-row-title">'+esc(e.name)+'</div>'
-        + '<div class="ex-row-meta">'+c.reps+' rep'+(c.reps===1?'':'s')+(isPerSide(e)?' this side':'')+'</div></div></div>';
+        + '<div class="ex-row-meta">'+(c.bumped ? 'up from last time · tap for technique' : 'tap for technique')+'</div></div>'
+        + '<div class="cx-reps"><b>'+c.reps+'</b><small>'+(perSide?'/ side':'reps')+'</small></div></div>';
     }).join('');
-  if(w.note) html += '<p style="color:var(--text-3);font-size:12.5px;margin-top:10px;">'+esc(w.note)+'</p>';
-  const last = SESSION.blockIndex >= chain.length-1;
-  const lastOfRound = last && (!perSide || currentSide()==='L');
-  html += '<button class="btn btn-ghost btn-block" style="margin-top:10px;" onclick="skipComplexRound()">Skip this round</button>';
-  html += '</div>';
-  html += focusDock(lastOfRound ? 'Round complete' : last ? 'Switch sides' : 'Next movement', 'advanceComplex()');
+  html += '<p class="wr-meta" style="margin:10px 2px 0;line-height:1.5;">'+(perSide
+      ? 'All '+chain.length+' movements on the right, pass the bell over, all '+chain.length+' on the left. Then put it down and log the round.'
+      : 'All '+chain.length+' movements without setting the bell down. Then log the round.')+'</p>';
+  if(w.note) html += '<p style="color:var(--text-3);font-size:12.5px;margin-top:8px;">'+esc(w.note)+'</p>';
+  html += '<button class="btn btn-ghost btn-block" style="margin-top:10px;" onclick="skipComplexRound()">Skip this round</button></div>';
+  const key = 'cx'+SESSION.round;
+  if(VOICE.cxKey !== key){ VOICE.cxKey = key;
+    const words = chain.map(function(c){ return c.reps+' '+EX_BY_ID[c.ex].name.replace(/^Kettlebell /,'').toLowerCase()+(c.reps===1?'':'s'); }).join(', ');
+    say('Round '+(SESSION.round+1)+'. '+words+'.'+(perSide?' Right side, then left.':''), true); }
+  html += focusDock('Done — log the round', "openSheet('clog')");
   return html;
 }
-function advanceComplex(){
-  const w = SESSION.workout, chain = w.chain||[];
-  const perSide = complexSides(w) === 2;
-  if(SESSION.blockIndex < chain.length-1){ SESSION.blockIndex++; render(); return; }
-  if(perSide && currentSide()==='R'){
-    SESSION.side='L'; SESSION.blockIndex=0;
-    switchSideNow(); return;
-  }
-  // a round is logged as one unit of work, at the weight carried through it
-  const first = EX_BY_ID[chain[0].ex];
-  const bell = withBell(first, getRecommendation(first, w.programId, w)).weight;
-  chain.forEach(function(c){
-    const ex = EX_BY_ID[c.ex]; if(!ex) return;
+function complexLogSheet(){
+  const w = SESSION.workout, chain = w.chain||[], perSide = complexSides(w)===2;
+  const lead = EX_BY_ID[chain[0].ex], crec = withBell(lead, getRecommendation(lead, w.programId, w));
+  return '<h3>Round '+(SESSION.round+1)+' — how many did you do?</h3>'
+    + '<p class="wr-meta" style="margin:0;">'+(perSide?'Per side. ':'')+'Did more than written? Put the real number in — the target goes up next time.</p>'
+    + chain.map(function(c,i){ const e = EX_BY_ID[c.ex];
+        return '<div class="cx-log"><span>'+esc(e.name)+'</span><div class="num-stepper sm"><button onclick="stepNum(\'cx'+i+'\',-1)">−</button><div class="val" id="cx'+i+'">'+c.reps+'</div><button onclick="stepNum(\'cx'+i+'\',1)">+</button></div></div>'; }).join('')
+    + (crec.weight ? weightField(U(), crec.weight) : '')
+    + feelField()
+    + '<button class="btn btn-primary btn-block" onclick="submitComplexRound()">Save the round</button>';
+}
+function submitComplexRound(){
+  const w = SESSION.workout, chain = w.chain||[], sides = complexSides(w);
+  const reps = chain.map(function(c,i){ const el = document.getElementById('cx'+i); return el ? Math.max(0, parseInt(el.textContent,10)||0) : c.reps; });
+  if(!reps.some(function(r){ return r>0; })){ toast('Log at least one rep — or skip the round'); return; }
+  const wEl = document.getElementById('weightInput'), lead = EX_BY_ID[chain[0].ex];
+  const bell = wEl ? parseFloat(wEl.dataset.kg) : withBell(lead, getRecommendation(lead, w.programId, w)).weight;
+  if(bell){ SESSION.bellFor = SESSION.bellFor || {}; SESSION.bellFor[lead.id] = bell; }
+  const diff = takeFeel(), flags = takeFlags();
+  chain.forEach(function(c, i){
+    const ex = EX_BY_ID[c.ex]; if(!ex || !reps[i]) return;
     logSet({exerciseId:c.ex, programId:w.programId, programName:w.programName, week:w.week,
             workoutIndex:w.idx, workoutName:w.name, format:'complex', noPR:true,
-            weight:isLoaded(ex) ? bell : null, result:c.reps*complexSides(w), difficulty:null, reason:null,
-            targetLow:c.reps, targetHigh:c.reps, side:null});
+            weight:isLoaded(ex) ? bell : null, result:reps[i]*sides, perSide:reps[i], difficulty:diff, reason:null,
+            targetLow:c.reps, targetHigh:c.reps, side:null, pain:flags.pain, form:flags.form});
   });
-  resetSide(); SESSION.blockIndex=0; SESSION.round++;
+  SESSION._sheet = null; resetSide(); SESSION.blockIndex = 0; SESSION.round++;
   if(SESSION.round>=w.rounds){ completeMainPart(); render(); return; }
   startRest(w.restSec||75, ()=>render(), 'Between rounds');
 }
+function advanceComplex(){ openSheet('clog'); }      // kept for old snapshots
 function skipComplexRound(){
   const w = SESSION.workout;
   resetSide(); SESSION.blockIndex=0; SESSION.round++;
   if(SESSION.round>=w.rounds) completeMainPart();
   render();
+}
+/* The written reps are a floor. What you actually did last time with this
+   complex moves it: more on every round raises the target (by up to two),
+   every round easy adds one, and a round you could not finish brings it back. */
+function complexTarget(progId, dayName, c, sides){
+  const hs = (STATE.history||[]).filter(function(h){ return h.format==='complex' && h.exerciseId===c.ex && h.workoutName===dayName && (!progId || h.programId===progId) && !h.skipped; });
+  if(!hs.length) return {reps:c.reps, bumped:false};
+  const key = hs[hs.length-1].sid || hs[hs.length-1].date;
+  const last = hs.filter(function(h){ return (h.sid||h.date)===key; });
+  const prevT = last[0].targetLow || c.reps;
+  const done = Math.min.apply(null, last.map(function(h){ return h.perSide || Math.round(h.result/(sides||1)); }));
+  let t = prevT;
+  if(last.some(function(h){ return h.pain || h.form; })) t = prevT;
+  else if(done > prevT) t = Math.min(prevT+2, done);
+  else if(done >= prevT && last.every(function(h){ return h.difficulty==='easy'; })) t = prevT+1;
+  else if(done < prevT && last.some(function(h){ return h.difficulty==='too_hard'; })) t = prevT-1;
+  t = Math.max(c.reps, Math.min(c.reps+4, t));
+  return {reps:t, bumped: t > c.reps};
 }
 
 /* --- EMOM --- */
@@ -8358,7 +8450,7 @@ function renderRestOverlay(){
                'Switch sides':'Same set, other side.'}[SESSION.restLabel] || '';
   const nx = nextUpInfo(), ps = nx && PHOTO_SETS[nx.ex.id];
   const bg = ps ? '<div class="rest-bg'+(nx.side==='L'?' mirrored':'')+'"><img alt="" src="'+ps.src[Math.min(ps.key||0, ps.src.length-1)]+'"></div>' : '';
-  return '<div class="rest-overlay'+(bg?' has-bg':'')+'">'+bg+'<div class="eyebrow">'+esc(SESSION.restLabel||'Rest')+(SESSION.restLabel==='Switch sides'?'':' · Rest')+'</div>'
+  return '<div class="rest-overlay'+(bg?' has-bg':'')+'">'+bg+'<div class="eyebrow">'+esc(SESSION.restLabel||'Rest')+(SESSION.restLabel==='Switch sides' || !SESSION.restLabel || /^rest$/i.test(SESSION.restLabel) ? '' : ' · Rest')+'</div>'
   + restRingMarkup()
   + (why ? '<p class="rest-why">'+esc(why)+'</p>' : '')
   + nextUpCard()
@@ -8866,12 +8958,88 @@ function renderWorkoutSummary(){
     + '<h2>'+esc(w.name)+'</h2>'+(sub?'<p>'+esc(sub)+'</p>':'')
     + (early?'<p>Everything you logged is saved. This day stays open, so you can come back to it.</p>':'')+'</div>'
     + '<div class="sum-tiles">'+tiles.map(function(t,i){ return '<div class="sum-tile'+rv(i+1)+'"><div class="n" data-to="'+t[0]+'">'+(anim?0:t[0].toLocaleString('en'))+'</div><div class="l">'+esc(t[1])+'</div></div>'; }).join('')+'</div>'
-    + (Object.keys(today).length ? '<div class="sum-block'+rv(4)+'"><div class="eyebrow" style="margin-bottom:10px;">What you worked today</div>'+heatMapMarkup(today)+'</div>' : '')
-    + (prs ? '<div class="sum-block'+rv(5)+'"><div class="eyebrow" style="margin-bottom:10px;">New records</div>'+prs+'</div>' : '')
+    + (prs ? '<div class="sum-block'+rv(4)+'"><div class="eyebrow" style="margin-bottom:10px;">New records</div>'+prs+'</div>' : '')
+    + (early ? '' : summaryProgressMarkup(S, w, rv))
+    + (Object.keys(today).length ? '<div class="sum-block'+rv(6)+'"><div class="eyebrow" style="margin-bottom:10px;">What you worked today</div>'+heatMapMarkup(today)+'</div>' : '')
     + '<div class="card'+rv(6)+'" style="margin-top:12px;text-align:center;">'
     + (setsLogged.length ? '<button class="btn btn-secondary btn-block share-cta" onclick="openShareCard()">'+ICON.share+' Share this session</button>' : '')
     + sessionNoteField(w.name)
+    + (!early && !(STATE.profile.remind && STATE.profile.remind.added) ? '<button class="btn btn-ghost btn-block rem-sum" onclick="remindFromSummary()">'+ICON.calendar+' Remind me next training day</button>' : '')
     + feedbackBlock + '</div>';
+}
+
+/* ---------- what today meant: compared with last time, and what comes next ---------- */
+function bestOf(sets){
+  const sc = function(h){ return h.weight ? e1rmOf(h.weight, h.result) : h.result; };
+  return sets.reduce(function(b,h){ return !b || sc(h) > sc(b) ? h : b; }, null);
+}
+/* the previous session with this lift (not today's), its best set */
+function prevBestFor(exId){
+  const sid = SESSION && SESSION.sid;
+  const hs = STATE.history.filter(function(h){ return h.exerciseId===exId && h.sid!==sid && countedEntry(h); });
+  if(!hs.length) return null;
+  const lastKey = hs[hs.length-1].sid || hs[hs.length-1].date;
+  return bestOf(hs.filter(function(h){ return (h.sid || h.date)===lastKey; }));
+}
+function liftChange(l){
+  const b = l.best, p = prevBestFor(l.ex.id);
+  if(!b || !countedEntry(b)) return null;
+  const unit = l.ex.timeBased ? ' sec' : ' reps';
+  if(!p) return {cls:'new', txt:'First time'};
+  if(b.weight && p.weight && b.weight > p.weight) return {cls:'up', txt:W(p.weight)+' → '+W(b.weight)+' '+U()};
+  if((b.weight||0)===(p.weight||0) && b.result > p.result) return {cls:'up', txt:'+'+(b.result-p.result)+unit+(b.weight ? ' at '+W(b.weight)+' '+U() : '')};
+  if(b.weight && p.weight && b.weight < p.weight) return {cls:'flat', txt:'Lighter bell today'};
+  return {cls:'flat', txt:'Same as last time'};
+}
+function nextTimeFor(l, w){
+  const b = l.best; if(!b || CIRCUIT_FORMATS.indexOf(b.format)>=0) return null;
+  let rec;
+  try{ const keep = SESSION.side; SESSION.side = b.side || 'R'; rec = getRecommendation(l.ex, w.programId, w); SESSION.side = keep; }catch(e){ return null; }
+  if(!rec) return null;
+  const reps = rec.low===rec.high ? rec.low : rec.low+'–'+rec.high;
+  if(rec.weight && b.weight && rec.weight > b.weight) return {up:true, txt:W(rec.weight)+' '+U()+' × '+reps};
+  if(rec.weight && b.weight && rec.weight < b.weight) return {txt:W(rec.weight)+' '+U()+' × '+reps+' — eased off'};
+  return {txt:(rec.weight ? W(rec.weight)+' '+U()+' × ' : '')+reps+(l.ex.timeBased?' sec':'')};
+}
+function milestones(S){
+  const out = [], sid = SESSION.sid;
+  const sessions = {}; STATE.history.forEach(function(h){ if(countedEntry(h) || h.format) sessions[h.sid || (h.date+'|'+h.workoutName)] = 1; });
+  const n = Object.keys(sessions).length;
+  if([1,5,10,20,25,50,75,100,150,200,250,300].indexOf(n)>=0) out.push(n===1 ? 'Your first workout' : 'Workout number '+n);
+  const before = STATE.history.filter(function(h){ return h.sid!==sid && h.weight; }).reduce(function(m,h){ return Math.max(m, h.weight); }, 0);
+  const todayMax = S.sets.reduce(function(m,h){ return Math.max(m, h.weight||0); }, 0);
+  if(before && todayMax > before) out.push('First time with a '+W(todayMax)+' '+U()+' bell');
+  const st = weekStreak(); if(st >= 2) out.push(st+'-week streak');
+  return out;
+}
+/* the same day of the programme, the last time it was done */
+function lastSameDayVolume(w){
+  const sid = SESSION.sid;
+  const hs = STATE.history.filter(function(h){ return h.sid!==sid && countedEntry(h) && h.workoutName===w.name && (!w.programId || h.programId===w.programId); });
+  if(!hs.length) return null;
+  const key = hs[hs.length-1].sid || hs[hs.length-1].date;
+  return hs.filter(function(h){ return (h.sid||h.date)===key; }).reduce(function(v,h){ return v+(h.weight||0)*(h.result||0); }, 0);
+}
+function summaryProgressMarkup(S, w, rv){
+  const rows = S.lifts.slice(0, 6).map(function(l){ return {l:l, ch:liftChange(l), nx:nextTimeFor(l, w)}; }).filter(function(r){ return r.ch; });
+  if(!rows.length) return '';
+  const ups = rows.filter(function(r){ return r.ch.cls==='up'; }).length;
+  const ms = milestones(S);
+  const prevVol = lastSameDayVolume(w);
+  const volTxt = prevVol && S.vol ? (function(){ const d = Math.round((S.vol-prevVol)/prevVol*100); return d>0 ? '+'+d+'% volume vs last time' : d<0 ? d+'% volume vs last time' : 'Same volume as last time'; })() : '';
+  const head = ups ? (ups===1 ? 'One lift went up today' : ups+' lifts went up today') : (rows.every(function(r){ return r.ch.cls==='new'; }) ? 'A first look at every lift' : 'Solid — the numbers held');
+  return '<div class="sum-block sum-prog'+rv(4)+'"><div class="eyebrow" style="margin-bottom:6px;">Compared with last time</div>'
+    + '<div class="sp-head">'+esc(head)+'</div>'
+    + (ms.length || volTxt ? '<div class="sp-chips">'+ms.map(function(m){ return '<span class="sp-chip ms">🎉 '+esc(m)+'</span>'; }).join('')+(volTxt?'<span class="sp-chip">'+esc(volTxt)+'</span>':'')+'</div>' : '')
+    + rows.map(function(r){
+        return '<div class="sp-row"><div class="sp-ex"><b>'+esc(r.l.ex.name)+'</b><small>Today '+esc(setLine(r.l))+'</small></div>'
+          + '<span class="sp-ch '+r.ch.cls+'">'+(r.ch.cls==='up'?'↑ ':'')+esc(r.ch.txt)+'</span></div>';
+      }).join('')
+    + '</div>'
+    + (rows.some(function(r){ return r.nx; }) ? '<div class="sum-block sum-next'+rv(5)+'"><div class="eyebrow" style="margin-bottom:8px;">Next time</div>'
+        + rows.filter(function(r){ return r.nx; }).map(function(r){
+            return '<div class="sp-row"><div class="sp-ex"><b>'+esc(r.l.ex.name)+'</b></div><span class="sp-next'+(r.nx.up?' up':'')+'">'+(r.nx.up?'↑ ':'')+esc(r.nx.txt)+'</span></div>'; }).join('')
+        + '<p class="wr-meta" style="margin:8px 0 0;">The app sets these for you — just press Start next time.</p></div>' : '');
 }
 /* A line for next time: "shoulder felt tight", "go up to 20 on swings". It is
    kept with the session and shown wherever the session is listed. */
@@ -9270,7 +9438,8 @@ function liftsList(){
       + '<div class="lift-body"><div class="wr-title">'+esc(t.ex.name)+(recentPR?' <span class="pr-dot" title="Record last session">'+ICON.trophy+'</span>':'')+'</div>'
       + '<div class="wr-meta">'+t.sessions.length+' session'+(t.sessions.length===1?'':'s')+' · last '+esc(fmtDay(t.last.date))+'</div></div>'
       + sparkline(t.sessions.slice(-10).map(function(s){return s.value;}))
-      + '<div class="lift-val"><div class="lift-num">'+esc(fmtKindValue(t.kind, t.last.value))+'<small> '+esc(kindUnit(t.kind))+'</small></div>'
+      /* what you actually lifted, not a computed estimate nobody recognises */
+      + '<div class="lift-val"><div class="lift-num lift-best">'+esc(bestSetText(t.ex, t.last))+'</div>'
       + (t.sessions.length>1 ? deltaChip(t.pct) : '<span class="delta flat">new</span>')+'</div>'
       + ico(ICON.chevron)+'</div>';
   }).join('');
@@ -9336,6 +9505,51 @@ function heatEntries(r){
   else { from = isoLocal(addDays(mon,-7)); to = isoLocal(addDays(mon,-1)); }
   return (STATE.history||[]).filter(function(h){ return h.date>=from && h.date<=to && !h.skipped && h.result>0; });
 }
+/* What the map should say about balance. A kettlebell day always loads the
+   hips and trunk more than the chest, so comparing groups with each other
+   calls every programme lopsided. A programme is balanced over its week by
+   design; what can go wrong is a day that did not happen. So with a
+   programme the note counts its days, and names a missed one. Only free
+   training, with no plan behind it, is judged by the sets themselves, and
+   only over a finished week. */
+function heatVerdict(entries, sets, fmtN){
+  const note = function(kind, html){ return '<div class="heat-note '+kind+'">'+(kind==='ok'?'✅':'⚠️')+' <span>'+html+'</span></div>'; };
+  const byProg = {};
+  entries.forEach(function(h){ if(h.programId && PROG_BY_ID[h.programId]) byProg[h.programId] = (byProg[h.programId]||0)+1; });
+  const pid = Object.keys(byProg).sort(function(a,b){ return byProg[b]-byProg[a]; })[0];
+  if(pid && byProg[pid] >= entries.length*0.6){
+    const P = PROG_BY_ID[pid], d = P.daysPerWeek || P.templates.length, T = P.templates;
+    const days = {};
+    entries.forEach(function(h){ if(h.programId===pid && h.workoutIndex!=null) days[(h.week||0)+'-'+h.workoutIndex] = h; });
+    const done = Object.keys(days).length;
+    const nameOf = function(i){ return T[i % T.length].name; };
+    if(HEAT_RANGE===0){
+      const wk = Math.max.apply(null, Object.keys(days).map(function(k){ return +k.split('-')[0]; }).concat([0]));
+      const left = []; for(let i=0;i<d;i++) if(!days[wk+'-'+i]) left.push(nameOf(i));
+      if(!left.length) return note('ok', '<b>Balanced.</b> All '+d+' days of '+esc(P.name)+' done — the plan spreads the work over the week.');
+      return note('ok', '<b>On plan.</b> '+esc(P.name)+' spreads the work over '+d+' days. Still to come this week: '+esc(left.join(', '))+'.');
+    }
+    const need = d * (HEAT_RANGE===1 ? 4 : 1);
+    if(done >= need) return note('ok', '<b>Balanced.</b> Every planned day done — '+esc(P.name)+' covers each group over the week.');
+    if(HEAT_RANGE===2){
+      const wk = Math.max.apply(null, Object.keys(days).map(function(k){ return +k.split('-')[0]; }).concat([0]));
+      const miss = []; for(let i=0;i<d;i++) if(!days[wk+'-'+i]) miss.push(nameOf(i));
+      return note('warn', '<b>'+done+' of '+d+' days.</b> '+(miss.length ? esc(miss.join(', '))+' didn’t happen, so the groups it trains got less than the plan gives them.' : 'One day short of the plan.'));
+    }
+    return note('warn', '<b>'+done+' of '+need+' planned days.</b> The plan is balanced over a full week — the missed days are where groups fall short.');
+  }
+  // free training: only a finished stretch can be judged, and only by real neglect
+  if(HEAT_RANGE===0) return '';
+  const weeks = HEAT_RANGE===1 ? 4 : 1;
+  const MAJOR = ['glutes','hamstrings','quads','back','shoulders','chest','core'];
+  const low = MAJOR.map(function(m){ return [m, sets[m]||0]; }).sort(function(a,b){ return a[1]-b[1]; })[0];
+  const total = Object.keys(sets).reduce(function(a,k){ return a+sets[k]; }, 0);
+  if(total < 12*weeks) return '';
+  const HINT = {chest:'Push-ups or a floor press cover it.', back:'Rows cover it.', quads:'Goblet or front squats cover it.',
+    hamstrings:'Swings or Romanian deadlifts cover it.', glutes:'Swings or bridges cover it.', shoulders:'A press covers it.', core:'Planks or carries cover it.'};
+  if(low[1] < 2*weeks) return note('warn', '<b>'+esc(MUSCLE_LABELS[low[0]]||low[0])+' got little direct work.</b> '+fmtN(low[1])+' set'+(low[1]===1?'':'s')+(weeks>1?' in four weeks':' all week')+'. '+HINT[low[0]]);
+  return note('ok', '<b>Balanced.</b> Every major group got real work.');
+}
 function muscleHeatSection(){
   const sets = muscleSets(heatEntries(HEAT_RANGE));
   const keys = Object.keys(sets).sort(function(a,b){ return sets[b]-sets[a]; });
@@ -9350,14 +9564,7 @@ function muscleHeatSection(){
       + '<div class="heat-list">'+keys.slice(0,8).map(function(m){
           return '<div class="heat-row"><span>'+esc(MUSCLE_LABELS[m]||m)+'</span><span class="t"><i style="width:'+Math.max(4,sets[m]/max*100)+'%;background:'+(heatColor(sets[m]/max)||'var(--bg-3)')+'"></i></span><span class="n">'+fmtN(sets[m])+' sets</span></div>';
         }).join('')+'</div>';
-    const MAJOR = ['glutes','hamstrings','quads','back','shoulders','chest','core'];
-    const lows = MAJOR.map(function(m){ return [m, sets[m]||0]; }).sort(function(a,b){ return a[1]-b[1]; });
-    const low = lows[0];
-    if(max >= 6 && low[1] < max*0.35){
-      body += '<div class="heat-note warn">⚠️ <span><b>'+esc(MUSCLE_LABELS[low[0]]||low[0])+' is falling behind.</b> '+fmtN(low[1])+' set'+(low[1]===1?'':'s')+' against '+fmtN(max)+' for '+esc((MUSCLE_LABELS[keys[0]]||keys[0]).toLowerCase())+'.</span></div>';
-    } else if(max >= 6){
-      body += '<div class="heat-note ok">✅ <span><b>Balanced.</b> Every major group got real work.</span></div>';
-    }
+    body += heatVerdict(heatEntries(HEAT_RANGE), sets, fmtN);
   }
   return '<div class="section"><div class="section-title">Muscles worked</div><div class="card">'
     + '<div class="heat-seg">'+['This week','4 weeks','Last week'].map(function(l,i){ return '<button class="'+(HEAT_RANGE===i?'on':'')+'" onclick="setHeatRange('+i+')">'+l+'</button>'; }).join('')+'</div>'
@@ -9615,6 +9822,100 @@ function resetAllData(){
   if(confirm('This will erase your profile, program progress and workout history. Continue?')){
     STATE = defaultState(); ONB_DATA=null; ONB_STEP=0; registerCustomPrograms(); saveState(); navigate('onboarding');
   }
+}
+
+
+/* ============================== REMINDERS ==============================
+   A web app cannot wake itself up at 18:00 without a server sending a push,
+   and NT Training has no server. The phone's own calendar can: the training
+   days go in as one repeating event with an alert, and the phone does the
+   reminding, on time, even with the app closed. The same days also tell the
+   app which days are training days (Home, Fuel). */
+const DOW = [['MO','Mon',1],['TU','Tue',2],['WE','Wed',3],['TH','Thu',4],['FR','Fri',5],['SA','Sat',6],['SU','Sun',0]];
+function defaultRemindDays(n){
+  return ({1:[3],2:[2,4],3:[1,3,5],4:[1,2,4,5],5:[1,2,3,4,5],6:[1,2,3,4,5,6],7:[0,1,2,3,4,5,6]})[n] || [1,3,5];
+}
+function remindPlan(){
+  const r = (STATE.profile && STATE.profile.remind) || {};
+  return {days: (r.days && r.days.length) ? r.days.slice() : defaultRemindDays(+STATE.profile.days||3), time: r.time || '18:30', alert: r.alert!=null ? r.alert : 15, set: !!r.added};
+}
+function isPlannedDay(date){
+  const r = STATE.profile && STATE.profile.remind; if(!r || !r.days || !r.days.length) return null;
+  return r.days.indexOf(new Date(date+'T00:00:00').getDay()) >= 0;
+}
+let REMIND_DRAFT = null;
+function remindToggleDay(d){ const R = REMIND_DRAFT; const i = R.days.indexOf(d); if(i>=0) R.days.splice(i,1); else R.days.push(d); render(); }
+function icsDate(d){ const p = function(n){ return String(n).padStart(2,'0'); }; return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'T'+p(d.getHours())+p(d.getMinutes())+'00'; }
+function buildIcs(R){
+  const hm = R.time.split(':'), start = new Date(); start.setHours(+hm[0]||18, +hm[1]||0, 0, 0);
+  // the first occurrence: the next chosen weekday from today
+  for(let i=0;i<8;i++){ if(R.days.indexOf(start.getDay())>=0 && (i>0 || start > new Date())) break; start.setDate(start.getDate()+1); }
+  const byday = DOW.filter(function(d){ return R.days.indexOf(d[2])>=0; }).map(function(d){ return d[0]; }).join(',');
+  const mins = Math.max(20, +STATE.profile.duration || 45);
+  const url = location.protocol.indexOf('http')===0 ? location.origin+location.pathname : '';
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//NT Training//Reminders//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH',
+    'BEGIN:VEVENT','UID:nt-training-'+Date.now()+'@nt-training','DTSTAMP:'+icsDate(new Date()),
+    'DTSTART:'+icsDate(start),'DURATION:PT'+mins+'M','RRULE:FREQ=WEEKLY;BYDAY='+byday,
+    'SUMMARY:NT Training — workout','DESCRIPTION:Your session is ready. Open NT Training and press Start.'+(url?'\\n'+url:''),
+    (url?'URL:'+url:null),
+    'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:NT Training in '+R.alert+' minutes','TRIGGER:-PT'+R.alert+'M','END:VALARM',
+    'END:VEVENT','END:VCALENDAR'].filter(Boolean);
+  return lines.join('\r\n');
+}
+async function remindAdd(){
+  const R = REMIND_DRAFT;
+  const t = document.getElementById('remTime'); if(t && t.value) R.time = t.value;
+  if(!R.days.length){ toast('Pick at least one day'); return; }
+  STATE.profile.remind = {days:R.days.slice().sort(), time:R.time, alert:R.alert, added:true}; saveState();
+  const ics = buildIcs(R), name = 'nt-training-reminders.ics';
+  const blob = new Blob([ics], {type:'text/calendar'});
+  try{
+    const file = new File([blob], name, {type:'text/calendar'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:'NT Training reminders'}); toast('Choose Calendar to add it'); render(); return; }
+  }catch(e){ if(e && e.name==='AbortError'){ render(); return; } }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+  toast('Open the file and tap Add to Calendar'); render();
+}
+function remindSaveOnly(){
+  const R = REMIND_DRAFT; const t = document.getElementById('remTime'); if(t && t.value) R.time = t.value;
+  if(!R.days.length){ toast('Pick at least one day'); return; }
+  const was = STATE.profile.remind || {};
+  STATE.profile.remind = {days:R.days.slice().sort(), time:R.time, alert:R.alert, added:!!was.added}; saveState(); toast('Training days saved'); goBack('profile');
+}
+function renderReminders(){
+  if(!REMIND_DRAFT) REMIND_DRAFT = remindPlan();
+  const R = REMIND_DRAFT;
+  return '<div class="top-row"><div class="back-btn" role="button" tabindex="0" aria-label="Back" onclick="REMIND_DRAFT=null;goBack(\'profile\')">'+ICON.back+'</div><div class="eyebrow">Reminders</div></div>'
+    + '<h1 style="font-size:28px;margin:6px 0 6px;">Never miss a session</h1>'
+    + '<p style="color:var(--text-2);font-size:14px;line-height:1.5;margin-bottom:16px;">Pick your training days and time. They go into your phone’s calendar as one repeating event, so the reminder comes on time even when the app is closed.</p>'
+    + '<div class="card">'
+    + '<div class="field"><label>Training days</label><div class="rem-days">'+DOW.map(function(d){
+        return '<button class="'+(R.days.indexOf(d[2])>=0?'on':'')+'" onclick="remindToggleDay('+d[2]+')">'+d[1]+'</button>'; }).join('')+'</div>'
+    + '<p class="wr-meta" style="margin:8px 0 0;">'+R.days.length+' day'+(R.days.length===1?'':'s')+' a week'+(R.days.length && R.days.length !== (+STATE.profile.days||3) ? ' · your programme has '+(+STATE.profile.days||3) : '')+'</p></div>'
+    + '<div class="field"><label for="remTime">Time</label><input id="remTime" class="rem-time" type="time" value="'+esc(R.time)+'"></div>'
+    + '<div class="field"><label>Alert</label><div class="chip-row">'+[[10,'10 min'],[15,'15 min'],[30,'30 min']].map(function(o){
+        return '<div class="chip '+(R.alert===o[0]?'selected':'')+'" onclick="REMIND_DRAFT.alert='+o[0]+';var t=document.getElementById(\'remTime\');if(t)REMIND_DRAFT.time=t.value;render()">'+o[1]+' before</div>'; }).join('')+'</div></div>'
+    + '<button class="btn btn-primary btn-block" onclick="remindAdd()">'+ICON.calendar+' Add to my calendar</button>'
+    + '<button class="btn btn-ghost btn-block" style="margin-top:8px;" onclick="remindSaveOnly()">Just save my training days</button>'
+    + '</div>'
+    + '<p class="wr-meta" style="margin:14px 2px 0;line-height:1.5;">To change the days later, delete the “NT Training — workout” event in your calendar and add it again from here. Your training days also mark Home and the Fuel meal plan.</p>';
+}
+function remindFromSummary(){
+  if(SESSION && !SESSION.workoutFeedbackGiven) finishWithFeedback(); else if(SESSION) closeWorkout();
+  REMIND_DRAFT = null; navigate('reminders');
+}
+function reminderCard(){
+  /* offered once there is a habit to protect: after the first two workouts, until set or dismissed */
+  const p = STATE.profile || {};
+  if(p.remind && p.remind.added) return '';
+  if(p.remindDismissed) return '';
+  const sessions = {}; (STATE.history||[]).forEach(function(h){ sessions[h.sid || h.date] = 1; });
+  if(Object.keys(sessions).length < 2) return '';
+  return '<div class="card card-tight rem-card"><div class="rem-ico">'+ICON.calendar+'</div><div style="flex:1;min-width:0;"><div class="wr-title">Remind me on training days</div>'
+    + '<div class="wr-meta">An alert from your calendar, even with the app closed.</div></div>'
+    + '<button class="btn btn-primary btn-sm" onclick="REMIND_DRAFT=null;navigate(\'reminders\')">Set up</button>'
+    + '<button class="rem-x" aria-label="Not now" onclick="STATE.profile.remindDismissed=true;saveState();render()">'+ICON.x+'</button></div>';
 }
 
 /* ============================== BODY WEIGHT ==============================
@@ -10279,6 +10580,8 @@ function nutriTrainGuess(date){
   if(typeof d.train === 'boolean') return d.train;
   const hist = STATE.history||[];
   if(hist.some(function(h){ return h.date===date; })) return true;
+  const planned = typeof isPlannedDay==='function' ? isPlannedDay(date) : null;
+  if(planned !== null) return planned;                   // your own training days, when you have set them
   if(date!==todayISO()) return false;
   const last = hist.length ? hist[hist.length-1].date : null;
   if(!last) return true;
