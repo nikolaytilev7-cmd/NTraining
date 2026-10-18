@@ -718,7 +718,9 @@ a{color:inherit;text-decoration:none;}
 .frame-seg button.on{background:var(--blue);border-color:var(--blue);color:var(--on-accent);}
 .focus-hero{position:relative;margin:0 -18px;}
 @media (min-width:900px){.focus-hero{margin:0;}}
-.focus-hero .fig-wrap{max-width:none;width:100%;height:min(46vh,500px);min-height:260px;margin:0;padding:0;border-radius:22px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.focus-hero .fig-wrap{max-width:none;width:100%;height:min(46vh,500px);
+  /* sized to what is left once the target, last-time line and the dock have their room */
+  height:clamp(210px, calc(100svh - 448px - var(--safe-t) - var(--safe-b)), 440px);min-height:0;margin:0;padding:0;border-radius:22px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center;}
 @media (min-width:900px){.focus-hero .fig-wrap{border-radius:22px;}}
 /* short phones (SE): a smaller photo so the numbers, the bell and the links sit above the dock */
 @media (max-height:700px){.focus-hero .fig-wrap{height:30vh;min-height:180px;}.fh-title{font-size:23px;}.fh-txt{padding-bottom:8px;}}
@@ -735,6 +737,13 @@ a{color:inherit;text-decoration:none;}
 .fh-eb .fh-side{color:#8FB0FF;}
 .fh-title{font-size:27px;font-weight:800;line-height:1.1;margin:3px 0 0;letter-spacing:-.01em;color:var(--text-1);}
 .fh-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px 0;min-height:30px;}
+/* the frame caption and dots ride on the photo's bottom edge instead of taking a row */
+.focus-hero .fh-row{position:absolute;left:0;right:0;bottom:10px;padding:0 14px;min-height:0;pointer-events:none;}
+.focus-hero .fh-row > *{pointer-events:auto;}
+.focus-hero .fh-cap{background:rgba(10,14,19,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;}
+.focus-hero .fh-dots{background:rgba(10,14,19,.55);padding:5px 7px;border-radius:99px;}
+.focus-hero .fh-dots i{background:rgba(255,255,255,.35);}
+.focus-hero .fh-dots i.on{background:#fff;}
 @media (min-width:900px){.fh-row{padding:10px 0 0;}}
 .fh-cap{background:var(--bg-3);color:var(--text-1);font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;max-width:72%;}
 .fh-cap:empty{display:none;}
@@ -2182,7 +2191,7 @@ PROGRAMS.forEach(function(p){ (p.templates||[]).forEach(function(t){ trimEmomTai
 const PROG_BY_ID = Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
 
 /* ============================= STORAGE ============================= */
-const BUILD = '2026-10-18b';   // shown in Profile, so "did the update land?" has an answer
+const BUILD = '2026-10-18c';   // shown in Profile, so "did the update land?" has an answer
 /* The brand is fixed; the category is the part that changes when the app
    grows past kettlebells. The storage key keeps its old name on purpose —
    renaming it would orphan every set already logged on the phone. */
